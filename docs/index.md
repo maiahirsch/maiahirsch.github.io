@@ -1,3 +1,27 @@
+<div style="display: flex; align-items: center; margin-bottom: 2rem;">
+
+  <!-- Profile Image -->
+  <img src="assets/photo.png"
+       alt="Maia Hirsch"
+       style="width:140px; height:140px; border-radius:50%; object-fit:cover; margin-right:1.5rem;" />
+
+  <!-- Intro Text -->
+  <div>
+    <h1 style="margin-bottom: 0.3rem;">Maia Hirsch</h1>
+    <p style="margin: 0;">
+      Mechanical Engineering · MAE 5190
+    </p>
+  </div>
+
+</div>
+
+<!-- Contact Links -->
+<div style="position: absolute; top: 1.5rem; left: 1.5rem; font-size: 0.9rem;">
+  <a href="mailto:mh2567@cornell.edu">📧 Email</a><br>
+  <a href="https://github.com/maiahirsch">💻 GitHub</a><br>
+  <a href="https://instagram.com/maiahirschlab">📷 Instagram</a>
+</div>
+
 ## Labs Directory
 
 | Lab # | Lab Name |
