@@ -9,7 +9,7 @@
   <div>
     <h1 style="margin-bottom: 0.3rem;">Maia Hirsch</h1>
     <p style="margin: 0;">
-      Mechanical Engineering · MAE 5190
+      MAE 5190
     </p>
   </div>
 
