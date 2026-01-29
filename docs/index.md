@@ -1,7 +1,7 @@
 <div style="display: flex; align-items: center; margin-bottom: 2rem;">
 
   <!-- Profile Image -->
-  <img src="assets/photo.png"
+  <img src="assets/Photo.png"
        alt="Maia Hirsch"
        style="width:140px; height:140px; border-radius:50%; object-fit:cover; margin-right:1.5rem;" />
 
