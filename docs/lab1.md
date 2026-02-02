@@ -50,20 +50,27 @@ I used `millis()` to get the current time since the board started running, conve
 
 I ran into a lot of errors with GET_TIME_MILLIS missing from CMD and fixed it by restarting the Kernel. 
 
-Reference used: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth and https://rga47-lab.github.io/lab1.html
+Reference: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth and https://rga47-lab.github.io/lab1.html
 
 ## Task 4: Notification Handler 
 
+To improve communication efficiency between the computer and the robot, I implemented a notification-based approach for receiving string data from the board. Instead of explicitly calling a receive function every time a response was needed, I set up a notification handler that automatically processes incoming data from the RX string characteristic.
 
-4. Setup a notification handler in Python to receive the string value (the BLEStringCharactersitic in Arduino) from the Artemis board. In the callback function, extract the time from the string.
+On the Python side, I defined a custom notification handler that converts the received byte array into a string and parses the message. Since some responses include multiple tokens (e.g., sample index and timestamp), the handler checks the length of the parsed string before printing the appropriate output. I then enabled notifications on the RX string characteristic. 
+![Lab 1B Task 4](assets/lab1btask4usingthis.png)
 
-reference: https://rga47-lab.github.io/lab1.html
+![Lab 1B Task 4](assets/lab1btask4newnotificationhandler.png)
 
-using extract from chart (screenshot)
+Once notifications were enabled, I sent the GET_TIME_MILLIS command from the computer. The board responds by sending back the current timestamp (in milliseconds) formatted as a string (e.g., T:387094.000). This response is automatically received and printed by the notification handler.
+
+![Lab 1B Task 4](assets/lab1btask4newntimestamps.png)
+![Lab 1B Task 4](assets/lab1btask4result.png)
+
+Reference: https://rga47-lab.github.io/lab1.html
 
 5. Write a loop that gets the current time in milliseconds and sends it to your laptop to be received and processed by the notification handler. Collect these values for a few seconds and use the time stamps to determine how fast messages can be sent. What is the effective data transfer rate of this method?
 
-using as reference: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth
+Reference: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth
 
 I then used the following methodology to determine the effective data transfer rate of this method after all 1000 time stamps were received.
 
