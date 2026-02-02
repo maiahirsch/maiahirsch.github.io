@@ -364,6 +364,12 @@ Reference: https://neverlandiz.github.io/fast_robots/
 
 #### 2. Reliability
 
+To test the reliability of BLE communication at higher transmission rates, I implemented a command called RELIABILITY on the Artemis board. When triggered, the robot sends 1000 sequentially numbered messages to the computer as quickly as possible using BLE notifications.
+
+A notification handler was used to collect all incoming messages into an array. After transmission completed, the received sequence was checked to verify that each message arrived in order and without missing values.
+
+The results showed that all messages were received correctly and in sequence, indicating that the BLE communication was reliable under this transmission rate. This demonstrates that, for this message size and rate, the computer was able to successfully process all incoming notifications without data loss.
+
 ## Discussion 
 
 In this lab, I learned how to design and compare different data acquisition and transmission strategies using BLE on the Artemis board. I explored the trade-offs between streaming data in real time versus buffering data locally before transmission, and how BLE throughput and on-board memory constraints affect system performance.
