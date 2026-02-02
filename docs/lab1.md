@@ -211,4 +211,87 @@ Reference: https://sgb1443.github.io/ece4160/Lab1B/
 
 7. Add a second array that is the same size as the time stamp array. Use this array to store temperature readings. Each element in both arrays should correspond, e.e., the first time stamp was recorded at the same time as the first temperature reading. Then add a command GET_TEMP_READINGS that loops through both arrays concurrently and sends each temperature reading with a time stamp. The notification handler should parse these strings and add populate the data into two lists.
 
+## Task 7: Time-Stamped Temperature Data Collection
+
+I extended the previous time-stamp data collection to include temperature readings, ensuring that each temperature measurement corresponds exactly to a recorded time stamp. To accomplish this, I added a second global array to store temperature values and implemented a new command, GET_TEMP_READINGS, that collects and transmits both data streams together.
+
+I defined a second array, temp_data, with the same indexing scheme as the existing time_data array. Both arrays are populated concurrently inside a timed loop so that each index represents a synchronized measurement pair.
+
+```c
+int time_data[5000] = {0};
+float temp_data[500] = {0.0};
+```
+
+Within the GET_TEMP_READINGS command, the board collects time stamps using millis() and temperature readings using getTempDegF() for a duration of three seconds. Each measurement pair is stored at the same index to preserve correspondence.
+
+```c
+case GET_TEMP_READINGS: {
+            int i = 0; 
+            unsigned long startTime = millis();
+            // create a loop to retrieve data for 3 seconds 
+            while(millis() - startTime < 3000) {
+                //prevent overflow
+                time_data[i] = millis();
+                temp_data[i] = getTempDegF();
+                i++; 
+                if(i == 9,999)
+                    Serial.println("Array Full");
+            }
+            Serial.println("Data Collected");
+
+            for (int j = 0; j <= i; j++) {
+
+                if(time_data[j] == 0)
+                    break; 
+
+                tx_estring_value.clear();
+                tx_estring_value.append("Sample: ");
+                tx_estring_value.append(j);
+                tx_estring_value.append(", T: ");
+                tx_estring_value.append(time_data[j]);
+                tx_estring_value.append(", Temp: ");
+                tx_estring_value.append(temp_data[j]);
+                tx_characteristic_string.writeValue(tx_estring_value.c_str());
+    
+            }
+            Serial.println("sent all");
+
+            break;
+```
+Each data point is sent as a formatted string over the BLE string characteristic, allowing the central device to parse the information reliably.
+
+On the Python side, I modified the notification handler to parse the incoming strings, extract the time and temperature values, and display them with appropriate units. The handler splits each message into its components and formats the output for readability.
+
+```c
+def notification_handler(uuid, byte_array):
+    s = ble.bytearray_to_string(byte_array).strip()
+
+    if "|" in s:
+        sep = s.split("|")
+
+        sample = sep[0].strip()                 # "Sample: 0"
+        time_ms = sep[1].replace("T:", "").strip()
+        temp_f  = sep[2].replace("Temp:", "").strip()
+
+        print(f"{sample}: {time_ms} ms, {temp_f} °F")
+    else:
+        print(s)
+```
+This approach cleanly separates data transmission (Arduino) from data presentation and parsing (Python), making the system easier to debug and extend.
+After starting notifications and sending the GET_TEMP_READINGS command, the laptop successfully received and displayed a sequence of synchronized measurements:
+
+```c
+Sample: 0, T: 875000, Temp: 78.932
+Sample: 1, T: 875001, Temp: 79.980
+Sample: 2, T: 875002, Temp: 78.932
+Sample: 3, T: 875003, Temp: 78.932
+Sample: 4, T: 875005, Temp: 78.932
+Sample: 5, T: 875008, Temp: 79.980
+Sample: 6, T: 875009, Temp: 78.932
+.
+.
+.
+```
+Each temperature reading corresponds to the exact time at which it was recorded, confirming that the two arrays remained synchronized throughout data collection.
+
 
