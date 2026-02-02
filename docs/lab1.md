@@ -115,154 +115,9 @@ Sample: 0, T: 40292
 Sample: 1, T: 40292
 Sample: 2, T: 40292
 Sample: 3, T: 40293
-Sample: 4, T: 40319
-Sample: 5, T: 40355
-Sample: 6, T: 40355
-Sample: 7, T: 40386
-Sample: 8, T: 40386
-Sample: 9, T: 40412
-Sample: 10, T: 40444
-Sample: 11, T: 40444
-Sample: 12, T: 40471
-Sample: 13, T: 40471
-Sample: 14, T: 40506
-Sample: 15, T: 40531
-Sample: 16, T: 40531
-Sample: 17, T: 40564
-Sample: 18, T: 40564
-Sample: 19, T: 40591
-Sample: 20, T: 40621
-Sample: 21, T: 40621
-Sample: 22, T: 40655
-Sample: 23, T: 40655
-Sample: 24, T: 40680
-Sample: 25, T: 40710
-Sample: 26, T: 40710
-Sample: 27, T: 40743
-Sample: 28, T: 40743
-Sample: 29, T: 40771
-Sample: 30, T: 40801
-Sample: 31, T: 40801
-Sample: 32, T: 40831
-Sample: 33, T: 40831
-Sample: 34, T: 40858
-Sample: 35, T: 40889
-Sample: 36, T: 40889
-Sample: 37, T: 40924
-Sample: 38, T: 40924
-Sample: 39, T: 40981
-Sample: 40, T: 41012
-Sample: 41, T: 41012
-Sample: 42, T: 41040
-Sample: 43, T: 41040
-Sample: 44, T: 41067
-Sample: 45, T: 41098
-Sample: 46, T: 41098
-Sample: 47, T: 41133
-Sample: 48, T: 41133
-Sample: 49, T: 41161
-Sample: 50, T: 41193
-Sample: 51, T: 41193
-Sample: 52, T: 41219
-Sample: 53, T: 41219
-Sample: 54, T: 41252
-Sample: 55, T: 41280
-Sample: 56, T: 41280
-Sample: 57, T: 41312
-Sample: 58, T: 41312
-Sample: 59, T: 41337
-Sample: 60, T: 41369
-Sample: 61, T: 41369
-Sample: 62, T: 41399
-Sample: 63, T: 41399
-Sample: 64, T: 41428
-Sample: 65, T: 41464
-Sample: 66, T: 41464
-Sample: 67, T: 41493
-Sample: 68, T: 41493
-Sample: 69, T: 41521
-Sample: 70, T: 41548
-Sample: 71, T: 41548
-Sample: 72, T: 41584
-Sample: 73, T: 41584
-Sample: 74, T: 41608
-Sample: 75, T: 41640
-Sample: 76, T: 41640
-Sample: 77, T: 41666
-Sample: 78, T: 41672
-Sample: 79, T: 41700
-Sample: 80, T: 41731
-Sample: 81, T: 41731
-Sample: 82, T: 41731
-Sample: 83, T: 41756
-Sample: 84, T: 41787
-Sample: 85, T: 41817
-Sample: 86, T: 41817
-Sample: 87, T: 41852
-Sample: 88, T: 41852
-Sample: 89, T: 41877
-Sample: 90, T: 41910
-Sample: 91, T: 41910
-Sample: 92, T: 41942
-Sample: 93, T: 41942
-Sample: 94, T: 41970
-Sample: 95, T: 42000
-Sample: 96, T: 42000
-Sample: 97, T: 42029
-Sample: 98, T: 42029
-Sample: 99, T: 42057
-Sample: 100, T: 42089
-Sample: 101, T: 42089
-Sample: 102, T: 42115
-Sample: 103, T: 42121
-Sample: 104, T: 42151
-Sample: 105, T: 42180
-Sample: 106, T: 42180
-Sample: 107, T: 42180
-Sample: 108, T: 42207
-Sample: 109, T: 42235
-Sample: 110, T: 42273
-Sample: 111, T: 42273
-Sample: 112, T: 42302
-Sample: 113, T: 42302
-Sample: 114, T: 42329
-Sample: 115, T: 42360
-Sample: 116, T: 42360
-Sample: 117, T: 42387
-Sample: 118, T: 42387
-Sample: 119, T: 42422
-Sample: 120, T: 42446
-Sample: 121, T: 42446
-Sample: 122, T: 42478
-Sample: 123, T: 42478
-Sample: 124, T: 42510
-Sample: 125, T: 42537
-Sample: 126, T: 42537
-Sample: 127, T: 42564
-Sample: 128, T: 42574
-Sample: 129, T: 42595
-Sample: 130, T: 42631
-Sample: 131, T: 42654
-Sample: 132, T: 42654
-Sample: 133, T: 42687
-Sample: 134, T: 42716
-Sample: 135, T: 42746
-Sample: 136, T: 42778
-Sample: 137, T: 42778
-Sample: 138, T: 42804
-Sample: 139, T: 42838
-Sample: 140, T: 42867
-Sample: 141, T: 42900
-Sample: 142, T: 42900
-Sample: 143, T: 42926
-Sample: 144, T: 42960
-Sample: 145, T: 42983
-Sample: 146, T: 43019
-Sample: 147, T: 43046
-Sample: 148, T: 43077
-Sample: 149, T: 43104
-Sample: 150, T: 43132
-Sample: 151, T: 43162
+.
+.
+.
 Sample: 152, T: 43196
 Sample: 153, T: 43225
 Sample: 154, T: 43253
@@ -281,10 +136,78 @@ Average time per message ≈ 2.992 / 156 ≈ 19.2 ms/message
 Each message is approximately "Sample: X, T: Y" which is ~20 characters ≈ 20 bytes.
 **Effective data transfer rate:** Data rate ≈ 52.1 × 20 ≈ 1040 bytes/s
 
-
 6. Now create an array that can store time stamps. This array should be defined globally so that other functions can access it if need be. In the loop, rather than send each time stamp, place each time stamp into the array. (Note: you’ll need some extra logic to determine when your array is full so you don’t “over fill” the array.) Then add a command SEND_TIME_DATA which loops the array and sends each data point as a string to your laptop to be processed. (You can store these values in a list in python to determine if all the data was sent over.)
 
-reference: https://sgb1443.github.io/ece4160/Lab1B/
+## Task 6: Buffering Time Stamps and Sending Them in a Separate Command
+
+For this task, I modified my implementation so that the robot **stores time stamps locally first** (instead of transmitting each time stamp immediately). I created a global array to hold the time data, collected timestamps for a fixed duration (3 seconds), and then implemented a new command, **SEND_TIME_DATA**, which loops through the stored array and sends each stored data point back to my laptop as a formatted string. On the Python side, I received the streamed strings using my BLE notification handler.
+
+To make the time data accessible across functions, I defined the storage array globally. I also initialized it to zeros so that I could use `0` as a stopping condition when sending the data.
+
+```c
+//////////// Global Variables ////////////
+unsigned long currentMillis = 0;
+int time_data[5000] = {0};
+```
+
+Inside the SEND_TIME_DATA command case, I first collected time stamps for 3 seconds using millis(). Instead of sending each value during collection, I stored each time stamp into the time_data array. I also included logic to avoid overflowing the array.
+
+```c
+case SEND_TIME_DATA: {
+
+            int i = 0; 
+            unsigned long startTime = millis();
+            // create a loop to retrieve data for 3 seconds 
+            while(millis() - startTime < 3000) {
+                //prevent overflow
+                time_data[i] = millis();
+                i++; 
+                if(i == 9,999)
+                    Serial.println("Array Full");
+            }
+            Serial.println("Data Collected");
+```
+After collection was complete, I looped through the stored values and transmitted each one as a formatted string:
+
+Sample: j, T: time_data[j]
+
+The loop stops once it reaches the last collected sample.
+```c
+for (int j = 0; j < i; j++) {
+    tx_estring_value.clear();
+    tx_estring_value.append("Sample: ");
+    tx_estring_value.append(j);
+    tx_estring_value.append(", T: ");
+    tx_estring_value.append(time_data[j]);
+    tx_characteristic_string.writeValue(tx_estring_value.c_str());
+}
+Serial.println("sent all");
+```
+On the Python side, I reused my BLE notification handler and started notifications on the RX string characteristic. Then I sent the SEND_TIME_DATA command. The board streamed all stored samples, and the notification handler printed them as they arrived.
+
+```c
+ble.start_notify(ble.uuid['RX_STRING'], notification_handler)
+ble.send_command(CMD.SEND_TIME_DATA, '')
+```
+
+```c
+Sample: 0, T: 1048364
+Sample: 1, T: 1048365
+Sample: 2, T: 1048366
+Sample: 3, T: 1048367
+.
+.
+.
+Sample: 1951, T: 1051358
+Sample: 1952, T: 1051359
+Sample: 1953, T: 1051360
+Sample: 1954, T: 1051361
+Sample: 1955, T: 1051362
+```
+
+This implementation confirms that the robot can buffer sensor/time data locally and then transmit it reliably in a separate step, which is useful when sampling at high speed but sending data over BLE more slowly.
+
+Reference: https://sgb1443.github.io/ece4160/Lab1B/
 
 7. Add a second array that is the same size as the time stamp array. Use this array to store temperature readings. Each element in both arrays should correspond, e.e., the first time stamp was recorded at the same time as the first temperature reading. Then add a command GET_TEMP_READINGS that loops through both arrays concurrently and sends each temperature reading with a time stamp. The notification handler should parse these strings and add populate the data into two lists.
 
