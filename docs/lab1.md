@@ -368,7 +368,12 @@ To test the reliability of BLE communication at higher transmission rates, I imp
 
 A notification handler was used to collect all incoming messages into an array. After transmission completed, the received sequence was checked to verify that each message arrived in order and without missing values.
 
+![Lab 1B 5000 Task 2](assets/lab1b5000task3.png)
+
 The results showed that all messages were received correctly and in sequence, indicating that the BLE communication was reliable under this transmission rate. This demonstrates that, for this message size and rate, the computer was able to successfully process all incoming notifications without data loss.
+
+![Lab 1B 5000 Task 2](assets/lab1b5000task3true.png)
+
 
 ## Discussion 
 
