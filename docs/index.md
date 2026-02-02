@@ -26,7 +26,7 @@
 
 | Lab # | Lab Name |
 |------:|----------|
-| [Lab 1](docs/lab1.md) | [Artemis and Bluetooth](docs/lab1.md) |
+| [Lab 1](lab1.md) | [Artemis and Bluetooth](lab1.md) |
 | [Lab 2](docs/lab2.md) | [IMU](labs/lab2.md) |
 | [Lab 3](docs/lab3.md) | [ToF](labs/lab3.md) |
 | [Lab 4](docs/lab4.md) | [Motor Drivers and Open Loop Control](labs/lab4.md) |
