@@ -213,8 +213,6 @@ This implementation confirms that the robot can buffer sensor/time data locally 
 
 Reference: https://sgb1443.github.io/ece4160/Lab1B/
 
-7. Add a second array that is the same size as the time stamp array. Use this array to store temperature readings. Each element in both arrays should correspond, e.e., the first time stamp was recorded at the same time as the first temperature reading. Then add a command GET_TEMP_READINGS that loops through both arrays concurrently and sends each temperature reading with a time stamp. The notification handler should parse these strings and add populate the data into two lists.
-
 ### Task 7: Time-Stamped Temperature Data Collection
 
 I extended the previous time-stamp data collection to include temperature readings, ensuring that each temperature measurement corresponds exactly to a recorded time stamp. To accomplish this, I added a second global array to store temperature values and implemented a new command, GET_TEMP_READINGS, that collects and transmits both data streams together.
@@ -266,36 +264,11 @@ Each data point is sent as a formatted string over the BLE string characteristic
 
 On the Python side, I modified the notification handler to parse the incoming strings, extract the time and temperature values, and display them with appropriate units. The handler splits each message into its components and formats the output for readability.
 
-```c
-def notification_handler(uuid, byte_array):
-    s = ble.bytearray_to_string(byte_array).strip()
-
-    if "|" in s:
-        sep = s.split("|")
-
-        sample = sep[0].strip()                 # "Sample: 0"
-        time_ms = sep[1].replace("T:", "").strip()
-        temp_f  = sep[2].replace("Temp:", "").strip()
-
-        print(f"{sample}: {time_ms} ms, {temp_f} °F")
-    else:
-        print(s)
-```
 This approach cleanly separates data transmission (Arduino) from data presentation and parsing (Python), making the system easier to debug and extend.
 After starting notifications and sending the GET_TEMP_READINGS command, the laptop successfully received and displayed a sequence of synchronized measurements:
 
-```c
-Sample: 0, T: 875000, Temp: 78.932
-Sample: 1, T: 875001, Temp: 79.980
-Sample: 2, T: 875002, Temp: 78.932
-Sample: 3, T: 875003, Temp: 78.932
-Sample: 4, T: 875005, Temp: 78.932
-Sample: 5, T: 875008, Temp: 79.980
-Sample: 6, T: 875009, Temp: 78.932
-.
-.
-.
-```
+
+![Lab 1B Task 7](assets/lab1btask7.png)
 Each temperature reading corresponds to the exact time at which it was recorded, confirming that the two arrays remained synchronized throughout data collection.
 
 ### Task 8: Comparison of Streaming vs. Buffered Data Collection Methods
@@ -368,10 +341,6 @@ When storing both time and temperature data, each sample consists of:
 
 This results in **8 bytes per sample**, reducing the practical storage capacity to approximately **40,000–45,000 synchronized samples**.
 
----
-
-#### Summary
-
 - The **streaming method** is best suited for real-time monitoring and low-rate data collection where memory usage must be minimized.
 - The **buffered method** enables much faster and more accurate data recording but is constrained by available RAM.
 - The choice between the two methods depends on whether real-time visibility or high-rate, low-jitter data acquisition is the primary goal.
@@ -379,11 +348,8 @@ This results in **8 bytes per sample**, reducing the practical storage capacity 
 Overall, buffering data locally before transmission provides a significant performance advantage when memory constraints allow it.
 
 ## Discussion 
-## Discussion
 
 In this lab, I learned how to design and compare different data acquisition and transmission strategies using BLE on the Artemis board. I explored the trade-offs between streaming data in real time versus buffering data locally before transmission, and how BLE throughput and on-board memory constraints affect system performance.
-
 One of the main challenges was debugging timing and parsing issues caused by BLE communication overhead and string formatting. Repeated timestamps and parsing errors highlighted the importance of separating data collection from data transmission and carefully defining message formats. Most issues were resolved by restarting the kernel.
-
 Overall, this lab reinforced the importance of considering communication bottlenecks, memory limitations, and system-level design choices when working with embedded systems and wireless data transfer.
 
