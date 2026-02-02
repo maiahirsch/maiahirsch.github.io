@@ -321,17 +321,13 @@ This rate reflects the speed of writing to memory rather than BLE transmission a
 
 #### Memory Constraints and Storage Capacity
 
-The Artemis board has **384 kB of RAM**, which corresponds to:
+The Artemis board has **384 kB of RAM**, which corresponds to: 
 
-\[
-384 \times 1024 = 393{,}216 \text{ bytes}
-\]
+384 × 1024 = 393,216 bytes
 
 A single timestamp stored as a 32-bit integer requires **4 bytes**, so the theoretical maximum number of timestamps that could be stored is:
 
-\[
-\frac{393{,}216}{4} \approx 98{,}000 \text{ samples}
-\]
+393,216 / 4 ≈ 98,000 samples
 
 In practice, the Artemis must also allocate memory for the BLE stack, buffers, program variables, and the call stack. Therefore, a more realistic estimate is approximately **80,000–90,000 timestamps**.
 
