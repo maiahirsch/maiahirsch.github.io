@@ -343,6 +343,13 @@ This results in **8 bytes per sample**, reducing the practical storage capacity 
 
 Overall, buffering data locally before transmission provides a significant performance advantage when memory constraints allow it.
 
+### Additional tasks (5000-level)
+
+#### 1. Effective Data Rate And Overhead
+
+
+#### 2. Reliability
+
 ## Discussion 
 
 In this lab, I learned how to design and compare different data acquisition and transmission strategies using BLE on the Artemis board. I explored the trade-offs between streaming data in real time versus buffering data locally before transmission, and how BLE throughput and on-board memory constraints affect system performance.
