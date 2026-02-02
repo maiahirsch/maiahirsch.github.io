@@ -36,16 +36,24 @@ The <mark>SEND_THREE_FLOATS</mark> command instructs the board to transmit three
 ![Lab 1B Task 2](assets/lab1btask2answer2.png)
 ![Lab 1B Task 2](assets/lab1btask2code.png)
 
+## Task 3:GET_TIME_MILLIS
 
-3. Add a command GET_TIME_MILLIS which makes the robot reply write a string such as “T:123456” to the string characteristic.
+I added a new command, <mark>GET_TIME_MILLIS</mark>, that makes the robot respond with the current time (in milliseconds) formatted as a string.
+In the C code, I added `GET_TIME_MILLIS` to the `CommandTypes` enum and implemented a new `case GET_TIME_MILLIS:` in the command handler. In the Python code, I added the corresponding command entry in `cmd_types.py` so I could send the command from my notebook.
 
-using as reference: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth
+I used `millis()` to get the current time since the board started running, converted it into a string with a `"T:"` prefix, and wrote it to the **string TX characteristic** (and also printed it to the serial monitor for debugging). On the computer side, I sent the command and verified that the received string matched the expected format.
 
-updated CommandTypes
+![Lab 1B Task 3](assets/lab1btask3code.png)
+![Lab 1B Task 3](assets/lab1btask3result.png)
+![Lab 1B Task 3](assets/lab1btask3update.png)
+![Lab 1B Task 3](assets/lab1btask3update2python.png)
 
-using: https://rga47-lab.github.io/lab1.html
+I ran into a lot of errors with GET_TIME_MILLIS missing from CMD and fixed it by restarting the Kernel. 
 
-was running into a lot of errors with GET_TIME_MILLIS missing from CMD and fixed it by restarting the Kernel
+Reference used: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth and https://rga47-lab.github.io/lab1.html
+
+## Task 4: Notification Handler 
+
 
 4. Setup a notification handler in Python to receive the string value (the BLEStringCharactersitic in Arduino) from the Artemis board. In the callback function, extract the time from the string.
 
