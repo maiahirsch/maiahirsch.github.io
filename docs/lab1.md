@@ -347,6 +347,20 @@ Overall, buffering data locally before transmission provides a significant perfo
 
 #### 1. Effective Data Rate And Overhead
 
+To evaluate the effective data rate and communication overhead between the computer and the Artemis board, I implemented a command that echoes back a string sent from the computer.
+Response sizes ranged from 3 bytes to 72 bytes, and for each message size, I measured the round-trip response time between sending the command and receiving the echoed reply. The response time was measured using Python’s time.time() function. The effective data rate was then computed as: 
+Data Rate = Response Size/ Response Time
+
+![Lab 1B 5000 Task 1](assets/lab1b5000task1.png)
+![Lab 1B 5000 Task 1](assets/lab1b5000task1result.png)
+
+Across all response sizes, the measured response time remained approximately constant at around 60 ms, regardless of payload size. As a result, the effective data rate increased with increasing response size. Short messages (e.g., 3 bytes) resulted in low data rates, while longer messages (e.g., 72 bytes) achieved significantly higher data rates.
+The scatter plot below shows the relationship between response size and effective data rate.
+
+Reference: https://neverlandiz.github.io/fast_robots/
+
+![Lab 1B 5000 Task 1](assets/lab1b5000task1plot.png)
+
 
 #### 2. Reliability
 
