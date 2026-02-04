@@ -395,7 +395,10 @@ Overall, this lab reinforced the importance of considering communication bottlen
 ## References
 
 Task 3: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth and https://rga47-lab.github.io/lab1.html
+
 Task 4: https://rga47-lab.github.io/lab1.html
+
 Task 6: https://sgb1443.github.io/ece4160/Lab1B/
+
 Effective Data Rate and Overhead: https://neverlandiz.github.io/fast_robots/
 
