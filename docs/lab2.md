@@ -34,7 +34,12 @@ I kept getting similar values for pitch and roll. So I decided to rewrite my rol
 
 The accelerometer is quite accuracy if it is held steady at an angle. But still the sensor readings keep changing. A fourier transform will assist with filtering out the noise from the sensor readings.
 
-I followed the Fourier transform for Python tutorial provided. 
+I followed the Fourier transform for Python tutorial provided. Still confused about implementation I asked Chat for advise. 
+
+I added Serial.print(millis()); to my loop, so I could have a time stamp for each reading to plot. 
+
+### The Stunt!
+
 
 
 ## Discussion 
