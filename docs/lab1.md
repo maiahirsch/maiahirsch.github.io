@@ -43,11 +43,13 @@ To reduce false detections, a known ambient noise peak at 904 Hz is explicitly i
 
 ## Prelab
 
+I checked the versions of Python and pip I had on my computer and created a new virtual environment. After installing the required packages, I quickly glanced over the required packages which facilitated the rest of the lab. 
+
 ## Lab Tasks
 
 ### Task 1:Echo 
 
-The <mark>ECHO</mark> command was used to verify that the communication between the computer and the board was functioning correctly. This command instructs the board to return the same string that it receives from the computer. To test this, I sent the string <mark>“HiHello”</mark> to the board. The board responded with the augmented message <mark>“Robot says → HiHello :)”</mark>, which I observed in my notebook, confirming that the string was correctly received and processed by the board. The returned string was also successfully received by the computer, verifying bidirectional communication.
+The ECHO command was used to verify that the communication between the computer and the board was functioning correctly. This command instructs the board to return the same string that it receives from the computer. To test this, I sent the string “HiHello” to the board. The board responded with the augmented message “Robot says → HiHello :)”, which I observed in my notebook, confirming that the string was correctly received and processed by the board. The returned string was also successfully received by the computer, verifying bidirectional communication.
 
 ![Lab 1B Task 1](assets/lab1btask1.png)
 
@@ -56,14 +58,14 @@ The <mark>ECHO</mark> command was used to verify that the communication between 
 
 ### Task 2: SEND_THREE_FLOATS
 
-The <mark>SEND_THREE_FLOATS</mark> command instructs the board to transmit three floating-point values to the computer. This command was implemented as an extension of the existing <mark>SEND_TWO_INTS</mark> command that was already provided. I modified the original implementation to support floating-point values instead of integers. The three floating-point values are transmitted and printed to the serial monitor for verification.
+The SEND_THREE_FLOATS command instructs the board to transmit three floating-point values to the computer. This command was implemented as an extension of the existing SEND_TWO_INTS command that was already provided. I modified the original implementation to support floating-point values instead of integers. The three floating-point values are transmitted and printed to the serial monitor for verification.
 
 ![Lab 1B Task 2](assets/lab1btask2answer2.png)
 ![Lab 1B Task 2](assets/lab1btask2code.png)
 
 ### Task 3:GET_TIME_MILLIS
 
-I added a new command, <mark>GET_TIME_MILLIS</mark>, that makes the robot respond with the current time (in milliseconds) formatted as a string.
+I added a new command, GET_TIME_MILLIS, that makes the robot respond with the current time (in milliseconds) formatted as a string.
 In the C code, I added `GET_TIME_MILLIS` to the `CommandTypes` enum and implemented a new `case GET_TIME_MILLIS:` in the command handler. In the Python code, I added the corresponding command entry in `cmd_types.py` so I could send the command from my notebook.
 
 I used `millis()` to get the current time since the board started running, converted it into a string with a `"T:"` prefix, and wrote it to the **string TX characteristic** (and also printed it to the serial monitor for debugging). On the computer side, I sent the command and verified that the received string matched the expected format.
