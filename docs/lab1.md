@@ -355,8 +355,6 @@ This results in **8 bytes per sample**, reducing the practical storage capacity 
 - The **buffered method** enables much faster and more accurate data recording but is constrained by available RAM.
 - The choice between the two methods depends on whether real-time visibility or high-rate, low-jitter data acquisition is the primary goal.
 
-Overall, buffering data locally before transmission provides a significant performance advantage when memory constraints allow it.
-
 ### Additional tasks (5000-level)
 
 #### 1. Effective Data Rate And Overhead
