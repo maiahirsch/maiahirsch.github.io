@@ -357,32 +357,6 @@ Overall, buffering data locally before transmission provides a significant perfo
 
 ### Additional tasks (5000-level)
 
-#### 1. Effective Data Rate And Overhead
-
-To evaluate the effective data rate and communication overhead between the computer and the Artemis board, I implemented a command that echoes back a string sent from the computer.
-Response sizes ranged from 3 bytes to 72 bytes, and for each message size, I measured the round-trip response time between sending the command and receiving the echoed reply. The response time was measured using Python’s time.time() function. The effective data rate was then computed as: 
-Data Rate = Response Size/ Response Time
-
-![Lab 1B 5000 Task 1](assets/lab1b5000task1.png)
-![Lab 1B 5000 Task 1](assets/lab1b5000task1result.png)
-
-Across all response sizes, the measured response time remained approximately constant at around 60 ms, regardless of payload size. As a result, the effective data rate increased with increasing response size. Short messages (e.g., 3 bytes) resulted in low data rates, while longer messages (e.g., 72 bytes) achieved significantly higher data rates.
-The scatter plot below shows the relationship between response size and effective data rate.
-
-![Lab 1B 5000 Task 1](assets/lab1b5000task1plot.png)
-
-
-#### 2. Reliability
-
-To test the reliability of BLE communication at higher transmission rates, I implemented a command called RELIABILITY on the Artemis board. When triggered, the robot sends 1000 sequentially numbered messages to the computer as quickly as possible using BLE notifications.
-
-A notification handler was used to collect all incoming messages into an array. After transmission completed, the received sequence was checked to verify that each message arrived in order and without missing values.
-
-![Lab 1B 5000 Task 2](assets/lab1b5000task3.png)
-
-The results showed that all messages were received correctly and in sequence, indicating that the BLE communication was reliable under this transmission rate. This demonstrates that, for this message size and rate, the computer was able to successfully process all incoming notifications without data loss.
-
-![Lab 1B 5000 Task 2](assets/lab1b5000task3true.png)
 
 
 ## Discussion 
