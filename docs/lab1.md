@@ -18,6 +18,27 @@
 
 ## Electronic Tuner (5000-level)
 
+To reduce false detections, a known ambient noise peak at 904 Hz is explicitly ignored. The detected frequency is then compared, using a small tolerance window, against three predefined target frequencies corresponding to the musical notes D4 (≈297 Hz), A4 (≈1327 Hz), and F5 (≈2117 Hz). A simple for-loop checks each target frequency, and when a match is found, the corresponding note name is printed to the serial interface. 
+
+```c
+    // Ignore room noise around 904 Hz
+  if (abs((int)ui32LoudestFrequency - (int)noiseFreq) < FREQ_TOL)
+    return;
+
+  // Detect only the 3 target notes
+  for (int i = 0; i < 3; i++)
+  {
+    if (abs((int)ui32LoudestFrequency - (int)noteFreqs[i]) < FREQ_TOL)
+    {
+      Serial.printf("Detected note: %s (%d Hz)\n", noteNames[i], ui32LoudestFrequency);
+      return;
+    }
+  }
+}
+```
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OIKyq5W-2Wk?si=gT6MoMMTx8yJsq1z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 # Lab 1B: 
 
 ## Prelab
@@ -54,8 +75,6 @@ I used `millis()` to get the current time since the board started running, conve
 
 I ran into a lot of errors with GET_TIME_MILLIS missing from CMD and fixed it by restarting the Kernel. 
 
-Reference: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth and https://rga47-lab.github.io/lab1.html
-
 ### Task 4: Notification Handler 
 
 To improve communication efficiency between the computer and the robot, I implemented a notification-based approach for receiving string data from the board. Instead of explicitly calling a receive function every time a response was needed, I set up a notification handler that automatically processes incoming data from the RX string characteristic.
@@ -78,7 +97,6 @@ Once notifications were enabled, I sent the GET_TIME_MILLIS command from the com
 ![Lab 1B Task 4](assets/lab1btask4newntimestamps.png)
 ![Lab 1B Task 4](assets/lab1btask4result.png)
 
-Reference: https://rga47-lab.github.io/lab1.html
 
 ### Task 5: GET_TIME_MILLIS_LOOP & Data Transfer Rate
 
@@ -138,9 +156,8 @@ Number of messages received: 156 messages
 Messages per second ≈ 156 / 2.992 ≈ 52.1 messages/s
 Average time per message ≈ 2.992 / 156 ≈ 19.2 ms/message
 Each message is approximately "Sample: X, T: Y" which is ~20 characters ≈ 20 bytes.
-**Effective data transfer rate:** Data rate ≈ 52.1 × 20 ≈ 1040 bytes/s
 
-6. Now create an array that can store time stamps. This array should be defined globally so that other functions can access it if need be. In the loop, rather than send each time stamp, place each time stamp into the array. (Note: you’ll need some extra logic to determine when your array is full so you don’t “over fill” the array.) Then add a command SEND_TIME_DATA which loops the array and sends each data point as a string to your laptop to be processed. (You can store these values in a list in python to determine if all the data was sent over.)
+**Effective data transfer rate:** Data rate ≈ 52.1 × 20 ≈ 1040 bytes/s
 
 ### Task 6: Buffering Time Stamps and Sending Them in a Separate Command
 
@@ -210,8 +227,6 @@ Sample: 1955, T: 1051362
 ```
 
 This implementation confirms that the robot can buffer sensor/time data locally and then transmit it reliably in a separate step, which is useful when sampling at high speed but sending data over BLE more slowly.
-
-Reference: https://sgb1443.github.io/ece4160/Lab1B/
 
 ### Task 7: Time-Stamped Temperature Data Collection
 
@@ -310,10 +325,7 @@ In the second method, data is first recorded locally into arrays on the Artemis 
 - Data is not available in real time.
 
 To estimate how quickly this method can record data, the difference between the first and last timestamps was divided by the total number of samples. For example, recording 1000 samples over approximately 32 milliseconds corresponds to an effective recording rate of:
-
-\[
-\frac{1000}{0.032} \approx 31{,}250 \text{ samples per second}
-\]
+1000 / 0.032 ≈ 31,250 samples per second
 
 This rate reflects the speed of writing to memory rather than BLE transmission and is several orders of magnitude faster than the streaming approach.
 
@@ -357,8 +369,6 @@ Data Rate = Response Size/ Response Time
 Across all response sizes, the measured response time remained approximately constant at around 60 ms, regardless of payload size. As a result, the effective data rate increased with increasing response size. Short messages (e.g., 3 bytes) resulted in low data rates, while longer messages (e.g., 72 bytes) achieved significantly higher data rates.
 The scatter plot below shows the relationship between response size and effective data rate.
 
-Reference: https://neverlandiz.github.io/fast_robots/
-
 ![Lab 1B 5000 Task 1](assets/lab1b5000task1plot.png)
 
 
@@ -380,4 +390,11 @@ The results showed that all messages were received correctly and in sequence, in
 In this lab, I learned how to design and compare different data acquisition and transmission strategies using BLE on the Artemis board. I explored the trade-offs between streaming data in real time versus buffering data locally before transmission, and how BLE throughput and on-board memory constraints affect system performance.
 One of the main challenges was debugging timing and parsing issues caused by BLE communication overhead and string formatting. Repeated timestamps and parsing errors highlighted the importance of separating data collection from data transmission and carefully defining message formats. Most issues were resolved by restarting the kernel.
 Overall, this lab reinforced the importance of considering communication bottlenecks, memory limitations, and system-level design choices when working with embedded systems and wireless data transfer.
+
+## References
+
+Task 3: https://akinfelami.github.io/fastrobots-2025/artemis-and-bluetooth and https://rga47-lab.github.io/lab1.html
+Task 4: https://rga47-lab.github.io/lab1.html
+Task 6: https://sgb1443.github.io/ece4160/Lab1B/
+Effective Data Rate and Overhead: https://neverlandiz.github.io/fast_robots/
 
