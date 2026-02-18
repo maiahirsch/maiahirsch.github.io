@@ -4,6 +4,7 @@
 
 Read and got familiar with the IMU we will be using. The IMU was connected to the Artemis board using the QWIIC connector. I installed the ICM-20948 library. 
 
+![QWIIC](assets/lab2/QWIIC.png)
 
 ## Lab Tasks
 
