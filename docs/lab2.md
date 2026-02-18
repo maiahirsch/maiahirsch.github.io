@@ -13,7 +13,7 @@ I installed the “SparkFun 9DOF IMU Breakout_ICM 20948_Arduino Library” durin
 
 I ran the “..\Arduino\libraries\SparkFun_ICM-20948\SparkFun_ICM-20948_ArduinoLibrary-master\examples\Arduino\Example1_Basics”. 
 
-[IMU EXAMPLE CODE VIDEO](https://youtube.com/shorts/j8tUnyvmHT0?feature=share)
+[IMU EXAMPLE CODE VIDEO](<iframe width="560" height="315" src="https://www.youtube.com/embed/f_yZHpNvcfE?si=GYR3WE7zYYTnpPrH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>)
 
 From the [data sheet](https://learn.sparkfun.com/tutorials/sparkfun-9dof-imu-icm-20948-breakout-hookup-guide/all) of the IMU, AD0_VAL is the value of the last bit of the I2C address. The default is 1, and when the ADR jumper is closed the value becomes 0. 
 
