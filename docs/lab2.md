@@ -13,14 +13,14 @@ I installed the “SparkFun 9DOF IMU Breakout_ICM 20948_Arduino Library” durin
 
 I ran the “..\Arduino\libraries\SparkFun_ICM-20948\SparkFun_ICM-20948_ArduinoLibrary-master\examples\Arduino\Example1_Basics”. 
 
-![IMU EXAMPLE CODE VIDEO](https://youtube.com/shorts/j8tUnyvmHT0?feature=share)
+[IMU EXAMPLE CODE VIDEO](https://youtube.com/shorts/j8tUnyvmHT0?feature=share)
 
 From the [data sheet](https://learn.sparkfun.com/tutorials/sparkfun-9dof-imu-icm-20948-breakout-hookup-guide/all) of the IMU, AD0_VAL is the value of the last bit of the I2C address. The default is 1, and when the ADR jumper is closed the value becomes 0. 
 
 When rotating the board, the accelerometer showed gravity shifting between the axes. I added a blink code to see when the board is running. 
 
 ![LAB2BLINK](assets/lab2/lab2blinkcode.png)
-![BLINK VIDEO](https://youtube.com/shorts/w1GEfw5nUFw?feature=share)
+[BLINK VIDEO](https://youtube.com/shorts/w1GEfw5nUFw?feature=share)
 
 ### Accelerometer 
 
@@ -30,8 +30,8 @@ I included the math.h library in Arduino. Then using the class slide, I added th
 
 ![ROLLPITCHFORMULAS](assets/lab2/rollpitchformulas.png)
 
-![PITCH VIDEO -90 0 90](https://youtube.com/shorts/UaUIQhe_3lE?feature=share)
-![ROLL VIDEO -90 0 90](https://youtube.com/shorts/F5NgczmTyRg?feature=share)
+[PITCH VIDEO -90 0 90](https://youtube.com/shorts/UaUIQhe_3lE?feature=share)
+[ROLL VIDEO -90 0 90](https://youtube.com/shorts/F5NgczmTyRg?feature=share)
 
 The accelerometer is quite accuracy if it is held steady at an angle. But still the sensor readings keep changing. A fourier transform will assist with filtering out the noise from the sensor readings.
 
@@ -90,7 +90,7 @@ The Artemis has 384kB of RAM. With 10 arrays of 5000 elements at 4 bytes each, t
 
 Here is the final task of the lab performing a stunt with the RC car to evaluate its capabilities: 
 
-![FIND THE STUNT HERE](https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
+[FIND THE STUNT HERE](https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
 
 ## Discussion 
 
