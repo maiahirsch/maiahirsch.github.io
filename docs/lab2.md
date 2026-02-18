@@ -99,3 +99,5 @@ This lab provided hands-on experience with IMU data collection and sensor fusion
 
 The complementary filter was an important takeaway: neither the accelerometer nor gyroscope alone is sufficient, but combining them produces stable, accurate angle estimates.
 
+### References
+I used the plots of student [Kotey Ashie](https://kotey538.github.io/fast_robots.github.io/) as guidance to check my results made sense. 
