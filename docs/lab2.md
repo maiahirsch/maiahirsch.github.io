@@ -98,6 +98,8 @@ Here is the final task of the lab performing a stunt with the RC car to evaluate
 
 As this is a YouTube Shorts and cannot be embedded, [FIND THE STUNT HERE](https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
 
+The RC car was driven in the hallway for several minutes. The car accelerates quickly from rest. Forward and backward speeds are similar, Turning is more responsive at higher speeds and the car tends to drift when turning sharply while going fast. 
+
 ## Discussion 
 
 This lab provided hands-on experience with IMU data collection and sensor fusion. The biggest challenge was managing BLE transmission speed — the Artemis can sample at 445 Hz but BLE becomes the bottleneck when sending large amounts of data, which is why the store-then-send approach is preferable to streaming in real time. 
