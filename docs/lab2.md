@@ -2,7 +2,9 @@
 
 ## Prelab
 
-Read and got familiar with the IMU we will be using.
+Read and got familiar with the IMU we will be using. The IMU was connected to the Artemis board using the QWIIC connector. I installed the ICM-20948 library. 
+
+
 
 ## Lab Tasks
 
@@ -18,7 +20,8 @@ From the [data sheet](https://learn.sparkfun.com/tutorials/sparkfun-9dof-imu-icm
 
 I added a blink code to see when the board is running. 
 
-[INSERT LAB2BLINK CODE]
+[LAB2BLINK](assets/lab2/lab2blinkcode.png)
+
 
 ### Accelerometer 
 
