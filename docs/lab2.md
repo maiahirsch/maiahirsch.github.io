@@ -38,7 +38,6 @@ As this is a YouTube Shorts and cannot be embedded, please [CLICK HERE](https://
 
 As this is a YouTube Shorts and cannot be embedded, please [CLICK HERE](https://youtube.com/shorts/F5NgczmTyRg?feature=share) to watch the **roll video** -90 0 90. 
 
-
 The accelerometer is quite accuracy if it is held steady at an angle. But still the sensor readings keep changing. A fourier transform will assist with filtering out the noise from the sensor readings.
 
 I followed the Fourier transform for Python tutorial provided. 
