@@ -28,7 +28,7 @@ I included the math.h library in Arduino. Then using the class slide, I added th
 
 [LAB2CLASSSLIDE](assets/lab2/lab2classslide.png)
 
-[ROLLPITCHFORMULAS)(assets/lab2/rollpitchformulas.png)
+[ROLLPITCHFORMULAS](assets/lab2/rollpitchformulas.png)
 
 [PITCH VIDEO -90 0 90](https://youtube.com/shorts/UaUIQhe_3lE?feature=share)
 [ROLL VIDEO -90 0 90](https://youtube.com/shorts/F5NgczmTyRg?feature=share)
@@ -39,7 +39,7 @@ I followed the Fourier transform for Python tutorial provided.
 
 To analize noise, I collected accelerometer data keeping the IMU still and tapping on the table to induce vobration. Shown below is the FFT signal for both cases. 
 
-FFT](assets/lab2/FFT.png)
+[FFT](assets/lab2/FFT.png)
 
 The FFT shows that noise is very low in both cases as the ICM-20948 already has a low pass filter on board. Even under vibration there is no significant high frequency spikes. A cuttoff frequency of 5 Hz was chosen for the low pass filter. 
 
@@ -90,7 +90,7 @@ The Artemis has 384kB of RAM. With 10 arrays of 5000 elements at 4 bytes each, t
 
 Here is the final task of the lab performing a stunt with the RC car to evaluate its capabilities: 
 
-[FIND THE STUNT HERE] (https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
+[FIND THE STUNT HERE](https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
 
 ## Discussion 
 
