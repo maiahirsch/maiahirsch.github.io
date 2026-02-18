@@ -48,12 +48,50 @@ The low-pass filter implemented was as follows:
 [LPF](assets/lab2/lowpassfilter2.png)
 
 [raw vs filtered](assets/lab2/rawvsfiltered.png)
+
+The filtered signal is much smoother than the raw signal while tracking true angle accurately. 
+
+### Gyroscope 
+
+Pitch, roll, and yaw were computed by integrating the gyroscope angular rate over time: 
+
+[GYRO FORMULAS](assets/lab2/gyroformulas.png)
+
+[GYRO PLOTS](assets/lab2/gyroplots.png)
+
+The gyroscope clearly showed drift over time because of the integration. The angle slowly gets farther away from the true value as the board is still. Yaw can only be measured by the gyroscope. Since gravoty has no yaw component the accelerometer cannot measure yaw. 
+
+[GYRO VS ACCEL VS COMP](assets/lab2/gyrovsaccelvscomp.png)
+
+The accelerometer is noisy but stable. The gyroscope is smooth but drifts significantly. The complementary filter combines both resulting in a smooth and drift-free estimate. 
+
+The complimentary filter was implemented as:
+
+[COMP FILTER](assets/lab2/compfilter.png)
+
+where alpha_comp = 0.98.
+
+[ACCEL VS COMP](assets/lab2/accelvscomp.png)
+
+### Sample Data
+
+To maximize sample speed, as suggested, all delays and Serial.print statements were removed. IMU data was collected in the main loop using a flag to strat and stop recording: 
+
+[SAMPLE DATA](assets/lab2/sampledata.png)
+
+The Artemis achieved a sampling rate of **445 Hz**. The main loop check 'dataReady()' and moves on without waiting. Separate arrays were used for accelerometer and dyroscope data as they serve different purposes and can be samples at different times. 
+
+The Artemis has 384kB of RAM. With 10 arrays of 5000 elements at 4 bytes each, that is approximately 200kB used, leaving ~184kB free. at 445 Hz, pitch, roll and time, can be stored for approximately **23 seconds** before running out of space. 
+
+
+
 ### The Stunt!
 
-
+Here is the final task of the lab performing a stunt with the RC car to evaluate its capabilities: 
 
 ## Discussion 
 
-## References
+This lab provided hands-on experience with IMU data collection and sensor fusion. The biggest challenge was managing BLE transmission speed — the Artemis can sample at 445 Hz but BLE becomes the bottleneck when sending large amounts of data, which is why the store-then-send approach is preferable to streaming in real time. 
 
+The complementary filter was an important takeaway: neither the accelerometer nor gyroscope alone is sufficient, but combining them produces stable, accurate angle estimates.
 
