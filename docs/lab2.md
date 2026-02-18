@@ -17,10 +17,13 @@ I ran the “..\Arduino\libraries\SparkFun_ICM-20948\SparkFun_ICM-20948_ArduinoL
 
 From the [data sheet](https://learn.sparkfun.com/tutorials/sparkfun-9dof-imu-icm-20948-breakout-hookup-guide/all) of the IMU, AD0_VAL is the value of the last bit of the I2C address. The default is 1, and when the ADR jumper is closed the value becomes 0. 
 
-When rotating the board, the accelerometer showed gravity shifting between the axes. I added a blink code to see when the board is running. 
+When rotating the board, the accelerometer showed gravity shifting between the axes. 
+
+I added a blink code to see when the board is running. 
 
 ![LAB2BLINK](assets/lab2/lab2blinkcode.png)
-[BLINK VIDEO](https://youtube.com/shorts/w1GEfw5nUFw?feature=share)
+
+As this is a YouTube Shorts and cannot be embedded, please [CLICK HERE](https://youtube.com/shorts/w1GEfw5nUFw?feature=share) to watch the video.
 
 ### Accelerometer 
 
@@ -30,8 +33,10 @@ I included the math.h library in Arduino. Then using the class slide, I added th
 
 ![ROLLPITCHFORMULAS](assets/lab2/rollpitchformulas.png)
 
-[PITCH VIDEO -90 0 90](https://youtube.com/shorts/UaUIQhe_3lE?feature=share)
-[ROLL VIDEO -90 0 90](https://youtube.com/shorts/F5NgczmTyRg?feature=share)
+As this is a YouTube Shorts and cannot be embedded, please [CLICK HERE](https://youtube.com/shorts/UaUIQhe_3lE?feature=share) to watch the **pitch video** -90 0 90. 
+
+As this is a YouTube Shorts and cannot be embedded, please [CLICK HERE](https://youtube.com/shorts/F5NgczmTyRg?feature=share) to watch the **roll video** -90 0 90. 
+
 
 The accelerometer is quite accuracy if it is held steady at an angle. But still the sensor readings keep changing. A fourier transform will assist with filtering out the noise from the sensor readings.
 
