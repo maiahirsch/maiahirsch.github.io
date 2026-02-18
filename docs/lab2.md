@@ -84,6 +84,7 @@ The Artemis achieved a sampling rate of **445 Hz**. The main loop check 'dataRea
 
 The Artemis has 384kB of RAM. With 10 arrays of 5000 elements at 4 bytes each, that is approximately 200kB used, leaving ~184kB free. at 445 Hz, pitch, roll and time, can be stored for approximately **23 seconds** before running out of space. 
 
+![IMU DATA](assets/lab2/imudata.png)
 
 
 ### The Stunt!
