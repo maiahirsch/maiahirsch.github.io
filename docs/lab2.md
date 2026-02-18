@@ -96,7 +96,7 @@ The Artemis has 384kB of RAM. With 10 arrays of 5000 elements at 4 bytes each, t
 
 Here is the final task of the lab performing a stunt with the RC car to evaluate its capabilities: 
 
-[FIND THE STUNT HERE](https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
+As this is a YouTube Shorts and cannot be embedded, [FIND THE STUNT HERE](https://youtube.com/shorts/qDWf7uRGerk?si=053rA-M1fdW1hEby)
 
 ## Discussion 
 
