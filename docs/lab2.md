@@ -46,7 +46,7 @@ To analize noise, I collected accelerometer data keeping the IMU still and tappi
 
 ![FFT](assets/lab2/FFT.png)
 
-The FFT shows that noise is very low in both cases as the ICM-20948 already has a low pass filter on board. Even under vibration there is no significant high frequency spikes. A cuttoff frequency of 5 Hz was chosen for the low pass filter. 
+The FFT shows that noise is very low in both cases as the ICM-20948 already has a low pass filter on board. Even under vibration there is no significant high frequency spikes. A cuttoff frequency of **5 Hz** was chosen for the low pass filter. A lower cutoff would add more lag; a higher one would let through more noise.
 
 The low-pass filter implemented was as follows: 
 
