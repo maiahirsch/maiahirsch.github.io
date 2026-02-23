@@ -29,7 +29,7 @@
 | [Lab 1](lab1.md) | [Artemis and Bluetooth](lab1.md) |
 | [Lab 2](lab2.md) | [IMU](lab2.md) |
 | [Lab 3](lab3.md) | [ToF](lab3.md) |
-| [Lab 4](docs/lab4.md) | [Motor Drivers and Open Loop Control](labs/lab4.md) |
+| [Lab 4](lab4.md) | [Motor Drivers and Open Loop Control](lab4.md) |
 | [Lab 5](docs/lab5.md) | [Linear PID and Linear Interpolation](labs/lab5.md) |
 | [Lab 6](docs/lab6.md) | [Orientation PID](labs/lab6.md) |
 | [Lab 7](docs/lab7.md) | [Kalman Filtering](labs/lab7.md) |
