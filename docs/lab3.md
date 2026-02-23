@@ -13,7 +13,7 @@ Briefly discuss placement of sensors on robot and scenarios where you will miss 
 
 Sketch of wiring diagram (with brief explanation if you want)
 
-lab3schematic.pdf
+![wiring](lab3schematic.png)
 
 Lab Tasks
 
