@@ -105,7 +105,21 @@ Both ToF sensors and IMU complimentary filter were recorded simultaneously using
 
 ## (5000) Discussion on infrared transmission based sensors
 
+Sensors can be either passive or active. **Passive sensors** detect IT emitted by the environment, which are useful for heat detection or proximity sensing; while **active sensors** emit their own IR and measure the reflection. 
+
+Within **active sensors** there are two main approaches: 
+1. Time of flight sensors like the one we used for this lab, which emit a pulse and measure how long it takes to retun.
+2. Intensity-based sensors, which are cheaper and simpler but less precise. These are better for low-cost applications that don't require exact distance measurements.
+
 ## (5000) Sensitivity of sensors to colors and textures
+
+Since the ToF sensor operated on IR light, its performance depends on the reflective properties of the target surface. I tested 3 colors and 3 materials at a fixed distance of 500mm to observe how readings varied. 
+
+The results showed that color had a subtle but 
+
+black: 277
+whit: 300
+grey: 294
 
 # References
 
