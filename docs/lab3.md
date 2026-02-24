@@ -49,20 +49,65 @@ Interestingly, Long mode tracked the reference line more smoothly throughout the
 
 ![4cases](assets/lab3/4cases.png)
 
-## 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel
+## 2 ToF sensors and the IMU
+
+Using the XSHUT addressing approach described in the prelab, both sensors were initialized at different addresses (0x29 and 0x30) and operated simultaneously. The setup code is as follows: 
+
+```
+  // Disable sensor 2 before anything else
+  pinMode(SHUTDOWN_PIN, OUTPUT);
+  digitalWrite(SHUTDOWN_PIN, LOW);
+
+  // Init dual ToF sensors
+  delay(10);
+  distanceSensor1.setI2CAddress(0x30);
+  digitalWrite(SHUTDOWN_PIN, HIGH);
+  delay(50);
+
+  distanceSensor1.setDistanceModeShort();
+  distanceSensor2.setDistanceModeShort();
+```
 
 ![dualTOF](assets/lab3/dualTOF.png)
 
-Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this
+## Tof sensor speed
 
-Time v Distance: Include graph of data sent over bluetooth (2 sensors)
+To maximize loop speed, I used a non-blocking approach with checkForDataReady() rather than waiting for each measurement to complete: 
 
-Time v Angle: Include graph of data sent over bluetooth
+```
+        if (distanceSensor1.checkForDataReady()) {
+          tof1_data[tof_index] = distanceSensor1.getDistance();
+          distanceSensor1.clearInterrupt();
+          got1 = true;
+        }
+        if (distanceSensor2.checkForDataReady()) {
+          tof2_data[tof_index] = distanceSensor2.getDistance();
+          distanceSensor2.clearInterrupt();
+          got2 = true;
+```
+
+![looptime](assets/lab3/looptime.png)
+
+The loop executes every 4-5ms when no sensor data is ready. New ToF data arrives every ~50ms, matching the Short mode ranging time measured earlier. The limiting factor is the sensor's measurement cycle, not the microcontroller's processing speed. 
+
+## Time v Distance
+
+ToF data was collected over bLE using a START_IMU flag that simultaneously triggered both ToF sensors and the IMU. Data was stored in arrays and transmitted after collection. 
+
+![ToF](assets/lab3/ToF.png)
+
+Both sensors respond clearly to objects being moved in front of them, with sensor 1 and sensor 2 tracking different distances simultaneously. 
+
+## Time v Angle: Include graph of data sent over bluetooth
+
+IMU complimentary filter data was collected simultanously and sent over BLE: 
+
+![complimentary](assets/lab3/complimentary.png)
+
+Both ToF sensors and IMU complimentary filter were recorded simultaneously using a shared record_imu flag in the main loop. Since the IMU samples faster than the ToF, separate timestamp arrays were maintained for each. The complimentary filter data was collected separately using GET_COMP_DATA. 
+
+![tofcomplimentary](assets/lab3/tofcomplimentary.png)
 
 (5000) Discussion on infrared transmission based sensors
 
 (5000) Sensitivity of sensors to colors and textures
-
-Please also include code snippets (consider using GitHub Gists) in appropriate sections if you included any written code. Do not copy and paste all your code. Include only relevant functions used for each task.
-
-Include screenshots of relevant results.
