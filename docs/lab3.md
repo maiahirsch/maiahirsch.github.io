@@ -113,13 +113,27 @@ Within **active sensors** there are two main approaches:
 
 ## (5000) Sensitivity of sensors to colors and textures
 
-Since the ToF sensor operated on IR light, its performance depends on the reflective properties of the target surface. I tested 3 colors and 3 materials at a fixed distance of 500mm to observe how readings varied. 
+Since the ToF sensor operated on IR light, its performance depends on the reflective properties of the target surface. I tested 3 colors and 3 materials at a fixed distance of 300mm to observe how readings varied. 
 
-The results showed that color had a subtle but 
+| Colors    | Distance Measured (mm) |
+| -------- | ------- |
+| Black  | 289    |
+| White | 300     |
+| Grey    | 294    |
 
-black: 277
-whit: 300
-grey: 294
+| Materials    | Distance Measured (mm) |
+| -------- | ------- |
+| Cardboard  | 300    |
+| Skin | 302     |
+| Mirror/glass    | 310    |
+
+![5000](assets/lab3/5000.png)
+
+Color had a noticeabel effect, white returned the most accurate reading at exactly 300mm, which black underestimated by 11mm, liekly because black surfaces absorb more IR light and return a weaker signal. 
+
+For materials, flat cardboard performed best, matching ground truth exactly. Skin introduced a small 2mm error, possibly due to partial absorption by organic tissue. Mirror/glass overestimated by 10mm, which is interesting because rather than absorbing IR, reflective surfaces may be scattering the pulse at an angle, cause the sensor to measure a longer path length than the direct distance. 
+
+Overall, flat matte light-colored surfaces give the most reliable readings. 
 
 # References
 
