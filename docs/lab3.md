@@ -40,12 +40,18 @@ The I2C scan detected the ToF sensor at address 0x29, matching the expected 7-bi
 
 I tested both Short and Long distance modes between 100mm and 1000mm, averaging 256 readings at each positions. The results are plotted below: 
 
+![longvsshort](assets/lab3/longshort.png)
 
+Interestingly, Long mode tracked the reference line more smoothly throughout the range, while Short mode showed irregularities, particularly a flat region around 500 - 600mm where readings plateaued before catching up. Despite this, I chose Short mode for the final robot for two reasons. 
 
+1. Short mode's ranging time is nearly half that of Long mode (~56ms vs ~101ms), meaning the robot can sample twice as fast and this is critical for last-minute stops.
+2. The robot only required reliable detection within ~1.3m, which is well within Short mode's specified range.
 
-Discussion and pictures of sensor data with chosen mode
+![4cases](assets/lab3/4cases.png)
 
-2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel
+## 2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel
+
+![dualTOF](assets/lab3/dualTOF.png)
 
 Tof sensor speed: Discussion on speed and limiting factor; include code snippet of how you do this
 
