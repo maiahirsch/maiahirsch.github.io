@@ -3,21 +3,29 @@ Word limit: < 1000 words
 
 This is not a strict requirement, but may be helpful in understanding what should be included in your webpage. It also helps with the flow of your report to show your understanding to the lab graders.
 
-Prelab
+# Prelab
 
-Note the I2C sensor address
+## I2C Address
 
-Briefly discuss the approach to using 2 ToF sensors
+The VL53L1X ToF sensor has a default 12C address of 0x29 (7-bit), which corresponds to  0 x 52 in the 8-bit addressing convention used in the datasheet. The Arduino Wire library uses 7-bit addressing, so **0x29** is the address I will use in the code. 
 
-Briefly discuss placement of sensors on robot and scenarios where you will miss obstacles
+## Two Sensor Approach 
 
-Sketch of wiring diagram (with brief explanation if you want)
+Both sensors share the same default a dress and this is problematic as they have to be modified to be used simultaneously. I used the XSHUT pin approach: on startup, the XSHUT pin of sensor 2 is pulled LOW to disable it, then sensor 1's address is changed to 0x30. Sensor 2 is then re-enabled via XSHUT and boots at the default 0x29. Both sensors can now be addressed independently on the same I2C bus at the same time. 
+
+## Sensor Placement 
+
+For the final robot, I plan to mount one sensor facing forward and one facing on the side. The forward sensor handles the primary obstacle detection for the stop-before-wall task. The side sensor helps detect lateral obstacles during turns. Obstacles will be missed if objects are very low to the ground, below the sensor's field of view. Objects approaching from behind and objects outside the angular sensitivity cone of each sensor will also be missed, although I do not expect any objects approaching from behind. 
+
+## Wiring Diagram
 
 ![wiring](assets/lab3/lab3schematic.png)
 
-Lab Tasks
+Both sensors connect to the QWIIC breakout board via QWIIC cables (SDA, SCL, VCC, GND). Sensor 2 has an additional wire from its XSHIT pin to GPIO pin A0 on the Artemis for shutdown control. 
 
-Picture of your ToF sensor connected to your QWIIC breakout board
+# Lab Tasks
+
+## ToF sensor connected to QWIIC breakout board
 
 Screenshot of Artemis scanning for I2C device (and discussion on I2C address)
 
