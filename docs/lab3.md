@@ -27,6 +27,9 @@ Both sensors connect to the QWIIC breakout board via QWIIC cables (SDA, SCL, VCC
 
 ## ToF sensor connected to QWIIC breakout board
 
+![connectedQWIIC](assets/lab3/connectedQWIIC.png)
+![soldered](assets/lab3/soldered.png)
+
 Screenshot of Artemis scanning for I2C device (and discussion on I2C address)
 
 Discussion and pictures of sensor data with chosen mode
