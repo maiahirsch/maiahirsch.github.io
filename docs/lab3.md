@@ -106,3 +106,8 @@ Both ToF sensors and IMU complimentary filter were recorded simultaneously using
 ## (5000) Discussion on infrared transmission based sensors
 
 ## (5000) Sensitivity of sensors to colors and textures
+
+# References
+
+- Aidan Derocher's Lab 3 write-up was used as guidance and reference to verify plot formatting and results interpretation.
+- SparkFun VL53L1X Arduino Library documentation
