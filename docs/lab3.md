@@ -30,7 +30,18 @@ Both sensors connect to the QWIIC breakout board via QWIIC cables (SDA, SCL, VCC
 ![connectedQWIIC](assets/lab3/connectedQWIIC.png)
 ![soldered](assets/lab3/soldered.png)
 
-Screenshot of Artemis scanning for I2C device (and discussion on I2C address)
+## I2C Scan
+
+![i2c](assets/lab3/i2c.png)
+
+The I2C scan detected the ToF sensor at address 0x29, matching the expected 7-bit address. The IMU was also detected at 0x69. The seconf I2C port showed no devices since all sensors are connected to the same bus. 
+
+## Distance Mode Selection 
+
+I tested both Short and Long distance modes between 100mm and 1000mm, averaging 256 readings at each positions. The results are plotted below: 
+
+
+
 
 Discussion and pictures of sensor data with chosen mode
 
