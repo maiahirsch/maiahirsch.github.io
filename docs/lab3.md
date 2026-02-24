@@ -1,8 +1,3 @@
-Write-up
-Word limit: < 1000 words
-
-This is not a strict requirement, but may be helpful in understanding what should be included in your webpage. It also helps with the flow of your report to show your understanding to the lab graders.
-
 # Prelab
 
 ## I2C Address
@@ -108,6 +103,6 @@ Both ToF sensors and IMU complimentary filter were recorded simultaneously using
 
 ![tofcomplimentary](assets/lab3/tofcomplimentary.png)
 
-(5000) Discussion on infrared transmission based sensors
+## (5000) Discussion on infrared transmission based sensors
 
-(5000) Sensitivity of sensors to colors and textures
+## (5000) Sensitivity of sensors to colors and textures
