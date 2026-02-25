@@ -93,7 +93,7 @@ ToF data was collected over bLE using a START_IMU flag that simultaneously trigg
 
 Both sensors respond clearly to objects being moved in front of them, with sensor 1 and sensor 2 tracking different distances simultaneously. 
 
-## Time v Angle: Include graph of data sent over bluetooth
+## Time v Angle:
 
 IMU complimentary filter data was collected simultanously and sent over BLE: 
 
