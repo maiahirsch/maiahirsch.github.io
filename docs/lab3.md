@@ -29,7 +29,7 @@ Both sensors connect to the QWIIC breakout board via QWIIC cables (SDA, SCL, VCC
 
 ![i2c](assets/lab3/i2c.png)
 
-The I2C scan detected the ToF sensor at address 0x29, matching the expected 7-bit address. The IMU was also detected at 0x69. The seconf I2C port showed no devices since all sensors are connected to the same bus. 
+The I2C scan detected the ToF sensor at address 0x29, matching the expected 7-bit address. The IMU was also detected at 0x69. The second I2C port showed no devices since all sensors are connected to the same bus. 
 
 ## Distance Mode Selection 
 
@@ -40,7 +40,7 @@ I tested both Short and Long distance modes between 100mm and 1000mm, averaging 
 Interestingly, Long mode tracked the reference line more smoothly throughout the range, while Short mode showed irregularities, particularly a flat region around 500 - 600mm where readings plateaued before catching up. Despite this, I chose Short mode for the final robot for two reasons. 
 
 1. Short mode's ranging time is nearly half that of Long mode (~56ms vs ~101ms), meaning the robot can sample twice as fast and this is critical for last-minute stops.
-2. The robot only required reliable detection within ~1.3m, which is well within Short mode's specified range.
+2. The robot only requires reliable detection within ~1.3m, which is well within Short mode's specified range.
 
 ![4cases](assets/lab3/4cases.png)
 
@@ -87,7 +87,7 @@ The loop executes every 4-5ms when no sensor data is ready. New ToF data arrives
 
 ## Time v Distance
 
-ToF data was collected over bLE using a START_IMU flag that simultaneously triggered both ToF sensors and the IMU. Data was stored in arrays and transmitted after collection. 
+ToF data was collected over BLE using a START_IMU flag that simultaneously triggered both ToF sensors and the IMU. Data was stored in arrays and transmitted after collection. 
 
 ![ToF](assets/lab3/ToF.png)
 
