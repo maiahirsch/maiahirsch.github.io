@@ -83,7 +83,9 @@ I tested the minimum PWM values the motors would operate under by incrementally 
 
 For on-axis turns, a value of 140 was necessary to get both wheels running, although the turn was sluggish at this value. Increasing to 150 ensured the car would immediately and smoothly spin on axis. The videos below show the difference between turning at 140 and 150. 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dtmJ3wMXpCQ?si=A96E5sIl4lVn0pdU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WXuU-dE0o2g?si=f0t0W6pLrWeTlHjN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Calibration demonstration (discussion, video, code, pictures as needed)
 ## Open loop code and video
