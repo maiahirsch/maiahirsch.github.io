@@ -22,11 +22,11 @@ I obtained a chopped rising edge result instead of a perfect square wave for bot
 
 ![chopped1](assets/lab4/chopped1.png)
 
-I resoldered the drivers and kept getting the same result. 
+I resoldered the drivers and kept getting the same result:
 
 ![chopped2](assets/lab4/chopped2.png)
 
-Even though this is not normal PWM behavior and does not match the expected results, I continued the lab, paying attention to any anomalies. In the end, the drivers worked just fine. 
+Even though this is not normal PWM behavior and does not match the expected results, I continued the lab. In the end, the drivers worked just fine. 
 
 As part of the debugging process for the chopped edge I was able to determine that this was an isolated issue regarding the motor driver and not the Artemis. The Artemis was outputting a perfect square wave as shown: 
 
