@@ -32,6 +32,10 @@ As part of the debugging process for the chopped edge I was able to determine th
 
 ![square](assets/lab4/square.png)
 
+I did not capture a photo of my bench setup before proceeding with soldering, as I was troubleshooting the chopped wave issue described below. Below is a diagram of my setup instead:
+![setup](assets/lab4/setup.png]
+The oscilloscope probe was connected directly to the motor driver output pin.
+
 ## Power supply setting
 
 The external power supply was set to 3.7V to match the nominal voltage of the 850mAh LiPo battery, with a current limit arounf 1A to protect the motor drivers during initial testing. 
