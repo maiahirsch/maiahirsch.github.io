@@ -15,7 +15,7 @@ The Artemis and motors are powered from separate batteries. The Artemis from a 6
 
 I started by soldering the motor driver to the Artemis and tested it could output PWM signals. I connected an oscilloscope to the output signal of one motor driver and grounded it. I powered the driver using a 3.7volt expernal power supply, equivalent to using a battery. I sent a 50% duty cicle PWM signal for both drivers. I tested each separately and obtained the following results: 
 
-
+## Image of your oscilloscope
 
 I obtained a chopped rising edge result instead of a perfect square wave for both drivers. I resoldered the drivers and kept getting the same result. I was advised by the professor to continue the lab and be aware of any anomalies, however the drivers worked just fine. 
 
@@ -44,10 +44,24 @@ I removed the circuit board on the car and the attatched LEDs to it. I soldered 
   analogWrite(16, 0);
   delay(5000);
 ````
-## Image of your oscilloscope
+
+Here is a video of the code running: 
 
 ## Short video of wheels spinning as expected (including code snippet it’s running on)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/n6jmWBIV9c4?si=LcekCE5srbo_04N4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+I also tested running the car using the 850mAh battery. I soldered the battery to the motor driver. See the following video for results: 
+
 ## Short video of both wheels spinning (with battery driving the motor drivers)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gb6jZ4B1DHs?si=qXSFO98zxbwUQuQl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Looking back, I made the mistake to solder the battery directly onto the motor drivers. I did not notice the connector we were given and assumed I had to cut the existing connector of the battery. I realized my mistake when the battery depleated and my car was not working. I am hoping to get a replacement during my next lab session 🥹. But for now, I borrowed a friend's. 
+
+
+
+
 ## Picture of all the components secured in the car
 ## Consider labeling your picture if you can’t see all the components
 ## Lower limit PWM value discussion
