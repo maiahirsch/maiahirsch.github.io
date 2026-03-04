@@ -45,6 +45,24 @@ This ensures the car stops if the Bluetooth connection drops mid-run
 ## Graph data should include Tof vs time and Motor input vs time (and whatever helps with debugging)
 ## (5000) Wind-up implementation and discussion
 
+## Task 1: Frequency: Determine the frequency at which the ToF sensor is returning new data.
+
+## Task 2: PI Position Control 
+
+
+![equation](assets/lab5/equation.png)
+
+## Task 3: PID Loop Rate: How fast is the PID control loop running? Compare this rate to ToF sensor rate.
+
+## Task 4: Distance Extrapolation 
+
+## Task 5: PID Control
+
+## Task 6: Speed
+
+## (5000) Wind-Up Protection
+
+
 # Discussion
 
 # References
