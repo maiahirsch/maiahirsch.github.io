@@ -1,6 +1,6 @@
 # Prelab
 
-## Diagram with your intended connections between the motor drivers, Artemis, and battery
+## Circuit Diagram
 
 To drive the motors, I used pina A3, A14, A15, and A16 as these are PWM capable and analog. Also, these pins are conveniently placed on the opposite side of the Artemis QWIIC port so there would be minimal damage if compoenents move in the car and the pins are closer to the motors allowing for shorter wires avoiding EMI.  I followed the diagram shown in class as shown below: 
 
