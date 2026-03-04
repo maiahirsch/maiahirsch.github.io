@@ -19,16 +19,17 @@ I started by soldering the motor driver to the Artemis and tested it could outpu
 
 I obtained a chopped rising edge result instead of a perfect square wave for both drivers as follows: 
 
-![chopped1](assets/lab4/chopped1.png)
+![chopped1](assets/lab4/chopped1.HEIC)
 
 I resoldered the drivers and kept getting the same result. 
 
-![chopped1](assets/lab4/chopped2.png)
+![chopped1](assets/lab4/chopped2.HEIC)
 
 Even though this is not normal PWM behavior and does not match the expected results, I continued the lab, paying attention to any anomalies. In the end, the drivers worked just fine. 
 
 As part of the debugging process for the chopped edge I was able to determine that this was an isolated issue regarding the motor driver and not the Artemis. The Artemis was outputting a perfect square wave as shown: 
 
+![chopped1](assets/lab4/square.HEIC)
 
 ## Power supply setting
 
@@ -68,10 +69,12 @@ I also tested running the car using the 850mAh battery. I soldered the battery t
 
 Looking back, I made the mistake to solder the battery directly onto the motor drivers. I did not notice the connector we were given and assumed I had to cut the existing connector of the battery. I realized my mistake when the battery depleated and my car was not working. I am hoping to get a replacement during my next lab session 🥹. But for now, I borrowed a friend's. 
 
-
-
-
 ## Picture of all the components secured in the car
+
+I fixed all the components in the car with tape. The motor drivers were placed far away from the Artemis and IMU to avoid EMF interference. The ToF sensors were placed on the walls outside of the car to detect objects. As seen in the following picture, I did not secure the Artemis board yet as I kept contantly plugging it to my computer to debug and download code. 
+
+![chopped1](assets/lab4/artemis.png)
+
 ## Consider labeling your picture if you can’t see all the components
 ## Lower limit PWM value discussion
 ## Calibration demonstration (discussion, video, code, pictures as needed)
