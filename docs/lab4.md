@@ -1,13 +1,51 @@
 # Prelab
-## Diagram with your intended connections between the motor drivers, Artemis, and battery (with specific pin numbers)
+## Diagram with your intended connections between the motor drivers, Artemis, and battery
 
+To drive the motors, I used pina A3, A14, A15, and A16 as these are PWM capable and analog. Also, these pins are conveniently placed on the opposite side of the Artemis QWIIC port so there would be minimal damage if compoenents move in the car and the pins are closer to the motors allowing for shorter wires avoiding EMI.  I followed the diagram shown in class as shown below: 
 
-## Battery discussion
+![diagrm](assets/lab4/lab4diagram.png)
+
+## Battery 
+
+The Artemis and motors are powered from separate batteries. The Artemis from a 650 mAh battery and the motors from a 850mAh battery. This is important because motors draw large amounts of current when starting, which causes voltage drops on a shared power supply. If both were on the same battery, the voltage could drop below the Artemis's operational range, causes resets or BLE disconnects. Keeping them separate ensures stable operation of the microcontroller regardless of motor load. 
+
 # Lab Tasks
+
 ## Picture of your setup with power supply and oscilloscope hookup
-## Power supply setting discussion
-## Include the code snippet for your analogWrite code that tests the motor drivers
+
+I started by soldering the motor driver to the Artemis and tested it could output PWM signals. I connected an oscilloscope to the output signal of one motor driver and grounded it. I powered the driver using a 3.7volt expernal power supply, equivalent to using a battery. I sent a 50% duty cicle PWM signal for both drivers. I tested each separately and obtained the following results: 
+
+
+
+I obtained a chopped rising edge result instead of a perfect square wave for both drivers. I resoldered the drivers and kept getting the same result. I was advised by the professor to continue the lab and be aware of any anomalies, however the drivers worked just fine. 
+
+As part of the debugging process for the chopped edge I was able to determine that this was an isolated issue regarding the motor driver and not the Artemis. The Artemis was outputting a perfect square wave as shown: 
+
+## Power supply setting
+
+The external power supply was set to 3.7V to match the nominal voltage of the 850mAh LiPo battery, with a current limit arounf 1A to protect the motor drivers during initial testing. 
+
+## Wiring to car + Testing motor drivers
+
+I removed the circuit board on the car and the attatched LEDs to it. I soldered the motor connections to the driver output pins. To test the motors, I kept using the external power supply and ran the following code that would make my wheels go forward for 5 seconds, and backwards for 5 seconds: 
+
+````
+// forward backward test
+//forward
+  analogWrite(3, 150);
+  analogWrite(16, 150);
+  analogWrite(14, 0);
+  analogWrite(15, 0);
+  delay(5000);
+//backward
+  analogWrite(14, 150);
+  analogWrite(15, 150);
+  analogWrite(3, 0);
+  analogWrite(16, 0);
+  delay(5000);
+````
 ## Image of your oscilloscope
+
 ## Short video of wheels spinning as expected (including code snippet it’s running on)
 ## Short video of both wheels spinning (with battery driving the motor drivers)
 ## Picture of all the components secured in the car
