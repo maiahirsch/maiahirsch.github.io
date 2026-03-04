@@ -1,4 +1,5 @@
 # Prelab
+
 ## Diagram with your intended connections between the motor drivers, Artemis, and battery
 
 To drive the motors, I used pina A3, A14, A15, and A16 as these are PWM capable and analog. Also, these pins are conveniently placed on the opposite side of the Artemis QWIIC port so there would be minimal damage if compoenents move in the car and the pins are closer to the motors allowing for shorter wires avoiding EMI.  I followed the diagram shown in class as shown below: 
@@ -19,17 +20,17 @@ I started by soldering the motor driver to the Artemis and tested it could outpu
 
 I obtained a chopped rising edge result instead of a perfect square wave for both drivers as follows: 
 
-![chopped1](assets/lab4/chopped1.HEIC)
+![chopped1](assets/lab4/chopped1.png)
 
 I resoldered the drivers and kept getting the same result. 
 
-![chopped1](assets/lab4/chopped2.HEIC)
+![chopped1](assets/lab4/chopped2.png)
 
 Even though this is not normal PWM behavior and does not match the expected results, I continued the lab, paying attention to any anomalies. In the end, the drivers worked just fine. 
 
 As part of the debugging process for the chopped edge I was able to determine that this was an isolated issue regarding the motor driver and not the Artemis. The Artemis was outputting a perfect square wave as shown: 
 
-![chopped1](assets/lab4/square.HEIC)
+![chopped1](assets/lab4/square.png)
 
 ## Power supply setting
 
@@ -73,7 +74,7 @@ Looking back, I made the mistake to solder the battery directly onto the motor d
 
 I fixed all the components in the car with tape. The motor drivers were placed far away from the Artemis and IMU to avoid EMF interference. The ToF sensors were placed on the walls outside of the car to detect objects. As seen in the following picture, I did not secure the Artemis board yet as I kept contantly plugging it to my computer to debug and download code. 
 
-![chopped1](assets/lab4/artemis.png)
+![artemis](assets/lab4/Artemis.png)
 
 ## Consider labeling your picture if you can’t see all the components
 ## Lower limit PWM value discussion
