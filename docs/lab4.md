@@ -4,7 +4,7 @@
 
 To drive the motors, I used pina A3, A14, A15, and A16 as these are PWM capable and analog. Also, these pins are conveniently placed on the opposite side of the Artemis QWIIC port so there would be minimal damage if compoenents move in the car and the pins are closer to the motors allowing for shorter wires avoiding EMI.  I followed the diagram shown in class as shown below: 
 
-![diagrm](assets/lab4/lab4diagram.png)
+![diagram](assets/lab4/lab4diagram.png)
 
 ## Battery 
 
@@ -24,13 +24,13 @@ I obtained a chopped rising edge result instead of a perfect square wave for bot
 
 I resoldered the drivers and kept getting the same result. 
 
-![chopped1](assets/lab4/chopped2.png)
+![chopped2](assets/lab4/chopped2.png)
 
 Even though this is not normal PWM behavior and does not match the expected results, I continued the lab, paying attention to any anomalies. In the end, the drivers worked just fine. 
 
 As part of the debugging process for the chopped edge I was able to determine that this was an isolated issue regarding the motor driver and not the Artemis. The Artemis was outputting a perfect square wave as shown: 
 
-![chopped1](assets/lab4/square.png)
+![square](assets/lab4/square.png)
 
 ## Power supply setting
 
@@ -88,6 +88,49 @@ For on-axis turns, a value of 140 was necessary to get both wheels running, alth
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WXuU-dE0o2g?si=f0t0W6pLrWeTlHjN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Calibration demonstration (discussion, video, code, pictures as needed)
+
+I found that my car veered left when both motors were driven at equal PWM values, as shown in the video below. This indicated that the left motors were spinning slower than the right, or had more resistance. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fURuT4bLCOM?si=z8tYya-WITzGq_wz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+To fix this, I applied a multiplicative calibration factor of **1.1** to the left side motors to increase their speed and match the right. I experimented with multiple values and found that 1.1 yielded the most consistent straight-line travel: 
+
+````
+  analogWrite(16, 80 * 1.1);  // adjusting bc the car veers left
+  analogWrite(3, 80);
+  analogWrite(15, 0);
+  analogWrite(14, 0);
+````
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uoKUZN20kVY?si=Xo2oh57Ei8kI1IJn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Open loop code and video
+To demonstrate open loop control, I programmed the car to drive in an approximate triangle path, alternating between straight segments and turns. The code repeats three times, one straight segment followed by one turn, to complete the triangle: 
+
+````
+// straight
+analogWrite(16, 80 * 1.1);  // left side scaled for calibration
+analogWrite(3, 80);
+analogWrite(15, 0);
+analogWrite(14, 0);
+delay(500);
+
+// turn
+analogWrite(16, 140 * 1.1);
+analogWrite(3, 0);
+analogWrite(15, 0);
+analogWrite(14, 140);
+delay(350);
+````
+
+The straight segments use the calibrated 1.1 factor on the left side to maintain a straight path, and the turn delay of 350ms was tuned experimentally to achieve the turns needed for a triangle. A video of this path below: 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EFwjFvbf2z8?si=iFWrmB2T2yaKL5A-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Since this is open loop cntrol, there is no feedback mechanism to correct for errors that will cause the path to deviate from a perfect triangle. Thsi is an inherent limitation of open loop ontrol and  motivated the need for closed loop feedback in the next lab.
+
 ## (5000) analogWrite frequency discussion (include screenshots and code)
+
+![frequency](assets/lab4/frequency.png)
+
 ## (5000) Lowest PWM value speed (once in motion) discussion (include videos where appropriate)
