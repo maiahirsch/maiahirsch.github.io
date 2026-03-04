@@ -12,11 +12,9 @@ The Artemis and motors are powered from separate batteries. The Artemis from a 6
 
 # Lab Tasks
 
-## Picture of your setup with power supply and oscilloscope hookup
-
 I started by soldering the motor driver to the Artemis and tested it could output PWM signals. I connected an oscilloscope to the output signal of one motor driver and grounded it. I powered the driver using a 3.7volt expernal power supply, equivalent to using a battery. I sent a 50% duty cicle PWM signal for both drivers. I tested each separately and obtained the following results: 
 
-## Image of your oscilloscope
+## Oscilloscope
 
 I obtained a chopped rising edge result instead of a perfect square wave for both drivers as follows: 
 
@@ -33,14 +31,16 @@ As part of the debugging process for the chopped edge I was able to determine th
 ![square](assets/lab4/square.png)
 
 I did not capture a photo of my bench setup before proceeding with soldering, as I was troubleshooting the chopped wave issue described below. Below is a diagram of my setup instead:
-![setup](assets/lab4/setup.png]
-The oscilloscope probe was connected directly to the motor driver output pin.
 
-## Power supply setting
+![setup](assets/lab4/setup2.png)
+
+The oscilloscope probe was connected directly to the motor driver output pin, with the ground clip connected to circuit ground.
+
+## Power Supply Setting
 
 The external power supply was set to 3.7V to match the nominal voltage of the 850mAh LiPo battery, with a current limit arounf 1A to protect the motor drivers during initial testing. 
 
-## Wiring to car + Testing motor drivers
+## Wiring to Car + Testing Motor Drivers
 
 I removed the circuit board on the car and the attatched LEDs to it. I soldered the motor connections to the driver output pins. To test the motors, I kept using the external power supply and ran the following code that would make my wheels go forward for 5 seconds, and backwards for 5 seconds: 
 
@@ -62,27 +62,23 @@ I removed the circuit board on the car and the attatched LEDs to it. I soldered 
 
 Here is a video of the code running: 
 
-## Short video of wheels spinning as expected (including code snippet it’s running on)
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/n6jmWBIV9c4?si=LcekCE5srbo_04N4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-I also tested running the car using the 850mAh battery. I soldered the battery to the motor driver. See the following video for results: 
 
-## Short video of both wheels spinning (with battery driving the motor drivers)
+I also tested running the car using the 850mAh battery. I soldered the battery to the motor driver. See the following video for results: 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gb6jZ4B1DHs?si=qXSFO98zxbwUQuQl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 Looking back, I made the mistake of soldering the battery directly onto the motor drivers. I did not notice the connector we were given and assumed I had to cut the existing connector of the battery. I realized my mistake when the battery depleated and my car was not working. I am hoping to get a replacement during my next lab session 🥹. 
 
-## Picture of all the components secured in the car
-## Consider labeling your picture if you can’t see all the components
+## Components in the Car
 
 I fixed all the components in the car with tape. The motor drivers were placed far away from the Artemis and IMU to avoid EMF interference. The ToF sensors were placed on the walls outside of the car to detect objects. As seen in the following picture, I did not secure the Artemis board yet as I kept contantly plugging it to my computer to debug and download code. 
 
 ![artemis](assets/lab4/Artemis.png)
 
-## Lower limit PWM value discussion
+## Lower Limit PWM Value
 
 I tested the minimum PWM values the motors would operate under by incrementally changing the values provided to analoWrite from 0 to 255. I found that an analogWrite value of **35** was sufficient to make the car go forward and backward. This corresponds to a duty cycle of approximately 13.7%
 
@@ -92,7 +88,7 @@ For on-axis turns, a value of 140 was necessary to get both wheels running, alth
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WXuU-dE0o2g?si=f0t0W6pLrWeTlHjN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## Calibration demonstration (discussion, video, code, pictures as needed)
+## Calibration
 
 I found that my car veered left when both motors were driven at equal PWM values, as shown in the video below. This indicated that the left motors were spinning slower than the right, or had more resistance. 
 
@@ -157,7 +153,7 @@ case MOTOR_CONTROL:
   }
 ````
 
-## (5000) analogWrite frequency discussion (include screenshots and code)
+## (5000) AnalogWrite Frequency
 
 I foudn the frequency of analogWrite by writing 50% PWM to pin A2 and measuring it with an oscilloscope: 
 
