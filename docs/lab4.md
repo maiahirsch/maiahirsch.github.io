@@ -170,6 +170,42 @@ I obtained a frequency to be about **40Hz** which is a very low frequency for mo
 
 ## (5000) Lowest PWM value speed (once in motion) discussion (include videos where appropriate)
 
+To find the kinetic friction threshold, I tested both forward motion and on-axis turns by first jumpstarting the motors at the static threshold, then dropping to a lower value to see if motion could be sustained.
+
+| | Static Threshold | Kinetic Threshold | Duty Cycle (Static) | Duty Cycle (Kinetic)
+|--|--|--|--|--|
+| **Forward** | 35 | 26 | 17.6% | 10.2% |
+| **Turn** | 140 | 137 | 54.9% | 47.1% |
+
+````
+// forward
+analogWrite(16, 45 * 1.1);
+analogWrite(3, 45);
+analogWrite(15, 0);
+analogWrite(14, 0);
+delay(500);  // jumpstart
+analogWrite(16, 26 * 1.1);
+analogWrite(3, 26);
+analogWrite(15, 0);
+analogWrite(14, 0);
+
+// turn
+analogWrite(16, 150 * 1.1);
+analogWrite(14, 150);
+analogWrite(15, 0);
+analogWrite(3, 0);
+delay(500);  // jumpstart
+analogWrite(16, 120 * 1.1);
+analogWrite(14, 120);
+analogWrite(15, 0);
+analogWrite(3, 0);
+````
+The robot settled to its slowest speed in approximately 500ms — the minimum jumpstart duration needed to overcome static friction before dropping to the kinetic threshold.
+
+# Discussion
+
+In this lab I learned how to interface dual motor drivers with the Artemis to achieve open loop control of the car. The most significant challenges were debugging a chopped waveform on the motor driver outputs and an unexpected BLE disconnection issue when starting the motors mid-connection, which I believe is caused by electrical noise from motor inrush current. The limitations of open loop control were clear from the triangle path test, where small inconsistencies caused visible deviation from the intended path, motivating the need for closed loop feedback in future labs.
+
 # References 
 
 I refered to Aidan Derocher webpage from last year to use as guidance for this lab as it's high quality was mentioned during class. I also consulted with Hayden Webb, TA Selina and Prof. Hellbling about my chopped wave problem. Hayden Webb was very kind to lend me his 850mAh battery to complete this lab. 
