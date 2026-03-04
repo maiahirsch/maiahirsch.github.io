@@ -71,13 +71,20 @@ I also tested running the car using the 850mAh battery. I soldered the battery t
 Looking back, I made the mistake to solder the battery directly onto the motor drivers. I did not notice the connector we were given and assumed I had to cut the existing connector of the battery. I realized my mistake when the battery depleated and my car was not working. I am hoping to get a replacement during my next lab session 🥹. But for now, I borrowed a friend's. 
 
 ## Picture of all the components secured in the car
+## Consider labeling your picture if you can’t see all the components
 
 I fixed all the components in the car with tape. The motor drivers were placed far away from the Artemis and IMU to avoid EMF interference. The ToF sensors were placed on the walls outside of the car to detect objects. As seen in the following picture, I did not secure the Artemis board yet as I kept contantly plugging it to my computer to debug and download code. 
 
 ![artemis](assets/lab4/Artemis.png)
 
-## Consider labeling your picture if you can’t see all the components
 ## Lower limit PWM value discussion
+
+I tested the minimum PWM values the motors would operate under by incrementally changing the values provided to analoWrite from 0 to 255. I found that an analogWrite value of **35** was sufficient to make the car go forward and backward. This corresponds to a duty cycle of approximately 13.7%
+
+For on-axis turns, a value of 140 was necessary to get both wheels running, although the turn was sluggish at this value. Increasing to 150 ensured the car would immediately and smoothly spin on axis. The videos below show the difference between turning at 140 and 150. 
+
+
+
 ## Calibration demonstration (discussion, video, code, pictures as needed)
 ## Open loop code and video
 ## (5000) analogWrite frequency discussion (include screenshots and code)
