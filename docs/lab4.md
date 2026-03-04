@@ -17,9 +17,18 @@ I started by soldering the motor driver to the Artemis and tested it could outpu
 
 ## Image of your oscilloscope
 
-I obtained a chopped rising edge result instead of a perfect square wave for both drivers. I resoldered the drivers and kept getting the same result. I was advised by the professor to continue the lab and be aware of any anomalies, however the drivers worked just fine. 
+I obtained a chopped rising edge result instead of a perfect square wave for both drivers as follows: 
+
+![chopped1](assets/lab4/chopped1.png)
+
+I resoldered the drivers and kept getting the same result. 
+
+![chopped1](assets/lab4/chopped2.png)
+
+Even though this is not normal PWM behavior and does not match the expected results, I continued the lab, paying attention to any anomalies. In the end, the drivers worked just fine. 
 
 As part of the debugging process for the chopped edge I was able to determine that this was an isolated issue regarding the motor driver and not the Artemis. The Artemis was outputting a perfect square wave as shown: 
+
 
 ## Power supply setting
 
