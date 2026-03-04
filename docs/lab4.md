@@ -130,6 +130,29 @@ The straight segments use the calibrated 1.1 factor on the left side to maintain
 
 Since this is open loop cntrol, there is no feedback mechanism to correct for errors that will cause the path to deviate from a perfect triangle. Thsi is an inherent limitation of open loop ontrol and  motivated the need for closed loop feedback in the next lab.
 
+## Note on BLE Connectivity
+During testing, I encountered an issue where the BLE connection would drop whenever a motor start command was sent from Jupyter. The error received was "Not connected to a BLE device" when attempting to send a stop command immediately after starting the motors. I am still debugging this issue, but I believe it is caused by the high current draw from the motors at startup, which generates electrical noise that interferes with the BLE radio on the Artemis — even with separate batteries for the motors and Artemis.
+As a workaround, I implemented a timed motor control command where the duration is sent as a parameter, allowing the car to stop itself without requiring a second BLE command.
+
+````
+case MOTOR_CONTROL:
+  {
+    int duration_ms;
+    success = robot_cmd.get_next_value(duration_ms);
+    
+    analogWrite(16, 80 * 1.1);
+    analogWrite(3, 80);
+    analogWrite(15, 0);
+    analogWrite(14, 0);
+
+    unsigned long startTime = millis();
+    while (millis() - startTime < duration_ms) {}
+
+    motorsStop();
+    break;
+  }
+````
+
 ## (5000) analogWrite frequency discussion (include screenshots and code)
 
 I foudn the frequency of analogWrite by writing 50% PWM to pin A2 and measuring it with an oscilloscope: 
