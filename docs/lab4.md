@@ -131,6 +131,21 @@ Since this is open loop cntrol, there is no feedback mechanism to correct for er
 
 ## (5000) analogWrite frequency discussion (include screenshots and code)
 
+I foudn the frequency of analogWrite by writing 50% PWM to pin A2 and measuring it with an oscilloscope: 
+
+````
+void setup() {
+  analogWriteResolution(8);
+  analogWrite(A2, 127);  // 50% duty cycle
+}
+void loop() {}
+````
 ![frequency](assets/lab4/frequency.png)
 
+I obtained a frequency to be about **40Hz** which is a very low frequency for motor control. At this frequency, the motors buzz audibly during operation. The motor acts as a low-pass filter and ideally should only receive the DV average voltage; at 40Hz the AC component is slow enough to influence motor behavior, causing torque ripple and less smooth operation especially at low speeds. Incorporating timers could help get a faster PWM frequency, improving low-speed control and noise. 
+
 ## (5000) Lowest PWM value speed (once in motion) discussion (include videos where appropriate)
+
+# References 
+
+I refered to Aidan Derocher webpage from last year to use as guidance for this lab as it's high quality was mentioned during class. I also consulted with Hayden Webb, TA Selina and Prof. Hellbling about my chopped wave problem. Hayden Webb was very kind to lend me his 850mAh battery to complete this lab. 
