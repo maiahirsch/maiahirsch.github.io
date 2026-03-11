@@ -295,4 +295,4 @@ Despite these issues, the final controller settles reliably at 304mm from ~1.2m 
 
 # References
 
-I used Stephan Wagner's writeup as a guide for task implementation and figure/videos needed. I let Hayden Webb borrow my car as his motors were not working properly.
+I used Stephan Wagner's writeup as a guide for task implementation and figure/videos needed. I let Hayden Webb borrow my car as his motors were not working properly. While working with my car, Hayden could not get past the BLE disconnect issue and so we were able to determine I had a hardware issue. 
