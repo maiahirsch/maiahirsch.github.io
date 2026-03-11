@@ -39,7 +39,7 @@ This ensures the car stops if the Bluetooth connection drops mid-run.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y9VUB1Mzq_o?si=npjEyLpQTC8yYoxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
-**Note on debugging BLE Disconnected:** before starting this lab, and since lab 4, I kept having BLE disconnect issues whenver the motors started. I determined it was a hardware issue as Hayden Webb tested his working code on my car and kept running into this porblem. I replaced the microcontroller and the BLE issue was resolved. 
+**Note on debugging BLE Disconnected:** before starting this lab, and since lab 4, I kept having BLE disconnect issues whenver the motors started. I determined it was a hardware issue as Hayden Webb tested his working code on my car and kept running into this problem. I replaced the microcontroller and the BLE issue was resolved. 
 
 
 # Lab Tasks
