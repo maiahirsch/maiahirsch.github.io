@@ -1,8 +1,5 @@
 # Prelab
 
-## Clearly describe how you handle sending and receiving data over Bluetooth
-## Consider adding code snippets as necessary to showcase how you implemented this on Arduino and Python
-
 I implemented a BLE command system that allows me to start/stop PID control, update gains, and retrieve logged data wirelessly from Python. 
 
 I added the following new commands to my `CommandTypes` enum:
@@ -37,6 +34,8 @@ flag_pid_pos = false;
 ````
 This ensures the car stops if the Bluetooth connection drops mid-run. 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Y9VUB1Mzq_o?si=npjEyLpQTC8yYoxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 # Lab Tasks
 
 ## P/I/D Discussion 
@@ -45,15 +44,11 @@ My task was to drive the car from a starting distance of ~1.2m and stop it exact
 ## Controller selection
 I implemented a full PID controller. Starting with P-only control gave reasonable behavior as the car approached and settled near 304mm. However, the car had a small steady-state error that I wanted to eliminate. Adding the I term corrected this. The D term helped reduce overshoot during the fast approach. 
 
-**Final gains:** `Kp = 0.07, Ki = 0.002, Kd = 0.005`
+**Final gains:** `Kp = 0.05, Ki = 0.002, Kd = 0.005`
 
 A speed scale factor `pid_speed_scale` multiplies the PID output before clamping, allowing testing at 50%, 80%, and 100% of full speed without changing the gains. 
 
 **Motor deadband:** Motors stop when the error is within ±20mm of the target, preventing chatter near the setpoint. Forward motor PWM is floored at 0 (no floor needed since proportional output is already large far from the wall), and backward PWM is floored at 55 to overcome static friction. 
-
-## P/I/D discussion (Kp/Ki/Kd values chosen, why you chose a combination of controllers, etc.)
-
-## Task 1: Frequency: Determine the frequency at which the ToF sensor is returning new data.
 
 ## Task 1: Frequency 
 The ToF sampling frequency is dependent on the timing budget. Because the goal here is to make a fast PID controller that can stop the car from running into walls, I opted for a 20ms timing budget, which is the fastest supported by our ToF sensors in long mode and yields a frequency of 50 Hz. To cofirm this, I printed times to the serial monitor as fast as possible while conditionally reading ToF data, like in lab 3: 
@@ -84,7 +79,7 @@ where e(t) is the error between the current ToF distance and the 304mm target.
 A P controller is a good starting point, however it often experiences steady-state error. A PI controller can fix this by pushing the motors harder until the error is eliminated. A PID controller improves further by damping the motor input in response to quick rapid changes in sensor readings, like when the car closes in on the wall quickly. I built up the controller incrementally, starting from P and adding terms one by one. 
 
 ### P Control
-I started with the proportional term alone. The error is the difference between the current ToF reading and the 304mm setpoint. With `Kp = 0.07`, an error of ~1000mm produces an utput of 70, which is well within the 55-150PWM operating range, while an error of 50mm produces an output of 3.5, which falls below the motor threhold and causes the car to stop. This gives a natural deadband behavior near the target. 
+I started with the proportional term alone. The error is the difference between the current ToF reading and the 304mm setpoint. With `Kp = 0.05`, an error of ~1000mm produces an utput of 70, which is well within the 55-150PWM operating range, while an error of 50mm produces an output of 3.5, which falls below the motor threhold and causes the car to stop. This gives a natural deadband behavior near the target. 
 
 ````
 float computePID(float current_dist) {
@@ -103,6 +98,10 @@ float computePID(float current_dist) {
 
 The car approaches and settles near 304mm with one overshoot, but a small steady-state error persists. 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ls4HNULZn50?si=8LbEeg5YL69Lwf7i" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5xCK_ILtfHw?si=frJFSl9arabMSrJn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ### PI Control 
 To eliminate the steady-state error, I added the integral term. The integral accumulates error over time and provides a growing corrective push even when the proportional output has become very small. I kept track of `dt` between PID iterations to properly integrate
 
@@ -117,6 +116,8 @@ return (pid_Kp * error) + I_term;
 ![PI control](assets/lab5/PIcontrol.png)
 
 After settling on `Ki = 0.002`, the car reliably reaches and holds 304mm. The I term is visible in the plot as a small but nonzero contribution near the setpoint that corrects the residual error left by the P term alone. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Inf_8gAk08c?si=TSrm-5DV3_BwoXE9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ### Task 3: PID Loop Rate
 
@@ -217,6 +218,14 @@ return (pid_Kp * error) + (pid_Ki * pid_integral) + (pid_Kd * pid_d_filtered);
 The Full 100% speed trial from ~1260mm shows the car approaching smoothly, overshooting to ~200mm, then backing up and settling at 304mm within ~3 seconds. The D term (green) goes negative during the fast approach, as expected. The I term (orange) remains small throughout, contributing only near the setpoint. 
 
 ![PID control](assets/lab5/PIDcontrol.png)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZxZTCUZuAlI?si=1gkkjQZqdw2AnJgD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/oD6CSUUjnk4?si=QdX6vixBR66gZTsc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/x4EOVGYcAVg?si=zIfw-z29mPSpSD8m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/81WT8jZsVRw?si=i87h4l7g0XX-3IU3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 #### Derivative Kick
 Derivative kick occurs when a sudden setpoint change causes a spike in the derivative term. In this implementation, kick is not a significant issue for two reasons:
