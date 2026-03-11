@@ -266,11 +266,14 @@ The plots below show the PID terms with and without wind-up protection. Without 
 
 In this lab I learned how to build a PID controller from scratch and tuning it for a real physical system. I had studied PID in coursework before, but this was useful to close the gap between theory and pratice. 
 
-Once of the mpst 
+One of the first issues I had was that the motors simply weren't running when PID started. The `motors_enabled` flag was never being set to `true` inside the `START_PID_POS_WITH_DATA` command handler, so the PID loop was computing outputs but the motor commands were silently ignored. Once that was fixed, a second issue surfaced: the controller was polling `distanceSensor1` for data while `distanceSensor2` was the one actually ranging, so the PID loop was starved of distance updates.
 
+On the data collection side, the PID loop running at ~800 Hz filled the 2000-point buffer in under a second, which meant early plots showed the first 900ms of a trial and cut off before the car reached the target. Adding a `pid_count % 8` downsampling condition extended coverage to ~6 seconds per trial. 
 
+As mentioned in the beginning, the notification handlers would sulently die between trials, when the car would start runing due to a disconnect of BLE but that was resolved by switching the microcontroller. 
 
-
-# Discussion
+Despite these issues, the final controller settles reliably at 304mm from ~1.2m at full speed, with a max approach speed of 2.06 m/s. 
 
 # References
+
+I used Stephan Wagner's writeup as a guide for task implementation and figure/videos needed. I let Hayden Webb borrow my car as his motors were not working properly.
