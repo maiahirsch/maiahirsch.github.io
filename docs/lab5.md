@@ -71,21 +71,7 @@ if (flag_pid_pos) {
 ````
 Testing revealed that the default timing bidget gave ~100ms intervals (10 Hz), which was far too slow for a responsive pID controller. After setting `setTimingBudgetInMs(20)`, the intervals dropped to ~20 ms, a 50 Hz sampling rate and a 5x improvement. 
 
-Since the car needs to start beyond 1.3m to have room to reach full speed, short mode's range limit was also a problem. I switched to long mode, which supports up to 4m. Together with the 20ms timing budget, the sensors trade some accuracy for speed and range, which is acceptable for this task. 
-
-## Range and Sampling Time Discussion 
-The VL53L1X ToF sensor was configured as follows:
-````
-distanceSensor2.setDistanceModeLong();
-distanceSensor2.setTimingBudgetInMs(20);
-distanceSensor2.setIntermeasurementPeriod(20);
-````
-This gave a ToF **sampling rate of ~50 Hz**. The PID control loop, however, runs at **~800 Hz** (about 16x faster than the sensor). To bridge this gap, I implemented **distance extrapolation:** between ToF readings, the controller estimates the current distance using the last measured velocity (slope):
-````
-float elapsed = (millis() - tof_curr_time) / 1000.0;
-float extrap_dist = tof_curr_dist + tof_slope * elapsed;
-````
-The extrapolated distance is fed into `computePID()` every loop interation, while `tof_slope` is updated only when a new sensor reading arrives. This decouples the control rate from the sensor rate and allows the PID loop to respond faster than the sensor can provide data. 
+Since the car needs to start beyond 1.3m to have room to reach full speed, short mode's range limit was also a problem. I switched to long mode, which supports up to 4m. Together with the 20ms timing budget, the sensors trade some accuracy for speed and range, which is acceptable for this task.  
 
 ## Task 2: PID Results
 
@@ -132,6 +118,87 @@ return (pid_Kp * error) + I_term;
 
 After settling on `Ki = 0.002`, the car reliably reaches and holds 304mm. The I term is visible in the plot as a small but nonzero contribution near the setpoint that corrects the residual error left by the P term alone. 
 
+### Task 3: PID Loop Rate
+
+The VL53L1X ToF sensor was configured as follows:
+````
+distanceSensor2.setDistanceModeLong();
+distanceSensor2.setTimingBudgetInMs(20);
+distanceSensor2.setIntermeasurementPeriod(20);
+````
+The PID control loop, however, runs much faster than the sensor, as it is decoupled from the ToF read and runs every iteration of `loop()`. To measure the difference I added counters for both the PID iterations adn the ToF readings and printed them in the Serial Monitor: 
+
+````
+if (flag_pid_pos) {
+    static int pid_count = 0;
+    static int tof_count_local = 0;
+
+    if (distanceSensor2.checkForDataReady()) {
+        tof_count_local++;
+        float new_dist = distanceSensor2.getDistance();
+        distanceSensor2.clearInterrupt();
+        // update slope...
+    }
+
+    if (tof_curr_dist > 0) {
+        pid_count++;
+        if (pid_count % 50 == 0) {
+            Serial.print("PID count: "); Serial.print(pid_count);
+            Serial.print("  TOF count: "); Serial.println(tof_count_local);
+        }
+        // run PID...
+    }
+}
+````
+
+This gave a ToF **sampling rate of ~50 Hz**. The PID control loop, however, runs at **~800 Hz** (about 16x faster than the sensor). To bridge this gap, I implemented **distance extrapolation:** between ToF readings, the controller estimates the current distance using the last measured velocity (slope):
+````
+float elapsed = (millis() - tof_curr_time) / 1000.0;
+float extrap_dist = tof_curr_dist + tof_slope * elapsed;
+````
+where `tof_slope` is the velocity computed from the last two ToF readings: 
+
+```
+float dt_tof = (tof_curr_time - tof_last_time) / 1000.0;
+if (dt_tof > 0) tof_slope = (tof_curr_dist - tof_last_dist) / dt_tof;
+```
+The extrapolated distance is fed into `computePID()` every loop interation, while `tof_slope` is updated only when a new sensor reading arrives. This decouples the control rate from the sensor rate and allows the PID loop to respond faster than the sensor can provide data.
+
+### Task 4: Distance Extrapolation 
+
+To extrapolate distance between ToF readings, I stored the last two measurements as globals and computed the slope between them. The extrapolated distance is then the last known position plus the slope multiplied by the time elapsed since the most recent reading: 
+
+```
+// Globals
+float tof_last_dist = 0.0, tof_curr_dist = 0.0;
+unsigned long tof_last_time = 0, tof_curr_time = 0;
+float tof_slope = 0.0;
+
+// Update slope when new ToF data arrives
+if (distanceSensor2.checkForDataReady()) {
+    tof_last_dist = tof_curr_dist;
+    tof_last_time = tof_curr_time;
+    tof_curr_dist = distanceSensor2.getDistance();
+    distanceSensor2.clearInterrupt();
+    tof_curr_time = millis();
+
+    if (tof_last_time > 0) {
+        float dt_tof = (tof_curr_time - tof_last_time) / 1000.0;
+        if (dt_tof > 0) tof_slope = (tof_curr_dist - tof_last_dist) / dt_tof;
+    }
+}
+
+// Extrapolate in PID loop
+float elapsed = (millis() - tof_curr_time) / 1000.0;
+float extrap_dist = tof_curr_dist + tof_slope * elapsed;
+```
+
+The effect of extrapolation is a relative smoothing of the step-like data generated by intermittent ToF readings. Instead of holding the last two known distance constant between readings, the controller tracks the estimated current position. The extrapolation can get its prediction wrong during sudden direction changes, causing small spikes int he extrapolated signal, but these are short-lived and don't significantly affect controller performance. 
+
+![Extrapolation](assets/lab5/extrapolation.png)
+ 
+## Task 5: PID Control
+
 ### PID Control 
 Adding the derivative term reduced overshoot. The D term senses how quickly the error is changing. When the car is closing in on the wall, the derivative goes negative and subtracts from the motor output, effectively breaking before the car overshoots. Since the derivative of a noisy sensor signal is very spiky, I applied a low-pass filter with `alpha = 0.015`
 
@@ -149,14 +216,24 @@ return (pid_Kp * error) + (pid_Ki * pid_integral) + (pid_Kd * pid_d_filtered);
 
 The Full 100% speed trial from ~1260mm shows the car approaching smoothly, overshooting to ~200mm, then backing up and settling at 304mm within ~3 seconds. The D term (green) goes negative during the fast approach, as expected. The I term (orange) remains small throughout, contributing only near the setpoint. 
 
+![PID control](assets/lab5/PIDcontrol.png)
 
-## Task 3: PID Loop Rate: How fast is the PID control loop running? Compare this rate to ToF sensor rate.
+#### Derivative Kick
+Derivative kick occurs when a sudden setpoint change causes a spike in the derivative term. In this implementation, kick is not a significant issue for two reasons:
+1. The setpoint is fixed at 304mm throughout the run (no jumps)
+2. The derivative is passed through a low-pass filter with alpha = 0.015, which heavily attenuates any high-frequency spikes before they affect motor output.
 
-## Task 4: Distance Extrapolation 
+The plot below shows the raw (unfiltered) D term vs the filtered D term. The raw D term is noisy and spiky near the setpoint, but the filtered version remains smooth throughout. 
 
-## Task 5: PID Control
+![Derivative Kick](assets/lab5/derivativekick.png)
+
+This shows that the LPF alone is sufficient to handle derivative kick without needing anything else. 
 
 ## Task 6: Speed
+At full speed (speed scale = 1.0), the car closes a ~1.26m distance in approximately 2.2 seconds. The maximum speed during the approach is **2.06 m/s**, determined by fitting a line to the steepest portion of the distance vs. time curve. 
+
+![Speed](assets/lab5/speed.png)
+
 
 ## (5000) Wind-Up Protection
 
