@@ -36,6 +36,8 @@ This ensures the car stops if the Bluetooth connection drops mid-run.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y9VUB1Mzq_o?si=npjEyLpQTC8yYoxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+**Note on debugging BLE Disconnected:** before starting this lab and since lab 4 I kept having BLE disconnect issues whenver the motors started. I determined it was a hardware issue as Hayden Webb tested his working code on my car and kept running into this porblem. I replaced the microcontroller and the BLE issue was resolved. 
+
 # Lab Tasks
 
 ## P/I/D Discussion 
@@ -243,8 +245,24 @@ At full speed (speed scale = 1.0), the car closes a ~1.26m distance in approxima
 
 ![Speed](assets/lab5/speed.png)
 
-
 ## (5000) Wind-Up Protection
+
+Integrator wind-up occus when the error accumulates over a long approach, causing the integral term to grow far beyond what is needed to correct steady-state error. Once the car reaches the setpoint, the large accumulated integral takes a long time to unwind, causing overshoot and oscillation. 
+
+To prevent this, I added a constrain on `pid_integral` in `computePID()`:
+
+```
+#define INTEGRAL_THRESHOLD 300
+
+pid_integral += error * dt;
+pid_integral = constrain(pid_integral, -INTEGRAL_THRESHOLD, INTEGRAL_THRESHOLD);
+```
+
+This caps the integral contribution so it cannot exceed ±300 in either direction, preventing runaway accumulation during the long path approach from 1.2m. 
+
+The plots below show the PID terms with and without wind-up protection. Without protection (high Ki), the I term grows large relative to the P term and takes time to unwind near the setpoint. With protection enabled and Ki = 0.002, the I term contributes only a small correction, staying well below the P term throughout. 
+
+
 
 
 # Discussion
