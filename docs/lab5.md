@@ -113,7 +113,22 @@ float computePID(float current_dist) {
     return (pid_Kp * error);
 }
 ````
+![P control](assets/lab5/Pcontrol.png)
 
+The car approaches and settles near 304mm with one overshoot, but a small steady-state error persists. 
+
+### PI Control 
+To eliminate the steady-state error, I added the integral term. The integral accumulates error over time and provides a growing corrective push even when the proportional output has become very small. I kept track of `dt` between PID iterations to properly integrate
+
+````
+float error = current_dist - pid_pos_target;
+pid_integral += error * dt;
+
+float I_term = pid_Ki * pid_integral;
+
+return (pid_Kp * error) + I_term;
+````
+![PI control](assets/lab5/PIcontrol.png)
 
 ## Task 3: PID Loop Rate: How fast is the PID control loop running? Compare this rate to ToF sensor rate.
 
