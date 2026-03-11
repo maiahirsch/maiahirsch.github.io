@@ -20,6 +20,7 @@ ble.send_command(CMD.START_PID_POS_WITH_DATA, "304")  # 304mm = 1ft
 ble.send_command(CMD.STOP_PID_POS_WITH_DATA, "")
 ble.send_command(CMD.SEND_PID_DATA,"")
 ````
+
 PID runs non-blocking inside the main `while (central.connected())` loop, checking `checkForDataReady()` on each iteration rather than blocking with a `while(!ready) wait`. Data is stored in timestamped arrays (`pid_time_data`, `pid_tod_data`, `pid_motor_data`) and sent over BLE after the maneuver completes. 
 
 For safety, I implemented a hard stop that triggered when BLE disconnects:
@@ -32,6 +33,7 @@ flag_pid_pos = false;
     distanceSensor1.stopRanging();
     distanceSensor2.stopRanging();
 ````
+
 This ensures the car stops if the Bluetooth connection drops mid-run. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Y9VUB1Mzq_o?si=npjEyLpQTC8yYoxI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -66,6 +68,7 @@ if (flag_pid_pos) {
           float new_dist = distanceSensor2.getDistance();
           distanceSensor2.clearInterrupt();
 ````
+
 Testing revealed that the default timing bidget gave ~100ms intervals (10 Hz), which was far too slow for a responsive pID controller. After setting `setTimingBudgetInMs(20)`, the intervals dropped to ~20 ms, a 50 Hz sampling rate and a 5x improvement. 
 
 Since the car needs to start beyond 1.3m to have room to reach full speed, short mode's range limit was also a problem. I switched to long mode, which supports up to 4m. Together with the 20ms timing budget, the sensors trade some accuracy for speed and range, which is acceptable for this task.  
@@ -96,6 +99,7 @@ float computePID(float current_dist) {
     return (pid_Kp * error);
 }
 ````
+
 ![P control](assets/lab5/Pcontrol.png)
 
 The car approaches and settles near 304mm with one overshoot, but a small steady-state error persists. 
@@ -115,6 +119,7 @@ float I_term = pid_Ki * pid_integral;
 
 return (pid_Kp * error) + I_term;
 ````
+
 ![PI control](assets/lab5/PIcontrol.png)
 
 After settling on `Ki = 0.002`, the car reliably reaches and holds 304mm. The I term is visible in the plot as a small but nonzero contribution near the setpoint that corrects the residual error left by the P term alone. 
@@ -124,11 +129,13 @@ After settling on `Ki = 0.002`, the car reliably reaches and holds 304mm. The I 
 ### Task 3: PID Loop Rate
 
 The VL53L1X ToF sensor was configured as follows:
+
 ````
 distanceSensor2.setDistanceModeLong();
 distanceSensor2.setTimingBudgetInMs(20);
 distanceSensor2.setIntermeasurementPeriod(20);
 ````
+
 The PID control loop, however, runs much faster than the sensor, as it is decoupled from the ToF read and runs every iteration of `loop()`. To measure the difference I added counters for both the PID iterations adn the ToF readings and printed them in the Serial Monitor: 
 
 ````
@@ -155,16 +162,19 @@ if (flag_pid_pos) {
 ````
 
 This gave a ToF **sampling rate of ~50 Hz**. The PID control loop, however, runs at **~800 Hz** (about 16x faster than the sensor). To bridge this gap, I implemented **distance extrapolation:** between ToF readings, the controller estimates the current distance using the last measured velocity (slope):
+
 ````
 float elapsed = (millis() - tof_curr_time) / 1000.0;
 float extrap_dist = tof_curr_dist + tof_slope * elapsed;
 ````
+
 where `tof_slope` is the velocity computed from the last two ToF readings: 
 
 ```
 float dt_tof = (tof_curr_time - tof_last_time) / 1000.0;
 if (dt_tof > 0) tof_slope = (tof_curr_dist - tof_last_dist) / dt_tof;
 ```
+
 The extrapolated distance is fed into `computePID()` every loop interation, while `tof_slope` is updated only when a new sensor reading arrives. This decouples the control rate from the sensor rate and allows the PID loop to respond faster than the sensor can provide data.
 
 ### Task 4: Distance Extrapolation 
@@ -249,6 +259,12 @@ At full speed (speed scale = 1.0), the car closes a ~1.26m distance in approxima
 
 Integrator wind-up occus when the error accumulates over a long approach, causing the integral term to grow far beyond what is needed to correct steady-state error. Once the car reaches the setpoint, the large accumulated integral takes a long time to unwind, causing overshoot and oscillation. 
 
+The plot below shows a simulation of what happens without wind-up protection, using Ki = 0.08 and no constrain on the integral. The I term (orange) grows to ~125 during the approach from ~926mm. Even after the car reaches the target and the P term drops to near zero, the I term remains large and would continue driving the motors aggressively. 
+
+![windup](assets/lab5/windup.png)
+
+In practice, every time I attemped to run the controller without the integral constrain caused the Artemis to reboot mid-trial. My theory is that the unbounded integral drove motor commands large enough to crash the board before data could be transmitted. This is itself a strong argument for wind-up protection. 
+
 To prevent this, I added a constrain on `pid_integral` in `computePID()`:
 
 ```
@@ -258,9 +274,10 @@ pid_integral += error * dt;
 pid_integral = constrain(pid_integral, -INTEGRAL_THRESHOLD, INTEGRAL_THRESHOLD);
 ```
 
-This caps the integral contribution so it cannot exceed ±300 in either direction, preventing runaway accumulation during the long path approach from 1.2m. 
+This caps the integral contribution so it cannot exceed ±300 in either direction. With protection and Ki = 0.002, the I term contributes only a small steady-state correction near the setpoint, and the controller runs stable.  
 
-The plots below show the PID terms with and without wind-up protection. Without protection (high Ki), the I term grows large relative to the P term and takes time to unwind near the setpoint. With protection enabled and Ki = 0.002, the I term contributes only a small correction, staying well below the P term throughout. 
+![PID control](assets/lab5/PIDcontrol.png)
+
 
 # Discussion 
 
