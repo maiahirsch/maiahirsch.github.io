@@ -262,6 +262,12 @@ This caps the integral contribution so it cannot exceed ±300 in either directio
 
 The plots below show the PID terms with and without wind-up protection. Without protection (high Ki), the I term grows large relative to the P term and takes time to unwind near the setpoint. With protection enabled and Ki = 0.002, the I term contributes only a small correction, staying well below the P term throughout. 
 
+# Discussion 
+
+In this lab I learned how to build a PID controller from scratch and tuning it for a real physical system. I had studied PID in coursework before, but this was useful to close the gap between theory and pratice. 
+
+Once of the mpst 
+
 
 
 
