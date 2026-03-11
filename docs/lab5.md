@@ -130,6 +130,26 @@ return (pid_Kp * error) + I_term;
 ````
 ![PI control](assets/lab5/PIcontrol.png)
 
+After settling on `Ki = 0.002`, the car reliably reaches and holds 304mm. The I term is visible in the plot as a small but nonzero contribution near the setpoint that corrects the residual error left by the P term alone. 
+
+### PID Control 
+Adding the derivative term reduced overshoot. The D term senses how quickly the error is changing. When the car is closing in on the wall, the derivative goes negative and subtracts from the motor output, effectively breaking before the car overshoots. Since the derivative of a noisy sensor signal is very spiky, I applied a low-pass filter with `alpha = 0.015`
+
+````
+float error = current_dist - pid_pos_target;
+pid_integral += error * dt;
+pid_integral = constrain(pid_integral, -INTEGRAL_THRESHOLD, INTEGRAL_THRESHOLD);
+
+float derivative = (error - pid_prev_error) / dt;
+pid_d_filtered = D_LPF_ALPHA * derivative + (1 - D_LPF_ALPHA) * pid_d_filtered;
+pid_prev_error = error;
+
+return (pid_Kp * error) + (pid_Ki * pid_integral) + (pid_Kd * pid_d_filtered);
+````
+
+The Full 100% speed trial from ~1260mm shows the car approaching smoothly, overshooting to ~200mm, then backing up and settling at 304mm within ~3 seconds. The D term (green) goes negative during the fast approach, as expected. The I term (orange) remains small throughout, contributing only near the setpoint. 
+
+
 ## Task 3: PID Loop Rate: How fast is the PID control loop running? Compare this rate to ToF sensor rate.
 
 ## Task 4: Distance Extrapolation 
