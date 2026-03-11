@@ -2,6 +2,11 @@
 
 # Lab Tasks
 
+As done in lab 5, I will be using a PID controller. A PID controller combines proportional, integral, and derivative control terms to form the motor input u(t):
+![equation](assets/lab5/equation.png)
+
+but in this case, e(t) is the error between the angular difference between the current orientation and the desired target orientation. 
+
 ## Task 1: PID Input Signal
 
 You should integrate your gyroscope to get an estimate for the orientation of the robot.
