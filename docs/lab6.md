@@ -42,7 +42,9 @@ Derivative kick is a concern when the setpoint is changed while the controller i
 
 **Is a lowpass filter needed before your derivative term?**
 
-Since the DMP already performs onboard sensor fusion, the yaw signal it outputs is significantly smoother than a raw gyro integration or ToF reading. As a result, a lowpass filter on the derivative term is less critical than in Lab 5.
+Since the DMP already performs onboard sensor fusion, the yaw signal it outputs is significantly smoother than a raw gyro integration or ToF reading. As a result, a lowpass filter on the derivative term is less critical than in Lab 5. However, I still included it in `computeOrientPID()`: 
+
+``` 
 
 ## Task 3: Programming Implementation
 
