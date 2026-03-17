@@ -12,6 +12,7 @@ The new commands added for _Lab 6_ are:
 # Lab Tasks
 
 As done in lab 5, I will be using a PID controller. A PID controller combines proportional, integral, and derivative control terms to form the motor input u(t):
+
 ![equation](assets/lab5/equation.png)
 
 but in this case, e(t) is the error between the angular difference between the current orientation and the desired target orientation. 
@@ -116,7 +117,7 @@ Tuning began with P-only control:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/tCKzASMDh-M?si=6L94SUdhMv88guXz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-
+![setpoint](assets/lab6/setpoint.png)
 
 ## 5000-level Task: Integrator Windup
 
@@ -131,3 +132,9 @@ cpporient_integral = constrain(orient_integral, -ORIENT_INTEGRAL_MAX, ORIENT_INT
 ```
 
 This ensures the integrator's contribution to the motor output never exceeds a bounded value regardless of how long the robot has been away from its setpoint, making the controller's behavior more consistent across different surfaces and starting conditions.
+
+The video below shows the controller running on carpet:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_SRFOeABaU4?si=j-0YlmY8h2k61aiN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+#
