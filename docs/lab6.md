@@ -1,4 +1,13 @@
-# Prelab
+# Prelab: Bluetooth Communication
+
+The Bluetooth communication setup from _Lab 5_ was kept, with new commands added for orientation control. The Arduino continuously polls for incoming BLE commands inside the `while(central.connected())` loop via `read_data()`, which calls `handle_command()` when a new command is received. This allows the car to receive and process commands, including **gain updates** and **setpoint changes**, while the PID controller is active. 
+
+The new commands added for _Lab 6_ are:
+- `SET_ORIENT_GAINS:` sets Kp, Ki, Kd
+- `SET_SETPOINT:` updates target yaw on the fly
+- `START_PID_ORIENT:` begins control and recording
+- `STOP_PID_ORIENT:` stops motors and recording
+- `SEND_ORIENT_DATA:` streams logged data to Python
 
 # Lab Tasks
 
@@ -47,6 +56,7 @@ Since the DMP already performs onboard sensor fusion, the yaw signal it outputs 
 ```c
   orient_d_filtered = D_LPF_ALPHA * derivative + (1.0 - D_LPF_ALPHA) * orient_d_filtered;
 ```
+
 Where `D_LPF_ALPHA` = 0.015. 
 
 ## Task 3: Programming Implementation
@@ -71,5 +81,9 @@ Implement wind-up protection for your integrator. Argue for why this is necessar
 Integrator wind-up occurs when the integral term accumulates unboundedly during periods where the controller output is saturated — for example, when the robot is far from its setpoint and the motors are already running at maximum speed. During this time, the error continues to be integrated even though the motor output cannot increase further. When the robot finally approaches the setpoint, the wound-up integrator produces a large overshoot because it takes time to "unwind" the accumulated integral before the output drops back into a reasonable range.
 This is particularly problematic for orientation control on different floor surfaces. On a high-friction surface like carpet, the robot may be unable to move at all for several seconds while the error is large, causing the integrator to wind up significantly. When the robot is then placed on a low-friction surface, the same wound-up integrator would drive the motors far past the setpoint before the integral decays.
 To prevent this, the integral term is clamped to ±200 on every timestep:
+
+```c
 cpporient_integral = constrain(orient_integral, -ORIENT_INTEGRAL_MAX, ORIENT_INTEGRAL_MAX);
+```
+
 This ensures the integrator's contribution to the motor output never exceeds a bounded value regardless of how long the robot has been away from its setpoint, making the controller's behavior more consistent across different surfaces and starting conditions.
