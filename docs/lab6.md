@@ -42,9 +42,12 @@ Derivative kick is a concern when the setpoint is changed while the controller i
 
 **Is a lowpass filter needed before your derivative term?**
 
-Since the DMP already performs onboard sensor fusion, the yaw signal it outputs is significantly smoother than a raw gyro integration or ToF reading. As a result, a lowpass filter on the derivative term is less critical than in Lab 5. However, I still included it in `computeOrientPID()`: 
+Since the DMP already performs onboard sensor fusion, the yaw signal it outputs is significantly smoother than a raw gyro integration or ToF reading. As a result, a lowpass filter on the derivative term is less critical than in Lab 5. However, I still included it in `computeOrientPID()` as it helps reduce any residual noise in the derivative signal and prevents occasional spikes that would cause sudden motor commands: 
 
-``` 
+```c
+  orient_d_filtered = D_LPF_ALPHA * derivative + (1.0 - D_LPF_ALPHA) * orient_d_filtered;
+```
+Where `D_LPF_ALPHA` = 0.015. 
 
 ## Task 3: Programming Implementation
 
@@ -61,6 +64,12 @@ This is also essential for being able to change the setpoint while the robot is 
 
 Include graphs of all appropriate measurements needed to debug your PID controller. Below is an example the set point, angle and motor offset plotted as a function of time. Observe the overshoot and settling time of the angle and the response of the motor values.
 
-## 5000-level Task
+## 5000-level Task: Integrator Windup
 
 Implement wind-up protection for your integrator. Argue for why this is necessary (you may for example demonstrate how your controller works reasonably independent of floor surface).
+
+Integrator wind-up occurs when the integral term accumulates unboundedly during periods where the controller output is saturated — for example, when the robot is far from its setpoint and the motors are already running at maximum speed. During this time, the error continues to be integrated even though the motor output cannot increase further. When the robot finally approaches the setpoint, the wound-up integrator produces a large overshoot because it takes time to "unwind" the accumulated integral before the output drops back into a reasonable range.
+This is particularly problematic for orientation control on different floor surfaces. On a high-friction surface like carpet, the robot may be unable to move at all for several seconds while the error is large, causing the integrator to wind up significantly. When the robot is then placed on a low-friction surface, the same wound-up integrator would drive the motors far past the setpoint before the integral decays.
+To prevent this, the integral term is clamped to ±200 on every timestep:
+cpporient_integral = constrain(orient_integral, -ORIENT_INTEGRAL_MAX, ORIENT_INTEGRAL_MAX);
+This ensures the integrator's contribution to the motor output never exceeds a bounded value regardless of how long the robot has been away from its setpoint, making the controller's behavior more consistent across different surfaces and starting conditions.
