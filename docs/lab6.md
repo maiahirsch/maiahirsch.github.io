@@ -139,4 +139,5 @@ The video below shows the controller running on carpet:
 
 # References: 
 
+I used Stephan Wagner's and Evan Leong's writeup as a guide for task implementation and figure/videos needed.
 
