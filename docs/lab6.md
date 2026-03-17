@@ -90,8 +90,31 @@ Include graphs of all appropriate measurements needed to debug your PID controll
 
 A PID controller was implemented with final gains **Kp = 1.5, Ki = 0.02, Kd = 1.5.** Starting with P-only control, the robot convered toward the setoint bur oscillated around it. Adding the D term (Kd=1.5) damped the oscillations effectively. A small Ki=0.02 was added to address residual steady-state error, though the motor deadband (5°) already limits steady-state error in practice. A minimum PWM clamp of 140 was added in motorsOrient() to ensure the motors always overcome static friction when commanded to move.
 
+### PID Tuning
 
+Tuning began with P-only control:
 
+- **Kp = 1.5, Ki = 0, Kd = 0:** Converges but still oscillates without derivative term. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EZ93HxlC1VI?si=vkrn-OFtNNs9C5b2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+- **Kp=1.5, Ki=0, Kd=0.5:** Oscillations are significantly reduced.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/u7PpzB268Hs?si=cnet5i-GnR2nPf0I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+- **Kp=1.5, Ki=0, Kd=1.0:** More stable.
+  
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EsLf-Rsc5nA?si=0-pZKaDXVkfDwLa4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+- **Kp=1.5, Ki=0.02, Kd=1.5 (final):** Settles at the setpoint with minimal overshoot. A small Ki=0.02 was added to correct residual steady-state error. The final gains are Kp=1.5, Ki=0.02, Kd=1.5.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZTKOzr5Pr-I?si=O6HuzIWtvOaRwqt6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### Setpoint Test 
+
+**Setpoint change from 0° to 90°:** The robot holds 0°, then snaps to 90° on a live `SET_SETPOINT` command and settles cleanly. The plot below shows the full data from this run:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tCKzASMDh-M?si=6L94SUdhMv88guXz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 ## 5000-level Task: Integrator Windup
