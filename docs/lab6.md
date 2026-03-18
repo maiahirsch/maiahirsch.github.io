@@ -133,8 +133,6 @@ Tuning began with P-only control:
 
 ## 5000-level Task: Integrator Windup
 
-Implement wind-up protection for your integrator. Argue for why this is necessary (you may for example demonstrate how your controller works reasonably independent of floor surface).
-
 Integrator wind-up occurs when the integral term accumulates unboundedly during periods where the controller output is saturated — for example, when the robot is far from its setpoint and the motors are already running at maximum speed. During this time, the error continues to be integrated even though the motor output cannot increase further. When the robot finally approaches the setpoint, the wound-up integrator produces a large overshoot because it takes time to "unwind" the accumulated integral before the output drops back into a reasonable range.
 This is particularly problematic for orientation control on different floor surfaces. On a high-friction surface like carpet, the robot may be unable to move at all for several seconds while the error is large, causing the integrator to wind up significantly. When the robot is then placed on a low-friction surface, the same wound-up integrator would drive the motors far past the setpoint before the integral decays.
 To prevent this, the integral term is clamped to ±200 on every timestep:
