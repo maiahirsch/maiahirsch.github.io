@@ -7,8 +7,23 @@
 to build the state space model, I have to estimate the drag and momentum acting on my car. Following the derivation from lab, the dynamics of the system can be expressed as: 
 
 $$
-\ddot{x} = - \frac{d}{m} \dot{x} + \frac{u}{m}
+\ddot{x} = -\frac{d}{m} \dot{x} + \frac{u}{m}
 $$
+
+If we consider a step response from rest to a steady state velocity, acceleration is zero once this velocity is achieved. We can then find d and m: 
+
+$$
+d = \frac{u_{ss}}{\dot{x}_{ss}}
+$$
+
+$$
+m = \frac{-d \cdot t_{0.9}}{ln(1-d \cdot \dot{x}_{ss})} = \frac{-d \cdot t_{0.9}}{ln(1-0.9)}
+$$
+
+Where d and m are lumped parameters that capture the dynamics of the system. Showing how the car responds to different inouts and moves throughout the world. 
+
+$u_{ss}$ is the constant control input passed to the robot. We will choose this input to be 1, as this corresponds to the maximum pwm signal possible (255). This is because we want the dybnamics to be as accurate as possible in order to obtain ideal behavior of an accurate controller. 
+
 
 **To build the state space model for your system, you will need to estimate the drag and momentum terms for your A and B matrices. Here, we will do this using a step response. Drive the car towards a wall at a constant imput motor speed while logging motor input values and ToF sensor output.**
 
