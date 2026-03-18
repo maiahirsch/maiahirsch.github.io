@@ -20,6 +20,7 @@ but in this case, e(t) is the error between the angular difference between the c
 ## Task 1: PID Input Signal
 
 **Gyroscope Integration**
+
 To begin this week's lab, I needed to integrate readings from the IMU's gyroscope in order to estimate the orientation of my robot around its z-axis (yaw).
 
 Integrating the gyroscope to estimate yaw works by accumulating `yaw += gyrZ * dt` each timestep. The main problem with this approach is gyroscope bias — even when stationary, the sensor outputs a small nonzero value that gets integrated continuously, causing the yaw estimate to drift over time.
