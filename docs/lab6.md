@@ -49,7 +49,7 @@ Yes, it actually makes sense in this case. The PID input is yaw angle, which is 
 
 **Does changing your setpoint while the robot is running cause problems with your implementation of the PID controller?**
 
-Derivative kick is a concern when the setpoint is changed while the controller is running. In a naive implementation where the derivative is computed as the change in error, a sudden setpoint change causes an instantaneous jump in error, which when divided by a small dt produces a large derivative spike that kicks the motors hard. To avoid this, the derivative term should be computed on the yaw measurement directly rather than on the error, `d(yaw)/dt instead` of `d(error)/dt`. Since the yaw signal only changes when the robot actually moves, updating the setpoint mid-run only affects the P and I terms, and the D term remains smooth.
+Derivative kick is a concern when the setpoint is changed while the controller is running. If the derivative is computed as the change in error, a sudden setpoint change causes an instantaneous jump in error, which when divided by a small dt produces a large derivative spike that kicks the motors hard. To avoid this, the derivative term should be computed on the yaw measurement directly rather than on the error, `d(yaw)/dt instead` of `d(error)/dt`. Since the yaw signal only changes when the robot actually moves, updating the setpoint mid-run only affects the P and I terms, and the D term remains smooth.
 
 **Is a lowpass filter needed before your derivative term?**
 
