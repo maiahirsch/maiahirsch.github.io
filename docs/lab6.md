@@ -76,8 +76,8 @@ My current `motorsOrient()` looks like:
 ```c
 void motorsOrient(int offset) {
   int spd = constrain(abs(offset), 0, 200);
-  if (spd < 10) { motorsStop(); return; }  // true zero deadband
-  spd = constrain(spd, 140, 200);           // clamp to [70, 200] when moving
+  if (spd < 10) { motorsStop(); return; }  
+  spd = constrain(spd, 140, 200);           
   if (offset > 0) {
     analogWrite(16, spd); analogWrite(15, 0);
     analogWrite(3,  0);   analogWrite(14, spd);
