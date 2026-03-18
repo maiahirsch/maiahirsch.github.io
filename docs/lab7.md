@@ -1,13 +1,33 @@
+# Lab 2
 
-1. Estimate drag and momentum
-To build the state space model for your system, you will need to estimate the drag and momentum terms for your A and B matrices. Here, we will do this using a step response. Drive the car towards a wall at a constant imput motor speed while logging motor input values and ToF sensor output.
+## Lab Tasks 
+
+### 1. Estimate drag and momentum
+
+to build the state space model, I have to estimate the drag and momentum acting on my car. Following the derivation from lab, the dynamics of the system can be expressed as: 
+
+$$
+\ddot{x} = - \frac{d}{m} \dot{x} + \frac{u}{m}
+$$
+
+**To build the state space model for your system, you will need to estimate the drag and momentum terms for your A and B matrices. Here, we will do this using a step response. Drive the car towards a wall at a constant imput motor speed while logging motor input values and ToF sensor output.**
+
+**- Drag terms for A matrix:**
+**- Drag terms for B matrix: **
 
 Choose your step responce, u(t), to be of similar size to the PWM value you used in Lab 5 (to keep the dynamics similar). Pick something between 50%-100% of the maximum u.
+
 Make sure your step time is long enough to reach steady state (you likely have to use active braking of the car to avoid crashing into the wall). Make sure to use a piece of foam to avoid hitting the wall and damaging your car.
+
 Show graphs for the TOF sensor output, the (computed) speed, and the motor input. Please ensure that the x-axis is in seconds.
+
 Measure the steady state speed, 90% rise time, and the speed at 90% risetime. Note, this doesn’t have to be 90%, you could also use somewhere between 60-90, but the speed and time must correspond to get an accurate estimate for m.
+
 When sending this data back to your laptop, make sure to save the data in a file so that you can use it even after your Jupyter kernel restarts. Consider writing the data to a CSV file, pickle file, or shelve file.
-2. Initialize KF (Python)
+
+
+**2. Initialize KF (Python)**
+
 Compute the A and B matrix given the terms you found above, and discretize your matrices. Be sure to note the sampling time in your write-up.
 
 Ad = np.eye(n) + Delta_T * A  //n is the dimension of your state space 
