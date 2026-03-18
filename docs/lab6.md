@@ -31,6 +31,8 @@ To address this, the ICM-20948's onboard Digital Motion Processor (DMP) was used
 
 The ICM-20948 gyroscope does exhibit bias — a small nonzero output even when the robot is stationary. This bias directly sets the rate of yaw drift: at a typical bias of ~0.3 °/s, the estimate drifts roughly 3° over 10 seconds, which is significant for a tight orientation controller. One way to correct for this manually is to sample the gyro at startup while the robot is still, average the readings, and subtract that constant offset from every future measurement. However, the cleaner solution is to use the IMU's onboard DMP, which performs continuous bias calibration, keeping drift minimal without any manual correction.
 
+Setting up the DMP required a few extra steps to get it working:
+
 ![DMP Setup](assets/lab6/dmpsetup.png)
 
 ![Fixed DMP Setup](assets/lab6/fixeddmpsetup.png)
