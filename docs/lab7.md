@@ -24,25 +24,9 @@ Where d and m are lumped parameters that capture the dynamics of the system. Sho
 
 $u_{ss}$ is the constant control input passed to the robot. We will choose this input to be 1, as this corresponds to the maximum pwm signal possible (255). This is because we want the dybnamics to be as accurate as possible in order to obtain ideal behavior of an accurate controller. 
 
+![TOF sensor output](assets/lab7/TOFsensoroutput.png)
 
-**To build the state space model for your system, you will need to estimate the drag and momentum terms for your A and B matrices. Here, we will do this using a step response. Drive the car towards a wall at a constant imput motor speed while logging motor input values and ToF sensor output.**
-
-**- Drag terms for A matrix:**
-**- Drag terms for B matrix: **
-
-Choose your step responce, u(t), to be of similar size to the PWM value you used in Lab 5 (to keep the dynamics similar). Pick something between 50%-100% of the maximum u.
-
-Make sure your step time is long enough to reach steady state (you likely have to use active braking of the car to avoid crashing into the wall). Make sure to use a piece of foam to avoid hitting the wall and damaging your car.
-
-Show graphs for the TOF sensor output, the (computed) speed, and the motor input. Please ensure that the x-axis is in seconds.
-
-Measure the steady state speed, 90% rise time, and the speed at 90% risetime. Note, this doesn’t have to be 90%, you could also use somewhere between 60-90, but the speed and time must correspond to get an accurate estimate for m.
-
-When sending this data back to your laptop, make sure to save the data in a file so that you can use it even after your Jupyter kernel restarts. Consider writing the data to a CSV file, pickle file, or shelve file.
-
-![TOF sensor output](assets/lab7/TOF sensor output.png)
-
-![computed speed](assets/lab7/computed speed.png)
+![computed speed](assets/lab7/computedspeed.png)
 
 I chose a step input of PWm = 150, matching my Lab 5 operating condition. From the exponentil curve fit, I measured: 
 
@@ -51,19 +35,11 @@ I chose a step input of PWm = 150, matching my Lab 5 operating condition. From t
 - Velocity at 90% rise time: v_90 = -1.8 mm/ms
 
 This gives: 
-![d and m](assets/lab7/d and m.png)
+
+![d and m](assets/lab7/dandm.png)
 
 
 **2. Initialize KF (Python)**
-
-Compute the A and B matrix given the terms you found above, and discretize your matrices. Be sure to note the sampling time in your write-up.
-
-Ad = np.eye(n) + Delta_T * A  //n is the dimension of your state space 
-Bd = Delta_t * B
-Identify your C matrix. Recall that C is a m x n matrix, where n are the dimensions in your state space, and m are the number of states you actually measure.
-This could look like C=np.array([[-1,0]]), because you measure the negative distance from the wall (state 0).
-Initialize your state vector, x, e.g. like this: x = np.array([[-TOF[0]],[0]])
-
 
 The continuous-time state space matrices are: 
 
@@ -104,13 +80,6 @@ $$
 \Sigma_z = \begin{bmatrix} \sigma_3^2 \end{bmatrix} = \begin{bmatrix} 400 \end{bmatrix}
 $$
 
-For the Kalman Filter to work well, you will need to specify your process noise and sensor noise covariance matrices.
-Try to reason about ballpark numbers for the variance of each state variable and sensor input.
-Recall that their relative values determine how much you trust your model versus your sensor measurements. If the values are set too small, the Kalman Filter will not work, if the values are too big, it will barely respond.
-Recall that the covariance matrices take the approximate following form, depending on the dimension of your system state space and the sensor inputs.
-sig_u=np.array([[sigma_1**2,0],[0,sigma_2**2]]) //We assume uncorrelated noise, and therefore a diagonal matrix works.
-sig_z=np.array([[sigma_3**2]])
-
 
 3. Implement and test your Kalman Filter in Jupyter (Python)
 To sanity check your parameters, implement your Kalman Filter in Jupyter first. You can do this using the function in the code below (for ease, variable names follow the convention from the lecture slides).
@@ -136,7 +105,6 @@ def kf(mu,sigma,u,y):
     return mu,sigma
 
 I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255. 
-Tuning the covariance matrices shows a clear trafeoff. When sigma_z is small (high sensor trust), the KF output closely trakced the raw ToF with minimal smoothing. When sigma_z is large (high model trust), the KF ignores sensor updates and relies entirely on the dynamics model, causing it to diverge from the true distance. 
 
 In Python, I implemented: 
 ```c
@@ -153,6 +121,11 @@ def kf(mu, sigma, u, y, update=True):
     return mu, sigma
 ```
 
+![KF](assets/lab7/KF.png)
+
+Tuning the covariance matrices shows a clear trafeoff. When sigma_z is small (high sensor trust), the KF output closely trakced the raw ToF with minimal smoothing. When sigma_z is large (high model trust), the KF ignores sensor updates and relies entirely on the dynamics model, causing it to diverge from the true distance. 
+
+![Covariance tuning](assets/lab7/covariancetuning.png)
 
 4. Implement the Kalman Filter on the Robot
 Integrate the Kalman Filter into your Lab 5 PID solution on the Artemis. Before trying to increase the speed of your controller, use your debugging script to verify that your Kalman Filter works as expected. Make sure to remove the linear extrapolation step before doing this. Be sure to demonstrate that your solution works by uploading videos and by plotting corresponding raw and estimated data in the same graph.
