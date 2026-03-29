@@ -20,15 +20,13 @@ $$
 m = \frac{-d \cdot t_{0.9}}{ln(1-d \cdot \dot{x}_{ss})} = \frac{-d \cdot t_{0.9}}{ln(1-0.9)}
 $$
 
-Where d and m are lumped parameters that capture the dynamics of the system. Showing how the car responds to different inouts and moves throughout the world. 
-
-$u_{ss}$ is the constant control input passed to the robot. We will choose this input to be 1, as this corresponds to the maximum pwm signal possible (255). This is because we want the dybnamics to be as accurate as possible in order to obtain ideal behavior of an accurate controller. 
+Where d and m are lumped parameters that capture the dynamics of the system. Showing how the car responds to different inputs and moves throughout the world. I drove the car at a constant PWM = 150 (u=150/255 = 0.588) toward the wall while logging ToF distance and motor input. I chose PWM 150 to match my Lab 5 operating condition. 
 
 ![TOF sensor output](assets/lab7/TOFsensoroutput.png)
 
 ![computed speed](assets/lab7/computspeed.png)
 
-I chose a step input of PWm = 150, matching my Lab 5 operating condition. From the exponentil curve fit, I measured: 
+Since the car did not reach steady state in a single run, I fit an exponential curve to the velocity data to extrapolate the steady-state velocity. From the fit I measured: 
 
 - Steady-state velocity: v_ss = -2.0 mm/ms
 - 90% rise time: t_90 = 2.0 s
@@ -43,12 +41,7 @@ This gives:
 
 The continuous-time state space matrices are: 
 
-The state vectior is x = [position,velocity]. The A matrix captures the system dynamics: position changes with velocity, and velocity decays due to drag. The B matrix maps the control input to acceleration. C = [1,0] since we directly measure position from the ToF sensor. 
-I discretized at **dt = 20ms**, matching my ToF sampling rate of 50Hz from lab 5. This gives:
-
-$$
-x_0 = \begin{bmatrix} -d_0 \\ 0 \end{bmatrix}
-$$
+The state vectior is **x = [position,velocity]**. The A matrix captures the system dynamics: position changes with velocity, and velocity decays due to drag. The B matrix maps the control input to acceleration. C = [1,0] since we directly measure position from the ToF sensor. 
 
 $$
 A = \begin{bmatrix} 0 & 1 \\ 0 & -d/m \end{bmatrix} = \begin{bmatrix} 0 & 1 \\ 0 & -1.151 \end{bmatrix}
@@ -62,6 +55,10 @@ $$
 C = \begin{bmatrix} 1 & 0 \end{bmatrix}
 $$
 
+
+I discretized at **dt = 20ms**, matching my ToF sampling rate of 50Hz from lab 5. This gives:
+
+
 ```c
 A = np.array([[0, 1],
               [0, -d/m]])
@@ -73,6 +70,17 @@ Ad = np.eye(n) + dt * A
 Bd = dt * B
 ```
 
+$$
+A_d = \begin{bmatrix} 1 & 0.02 \\ 0 & 0.977 \end{bmatrix}, \quad
+B_d = \begin{bmatrix} 0 \\ 0.078 \end{bmatrix}
+$$
+
+The initial state vector is initialized from the first ToF reading, with velocity zero since the car starts at rest: 
+
+$$
+x_0 = \begin{bmatrix} -d_0 \\ 0 \end{bmatrix}
+$$
+
 For the covariance matrices, I set **sigma_1 = sigma_2 = 20** for process noise. For sensor noise, I set **sigma_3 = 20**, consistent with the ~20-30mm ToF standard deviation measured in lab 3. The relative values of Sigma_u and Sigma_z determine the Kalman gain. If Sigma_z is large relative to Sigma_u, the filter trusts the model more; if small, it follows the sensor closely. 
 
 $$
@@ -83,7 +91,7 @@ $$
 
 ### 3. Kalman Filter in Jupyter (Python)
 
-I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255 = 0.588. 
+I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255 = 0.588. In the prediction step, it uses the dynamics model to estimate the next state, and in the update step it merges this prediction with the new ToF measurement weighted by the Kalman gain: 
 
 In Python, I implemented: 
 ```c
@@ -102,6 +110,8 @@ def kf(mu, sigma, u, y, update=True):
 
 ![KF](assets/lab7/KF.png)
 
+The filter tracks the raw ToF well, with a small lag in the later portion of the run. The model preducts slightly slower deceleration. However, this is expected given the uncertainty in d and m. 
+
 #### Parameter Discussion 
 Tuning the covariance matrices shows a clear trafeoff. When sigma_z is small (high sensor trust), the KF output closely trakced the raw ToF with minimal smoothing. When sigma_z is large (high model trust), the KF ignores sensor updates and relies entirely on the dynamics model, causing it to diverge from the true distance. 
 
@@ -115,13 +125,13 @@ I replaced the linear extrapolation from lab 5 with the Kalman Filter running di
 
 The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the pID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
 
-In the early portion of the run (0-800ms), the raw ToF readings exhibit significant noise due to the 20ms timing budget at lonf range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
+In the early portion of the run (0-800ms), the raw ToF readings exhibit significant noise due to the 20ms timing budget at long range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
 
 ![Raw vs KF](assets/lab7/rawvsKF.png)
 
 ```c
 void kalman_step(float u, float y, bool update) {
-  // Predict
+  // predict
   Matrix<2, 1> mu_p = Ad_kf * x_kf + Bd_kf * u;
   Matrix<2, 2> sigma_p = Ad_kf * Sigma_kf * ~Ad_kf + Sigma_u_kf;
 
@@ -131,7 +141,7 @@ void kalman_step(float u, float y, bool update) {
     return;
   }
 
-  // Update
+  // update
   Matrix<1, 1> sigma_m = C_kf * sigma_p * ~C_kf + Sigma_z_kf;
   Matrix<2, 1> kf_gain = sigma_p * ~C_kf * Inverse(sigma_m);
 
@@ -145,11 +155,12 @@ void kalman_step(float u, float y, bool update) {
 }
 ```
 
+I implemented a new case `START_KF_PID` which receives all tunable parameters: 
 
 ```c
 while (millis() - start_time < (unsigned long)runtime) {
 
-          // Check for new ToF data
+          // check for new ToF data
           bool got_new_tof = false;
           if (distanceSensor2.checkForDataReady()) {
             kf_last_tof = distanceSensor2.getDistance();
@@ -157,19 +168,19 @@ while (millis() - start_time < (unsigned long)runtime) {
             got_new_tof = true;
           }
 
-          // Run KF step — update only when new ToF data arrived
+          // run KF step. update only when new ToF data arrived
           float u = pid_motor_data[max(0, kf_data_index - 1)] / 255.0;
           kalman_step(u, kf_last_tof, got_new_tof);
 
-          // Get KF position estimate
+          // get KF position estimate
           float kf_dist = x_kf(0);
 
-          // Compute PID on KF estimate
+          // compute PID on KF estimate
           float error = kf_dist - pid_pos_target;
           float output = computePID(kf_dist);
           output = constrain(output, -255, 255);
 
-          // Drive motors
+          // drive motors
           if (abs(error) < DEADBAND_MM) {
             motorsStop();
           } else if (error > 0) {
@@ -184,5 +195,8 @@ while (millis() - start_time < (unsigned long)runtime) {
 
 
 ![Everything together](assets/lab7/PIDKFdistancetarget.png)
+
+
+
 
 
