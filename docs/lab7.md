@@ -121,7 +121,7 @@ In the left plot (sigma_u = 500, sigma_z = 1), the filter trusts the sensor almo
 
 ### 4.  Kalman Filter on the Robot
 
-I replaced the linear extrapolation from lab 5 with the Kalman Filter running directly on the Artemis using the BasicLinearAlgebra library. All KF parameters (PID gains, d, m, sigma values) are sent over BLE from Python.
+I removed the linear extrapolation from lab 5 and added the Kalman Filter running directly on the Artemis using the BasicLinearAlgebra library. All KF parameters (PID gains, d, m, sigma values) are sent over BLE from Python.
 
 The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the PID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
 
