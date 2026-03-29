@@ -4,7 +4,7 @@
 
 ### 1. Estimate drag and momentum
 
-to build the state space model, I have to estimate the drag and momentum acting on my car. Following the derivation from lab, the dynamics of the system can be expressed as: 
+To build the state space model, I have to estimate the drag and momentum acting on my car. Following the derivation from lab, the dynamics of the system can be expressed as: 
 
 $$
 \ddot{x} = -\frac{d}{m} \dot{x} + \frac{u}{m}
@@ -26,7 +26,7 @@ $u_{ss}$ is the constant control input passed to the robot. We will choose this 
 
 ![TOF sensor output](assets/lab7/TOFsensoroutput.png)
 
-![computed speed](assets/lab7/computedspeed.png)
+![computed speed](assets/lab7/computspeed.png)
 
 I chose a step input of PWm = 150, matching my Lab 5 operating condition. From the exponentil curve fit, I measured: 
 
@@ -39,7 +39,7 @@ This gives:
 ![d and m](assets/lab7/dandm.png)
 
 
-**2. Initialize KF (Python)**
+### 2. Initialize KF (Python)
 
 The continuous-time state space matrices are: 
 
@@ -81,10 +81,8 @@ $$
 $$
 
 
-3. Implement and test your Kalman Filter in Jupyter (Python)
-To sanity check your parameters, implement your Kalman Filter in Jupyter first. You can do this using the function in the code below (for ease, variable names follow the convention from the lecture slides).
-Import timing, ToF, and PWM data from a straight run towards the wall (you should have this data handy from lab 5).
-You may need to format your data first. For the Kalman Filter to work, you’ll need all input arrays to be of equal length. That means that you might have to interpolate data if for example you have fewer ToF measurements than you have motor input updates. This should also be handy from lab 5.
+### 3. Kalman Filter in Jupyter (Python)
+
 Loop through all of the data, while calling the Kalman Filter.
 Remember to scale your input from 1 to the actual value of your step size (u/step_size).
 Plot the Kalman Filter output to demonstrate how well your Kalman Filter estimated the system state.
@@ -104,7 +102,7 @@ def kf(mu,sigma,u,y):
 
     return mu,sigma
 
-I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255. 
+I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255 = 0.588. 
 
 In Python, I implemented: 
 ```c
@@ -123,11 +121,14 @@ def kf(mu, sigma, u, y, update=True):
 
 ![KF](assets/lab7/KF.png)
 
+#### Parameter Discussion 
 Tuning the covariance matrices shows a clear trafeoff. When sigma_z is small (high sensor trust), the KF output closely trakced the raw ToF with minimal smoothing. When sigma_z is large (high model trust), the KF ignores sensor updates and relies entirely on the dynamics model, causing it to diverge from the true distance. 
+
+In the left plot (sigma_u = 500, sigma_z = 1), the filter trusts the sensor almost completely — the KF output overlaps with the raw ToF since the Kalman gain approaches 1 and the model contributes nothing. In the right plot (sigma_u = 10, sigma_z = 200), the filter trusts the model heavily — it barely responds to sensor updates and lags far behind the true distance. For my final implementation I used sigma_1 = sigma_2 = 20, sigma_3 = 50, which balances both sources and produces a smooth estimate that tracks the true distance while rejecting noise.
 
 ![Covariance tuning](assets/lab7/covariancetuning.png)
 
-4. Implement the Kalman Filter on the Robot
+### 4.  Kalman Filter on the Robot
 Integrate the Kalman Filter into your Lab 5 PID solution on the Artemis. Before trying to increase the speed of your controller, use your debugging script to verify that your Kalman Filter works as expected. Make sure to remove the linear extrapolation step before doing this. Be sure to demonstrate that your solution works by uploading videos and by plotting corresponding raw and estimated data in the same graph.
 
 The following code snippets give helpful hints on how to do matrix operations on the robot:
@@ -147,6 +148,8 @@ I replaced the linear extrapolation from lab 5 with the Kalman Filter running di
 The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the pID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
 
 In the early portion of the run (0-800ms), the raw ToF readings exhibit significant noise due to the 20ms timing budget at lonf range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
+
+![Raw vs KF](assets/lab7/rawvsKF.png)
 
 ```c
 void kalman_step(float u, float y, bool update) {
@@ -209,7 +212,6 @@ while (millis() - start_time < (unsigned long)runtime) {
 }
 ```
 
-5. Speed it up (optional)
-If you have time, and want to get a jump start on Lab 8, try speeding up your robot with your KF to decrease the execution time of your control loop. Note: you built your Kalman Filter around a specific setpoint u, if you speed up your robot, you will want to check that your model is still valid at the higher higher operating condition.
+![Everything together](assets/lab7/PIDKFdistancetarget.png)
 
 
