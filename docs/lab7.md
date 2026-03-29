@@ -123,7 +123,7 @@ In the left plot (sigma_u = 500, sigma_z = 1), the filter trusts the sensor almo
 
 I replaced the linear extrapolation from lab 5 with the Kalman Filter running directly on the Artemis using the BasicLinearAlgebra library. All KF parameters (PID gains, d, m, sigma values) are sent over BLE from Python.
 
-The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the pID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
+The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the PID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
 
 In the early portion of the run (0-800ms), the raw ToF readings exhibit significant noise due to the 20ms timing budget at long range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
 
@@ -194,7 +194,11 @@ while (millis() - start_time < (unsigned long)runtime) {
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cPGe_ZuRw64?si=p2HoFTTKNWN0gFh5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
+The P term (magenta) starts high when the car is far from the wall and decreases as it approaches, going negative briefly when the car overshoots before settling near zero at the target. The D term (purple) is negative during the fast approach as it resists the rapid change in error, then crosses zero as the car decelerates. The I term (orange) remains small throughout since the KF provides a clean enough estimate to keep steady-state error low.
+
+
 ![Everything together](assets/lab7/PIDKFdistancetarget.png)
+
 
 ## Discussion 
 
