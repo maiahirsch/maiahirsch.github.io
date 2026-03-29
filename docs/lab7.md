@@ -196,6 +196,13 @@ while (millis() - start_time < (unsigned long)runtime) {
 
 ![Everything together](assets/lab7/PIDKFdistancetarget.png)
 
+## Discussion 
+
+Compared to Lab 5, replacing linear extrapolation with the Kalman Filter produces a smoother distance estimate, especially visible in the noisy early region where the raw ToF jumps significantly but the KF remains more stable. This smoother input to the PID controller contributes to a cleaner stop at the 304mm target.
+One practical challenge during testing was BLE disconnection. If the car hit the wall too hard or missed the foam padding entirely, the physical impact would jar the board and drop the BLE connection, causing all logged data in RAM to be lost. Adding extra padding to the wall helped absorb the impact and keep the connection stable during runs.
+
+## References
+I used Trevor Dales's writeup as a guide for task implementation and figure/videos needed. Claude helped make the plots prettier and cleaner. 
 
 
 
