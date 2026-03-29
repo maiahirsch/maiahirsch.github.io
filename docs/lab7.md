@@ -53,6 +53,18 @@ I chose a step input of PWm = 150, matching my Lab 5 operating condition. From t
 This gives: 
 ![d and m](assets/lab7/d and m.png)
 
+
+**2. Initialize KF (Python)**
+
+Compute the A and B matrix given the terms you found above, and discretize your matrices. Be sure to note the sampling time in your write-up.
+
+Ad = np.eye(n) + Delta_T * A  //n is the dimension of your state space 
+Bd = Delta_t * B
+Identify your C matrix. Recall that C is a m x n matrix, where n are the dimensions in your state space, and m are the number of states you actually measure.
+This could look like C=np.array([[-1,0]]), because you measure the negative distance from the wall (state 0).
+Initialize your state vector, x, e.g. like this: x = np.array([[-TOF[0]],[0]])
+
+
 The continuous-time state space matrices are: 
 
 The state vectior is x = [position,velocity]. The A matrix captures the system dynamics: position changes with velocity, and velocity decays due to drag. The B matrix maps the control input to acceleration. C = [1,0] since we directly measure position from the ToF sensor. 
@@ -74,23 +86,23 @@ $$
 C = \begin{bmatrix} 1 & 0 \end{bmatrix}
 $$
 
-For the covariance matrix: 
+```c
+A = np.array([[0, 1],
+              [0, -d/m]])
+B = np.array([[0],
+              [1/m]])
+C = np.array([[1, 0]])
+
+Ad = np.eye(n) + dt * A
+Bd = dt * B
+```
+
+For the covariance matrices, I set **sigma_1 = sigma_2 = 20** for process noise. For sensor noise, I set **sigma_3 = 20**, consistent with the ~20-30mm ToF standard deviation measured in lab 3. The relative values of Sigma_u and Sigma_z determine the Kalman gain. If Sigma_z is large relative to Sigma_u, the filter trusts the model more; if small, it follows the sensor closely. 
 
 $$
 \Sigma_u = \begin{bmatrix} \sigma_1^2 & 0 \\ 0 & \sigma_2^2 \end{bmatrix} = \begin{bmatrix} 400 & 0 \\ 0 & 400 \end{bmatrix}, \quad
 \Sigma_z = \begin{bmatrix} \sigma_3^2 \end{bmatrix} = \begin{bmatrix} 400 \end{bmatrix}
 $$
-
-
-**2. Initialize KF (Python)**
-
-Compute the A and B matrix given the terms you found above, and discretize your matrices. Be sure to note the sampling time in your write-up.
-
-Ad = np.eye(n) + Delta_T * A  //n is the dimension of your state space 
-Bd = Delta_t * B
-Identify your C matrix. Recall that C is a m x n matrix, where n are the dimensions in your state space, and m are the number of states you actually measure.
-This could look like C=np.array([[-1,0]]), because you measure the negative distance from the wall (state 0).
-Initialize your state vector, x, e.g. like this: x = np.array([[-TOF[0]],[0]])
 
 For the Kalman Filter to work well, you will need to specify your process noise and sensor noise covariance matrices.
 Try to reason about ballpark numbers for the variance of each state variable and sensor input.
@@ -98,6 +110,8 @@ Recall that their relative values determine how much you trust your model versus
 Recall that the covariance matrices take the approximate following form, depending on the dimension of your system state space and the sensor inputs.
 sig_u=np.array([[sigma_1**2,0],[0,sigma_2**2]]) //We assume uncorrelated noise, and therefore a diagonal matrix works.
 sig_z=np.array([[sigma_3**2]])
+
+
 3. Implement and test your Kalman Filter in Jupyter (Python)
 To sanity check your parameters, implement your Kalman Filter in Jupyter first. You can do this using the function in the code below (for ease, variable names follow the convention from the lecture slides).
 Import timing, ToF, and PWM data from a straight run towards the wall (you should have this data handy from lab 5).
@@ -120,6 +134,26 @@ def kf(mu,sigma,u,y):
     sigma=(np.eye(2)-kkf_gain.dot(C)).dot(sigma_p)
 
     return mu,sigma
+
+I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255. 
+Tuning the covariance matrices shows a clear trafeoff. When sigma_z is small (high sensor trust), the KF output closely trakced the raw ToF with minimal smoothing. When sigma_z is large (high model trust), the KF ignores sensor updates and relies entirely on the dynamics model, causing it to diverge from the true distance. 
+
+In Python, I implemented: 
+```c
+def kf(mu, sigma, u, y, update=True):
+    mu_p    = Ad.dot(mu) + Bd.dot(u)
+    sigma_p = Ad.dot(sigma.dot(Ad.T)) + Sigma_u
+    if not update:
+        return mu_p, sigma_p
+    sigma_m  = C.dot(sigma_p.dot(C.T)) + Sigma_z
+    kf_gain  = sigma_p.dot(C.T.dot(np.linalg.inv(sigma_m)))
+    y_m      = y - C.dot(mu_p)
+    mu       = mu_p + kf_gain.dot(y_m)
+    sigma    = (np.eye(2) - kf_gain.dot(C)).dot(sigma_p)
+    return mu, sigma
+```
+
+
 4. Implement the Kalman Filter on the Robot
 Integrate the Kalman Filter into your Lab 5 PID solution on the Artemis. Before trying to increase the speed of your controller, use your debugging script to verify that your Kalman Filter works as expected. Make sure to remove the linear extrapolation step before doing this. Be sure to demonstrate that your solution works by uploading videos and by plotting corresponding raw and estimated data in the same graph.
 
@@ -134,6 +168,74 @@ Matrix<2,2> A = {1, 1,
                  0, 1};            //Declares and initializes a 2x2 matrix
 state(1,0) = 1;                    //Writes only location 1 in the 2x1 matrix.
 Sigma_p = Ad*Sigma*~Ad + Sigma_u;  //Example of how to compute Sigma_p (~Ad equals Ad transposed) 
+
+I replaced the linear extrapolation from lab 5 with the Kalman Filter running directly on the Artemis using the BasicLinearAlgebra library. All KF parameters (PID gains, d, m, sigma values) are sent over BLE from Python.
+
+The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the pID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
+
+In the early portion of the run (0-800ms), the raw ToF readings exhibit significant noise due to the 20ms timing budget at lonf range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
+
+```c
+void kalman_step(float u, float y, bool update) {
+  // Predict
+  Matrix<2, 1> mu_p = Ad_kf * x_kf + Bd_kf * u;
+  Matrix<2, 2> sigma_p = Ad_kf * Sigma_kf * ~Ad_kf + Sigma_u_kf;
+
+  if (!update) {
+    x_kf = mu_p;
+    Sigma_kf = sigma_p;
+    return;
+  }
+
+  // Update
+  Matrix<1, 1> sigma_m = C_kf * sigma_p * ~C_kf + Sigma_z_kf;
+  Matrix<2, 1> kf_gain = sigma_p * ~C_kf * Inverse(sigma_m);
+
+  Matrix<1, 1> y_m;
+  y_m(0) = y - (C_kf * mu_p)(0);
+
+  x_kf = mu_p + kf_gain * y_m;
+  Matrix<2, 2> I_KC = { 1 - kf_gain(0) * C_kf(0, 0), -kf_gain(0) * C_kf(0, 1),
+                        -kf_gain(1) * C_kf(0, 0), 1 - kf_gain(1) * C_kf(0, 1) };
+  Sigma_kf = I_KC * sigma_p;
+}
+```
+
+
+```c
+while (millis() - start_time < (unsigned long)runtime) {
+
+          // Check for new ToF data
+          bool got_new_tof = false;
+          if (distanceSensor2.checkForDataReady()) {
+            kf_last_tof = distanceSensor2.getDistance();
+            distanceSensor2.clearInterrupt();
+            got_new_tof = true;
+          }
+
+          // Run KF step — update only when new ToF data arrived
+          float u = pid_motor_data[max(0, kf_data_index - 1)] / 255.0;
+          kalman_step(u, kf_last_tof, got_new_tof);
+
+          // Get KF position estimate
+          float kf_dist = x_kf(0);
+
+          // Compute PID on KF estimate
+          float error = kf_dist - pid_pos_target;
+          float output = computePID(kf_dist);
+          output = constrain(output, -255, 255);
+
+          // Drive motors
+          if (abs(error) < DEADBAND_MM) {
+            motorsStop();
+          } else if (error > 0) {
+            motorsForward((int)constrain(abs(output), 55, 150));
+          } else {
+            motorsBackward((int)constrain(abs(output), 55, 150));
+          }
+}
+```
+
 5. Speed it up (optional)
 If you have time, and want to get a jump start on Lab 8, try speeding up your robot with your KF to decrease the execution time of your control loop. Note: you built your Kalman Filter around a specific setpoint u, if you speed up your robot, you will want to check that your model is still valid at the higher higher operating condition.
 
