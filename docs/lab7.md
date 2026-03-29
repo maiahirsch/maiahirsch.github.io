@@ -44,6 +44,8 @@ When sending this data back to your laptop, make sure to save the data in a file
 
 ![computed speed](assets/lab7/computed speed.png)
 
+![d and m](assets/lab7/d and m.png)
+
 **2. Initialize KF (Python)**
 
 Compute the A and B matrix given the terms you found above, and discretize your matrices. Be sure to note the sampling time in your write-up.
