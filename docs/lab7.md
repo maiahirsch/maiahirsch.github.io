@@ -44,7 +44,43 @@ When sending this data back to your laptop, make sure to save the data in a file
 
 ![computed speed](assets/lab7/computed speed.png)
 
+I chose a step input of PWm = 150, matching my Lab 5 operating condition. From the exponentil curve fit, I measured: 
+
+- Steady-state velocity: v_ss = -2.0 mm/ms
+- 90% rise time: t_90 = 2.0 s
+- Velocity at 90% rise time: v_90 = -1.8 mm/ms
+
+This gives: 
 ![d and m](assets/lab7/d and m.png)
+
+The continuous-time state space matrices are: 
+
+The state vectior is x = [position,velocity]. The A matrix captures the system dynamics: position changes with velocity, and velocity decays due to drag. The B matrix maps the control input to acceleration. C = [1,0] since we directly measure position from the ToF sensor. 
+I discretized at **dt = 20ms**, matching my ToF sampling rate of 50Hz from lab 5. This gives:
+
+$$
+x_0 = \begin{bmatrix} -d_0 \\ 0 \end{bmatrix}
+$$
+
+$$
+A = \begin{bmatrix} 0 & 1 \\ 0 & -d/m \end{bmatrix} = \begin{bmatrix} 0 & 1 \\ 0 & -1.151 \end{bmatrix}
+$$
+
+$$
+B = \begin{bmatrix} 0 \\ 1/m \end{bmatrix} = \begin{bmatrix} 0 \\ 3.914 \end{bmatrix}
+$$
+
+$$
+C = \begin{bmatrix} 1 & 0 \end{bmatrix}
+$$
+
+For the covariance matrix: 
+
+$$
+\Sigma_u = \begin{bmatrix} \sigma_1^2 & 0 \\ 0 & \sigma_2^2 \end{bmatrix} = \begin{bmatrix} 400 & 0 \\ 0 & 400 \end{bmatrix}, \quad
+\Sigma_z = \begin{bmatrix} \sigma_3^2 \end{bmatrix} = \begin{bmatrix} 400 \end{bmatrix}
+$$
+
 
 **2. Initialize KF (Python)**
 
