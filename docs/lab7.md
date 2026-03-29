@@ -40,6 +40,9 @@ Measure the steady state speed, 90% rise time, and the speed at 90% risetime. No
 
 When sending this data back to your laptop, make sure to save the data in a file so that you can use it even after your Jupyter kernel restarts. Consider writing the data to a CSV file, pickle file, or shelve file.
 
+![TOF sensor output](assets/lab7/TOF sensor output.png)
+
+![computed speed](assets/lab7/computed speed.png)
 
 **2. Initialize KF (Python)**
 
