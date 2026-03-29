@@ -83,25 +83,6 @@ $$
 
 ### 3. Kalman Filter in Jupyter (Python)
 
-Loop through all of the data, while calling the Kalman Filter.
-Remember to scale your input from 1 to the actual value of your step size (u/step_size).
-Plot the Kalman Filter output to demonstrate how well your Kalman Filter estimated the system state.
-If your Kalman Filter is off, try adjusting the covariance matrices. Discuss how/why you adjust them.
-Be sure to include a discussion of all the paramters that affect the performace of your filter.
-def kf(mu,sigma,u,y):
-    
-    mu_p = A.dot(mu) + B.dot(u) 
-    sigma_p = A.dot(sigma.dot(A.transpose())) + Sigma_u
-    
-    sigma_m = C.dot(sigma_p.dot(C.transpose())) + Sigma_z
-    kkf_gain = sigma_p.dot(C.transpose().dot(np.linalg.inv(sigma_m)))
-
-    y_m = y-C.dot(mu_p)
-    mu = mu_p + kkf_gain.dot(y_m)    
-    sigma=(np.eye(2)-kkf_gain.dot(C)).dot(sigma_p)
-
-    return mu,sigma
-
 I tested the KF in Python on my step response data before deploying to the robot. The filter was run at the ToF sampling rate with a constant normalized input u = 150/255 = 0.588. 
 
 In Python, I implemented: 
@@ -129,19 +110,6 @@ In the left plot (sigma_u = 500, sigma_z = 1), the filter trusts the sensor almo
 ![Covariance tuning](assets/lab7/covariancetuning.png)
 
 ### 4.  Kalman Filter on the Robot
-Integrate the Kalman Filter into your Lab 5 PID solution on the Artemis. Before trying to increase the speed of your controller, use your debugging script to verify that your Kalman Filter works as expected. Make sure to remove the linear extrapolation step before doing this. Be sure to demonstrate that your solution works by uploading videos and by plotting corresponding raw and estimated data in the same graph.
-
-The following code snippets give helpful hints on how to do matrix operations on the robot:
-
-#include <BasicLinearAlgebra.h>    //Use this library to work with matrices:
-using namespace BLA;               //This allows you to declare a matrix
-
-Matrix<2,1> state = {0,0};         //Declares and initializes a 2x1 matrix 
-Matrix<1> u;                       //Basically a float that plays nice with the matrix operators
-Matrix<2,2> A = {1, 1,
-                 0, 1};            //Declares and initializes a 2x2 matrix
-state(1,0) = 1;                    //Writes only location 1 in the 2x1 matrix.
-Sigma_p = Ad*Sigma*~Ad + Sigma_u;  //Example of how to compute Sigma_p (~Ad equals Ad transposed) 
 
 I replaced the linear extrapolation from lab 5 with the Kalman Filter running directly on the Artemis using the BasicLinearAlgebra library. All KF parameters (PID gains, d, m, sigma values) are sent over BLE from Python.
 
@@ -211,6 +179,9 @@ while (millis() - start_time < (unsigned long)runtime) {
           }
 }
 ```
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cPGe_ZuRw64?si=p2HoFTTKNWN0gFh5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 ![Everything together](assets/lab7/PIDKFdistancetarget.png)
 
