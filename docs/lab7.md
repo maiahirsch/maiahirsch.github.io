@@ -125,7 +125,7 @@ I removed the linear extrapolation from lab 5 and added the Kalman Filter runnin
 
 The KF runs every loop iteration, predicting the next state using the physics model. It only performs a measurement updaye when a new ToF reading is available. This allows the PID controller to run at the full loop rate (~800Hz) using KF estimates between sensor readings, rather than being limited to the 50Hz ToF rate. 
 
-In the early portion of the run (0-800ms), the raw ToF readings exhibit significant noise due to the 20ms timing budget at long range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
+In the early portion of the run (0-800ms), the raw ToF readings show significant noise due to the 20ms timing budget at long range. Only once the car closes within ~1.5m, the ToF stabilizes and KF tracks closely, sucessfully guiding the car to stop at the 304mm target. 
 
 ![Raw vs KF](assets/lab7/rawvsKF.png)
 
