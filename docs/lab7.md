@@ -24,7 +24,7 @@ Where d and m are lumped parameters that capture the dynamics of the system. Sho
 
 ![TOF sensor output](assets/lab7/TOFsensoroutput.png)
 
-![computed speed](assets/lab7/computspeed.png)
+![computed speed](assets/lab7/computespeed.png)
 
 Since the car did not reach steady state in a single run, I fit an exponential curve to the velocity data to extrapolate the steady-state velocity. From the fit I measured: 
 
