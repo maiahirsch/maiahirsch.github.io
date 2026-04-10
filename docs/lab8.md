@@ -1,4 +1,4 @@
-# Lab 8: Stuents - Task B: Drift
+# Lab 8: Stunts - Task B: Drift
 
 ## Overview
 
