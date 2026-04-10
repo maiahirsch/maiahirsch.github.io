@@ -98,3 +98,7 @@ PLOT 2
 ## Conclusion
 
 The drift stint succesfully demonstrates combined use of linear PID, orientation PID, and ToF sensing. The main challenges were managing DMP FIFO reads, tuning the trigger distance for high-speed spproach, and maintaining BLE connectivity during the stunt. 
+
+## References
+
+I used XXX page for code reference. I used Claude 
