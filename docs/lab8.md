@@ -1,4 +1,4 @@
-# Lab 8: Stunts - Task B: Drift
+# Lab 8: Stunts - Drift
 
 ## Overview
 
@@ -102,10 +102,15 @@ This lab was supposed to be quick and easy and I spent countless hours debugging
 
 The plot shows the complete stunt sequence: ToF decreasing from ~2700mm to 1500mm during approach (0–1000ms), wild ToF readings as the sensor rotates during the spin (1000–1700ms), IMU yaw changing by ~140° confirming the rotation, then ToF increasing as the car returns away from the wall (1700ms+).
 
+## Just for fun
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zaOLfMlM2To?si=oelBLh3DZBruoQw8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Conclusion
 
-The drift stint succesfully demonstrates combined use of linear PID, orientation PID, and ToF sensing. The main challenges were managing DMP FIFO reads, tuning the trigger distance for high-speed spproach, and maintaining BLE connectivity during the stunt. 
+The drift stunt succesfully demonstrates combined use of linear PID, orientation PID, and ToF sensing. The main challenges were managing DMP FIFO reads, tuning the trigger distance for high-speed spproach, and maintaining BLE connectivity during the stunt. 
+Also, while writing this report I won the NSF GRFP grant so now I'm done right on time to celebrate 🎊. 
 
 ## References
 
-I used XXX page for code reference. I used Claude 
+I used Andrew DOnofrio's page for code reference. I used Claude when I could not figure out why my car kept spinning uncontrollably to return. This did not help much though. 
