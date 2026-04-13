@@ -96,12 +96,9 @@ This lab was supposed to be quick and easy and I spent countless hours debugging
 
 ## Results 
 
-
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EpEb1Za8rkI?si=wa-x9cIBpXh2obMF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-
-
-
+![Stunt Plot](assets/lab8/plotstunt.png)
 
 The plot shows the complete stunt sequence: ToF decreasing from ~2700mm to 1500mm during approach (0–1000ms), wild ToF readings as the sensor rotates during the spin (1000–1700ms), IMU yaw changing by ~140° confirming the rotation, then ToF increasing as the car returns away from the wall (1700ms+).
 
