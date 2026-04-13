@@ -17,8 +17,8 @@ The drift runs inside `drift_step()`, called in every iteration of the main `loo
 - STATE 0 - initialize: capture starting yaw, reset all PID state, enable linear PID
 - STATE 1 - approach: linear pID drives toward wall, triggers when ToF < 1500 mm
 - STATE 2 - setup spin: compute `yaw_start + 180°` target wth angle wrapping, enable orientation PID.
-- STATE 3 - spin: exisys wjen yaw has changed ≥ 120° from start
-- STATE 4 - return: motorsForward(200) for 1 seconds
+- STATE 3 - spin: when yaw has changed ≥ 120° from start
+- STATE 4 - return: motorsForward(150) for 1 second
 
 ```c
 void drift_step() {
@@ -78,7 +78,7 @@ void drift_step() {
 ```
 ### The Return Phase
 
-After the 180° spin, the ToF sensor faces away from the wall and cannot measure return distance. I used a timed `motorsForward()` call at 200 PWM for 1 second. 
+After the 180° spin, the ToF sensor faces away from the wall and cannot measure return distance. I used a timed `motorsForward()` call at 150 PWM for 1 second. 
 
 ### PID Gains
 
@@ -90,9 +90,9 @@ After the 180° spin, the ToF sensor faces away from the wall and cannot measure
 This lab was supposed to be quick and easy and I spent countless hours debugging the following issues: 
 
 1. **Car crashing into wall:** the ToF was mounted slightly downward, and it was reading the floor. This meant the trigger condition fired immediately regardless of wall distance, causing the car to jump straight to STATE 3 (spin) without approaching.
-2. **Orient PID gains:** with `Kp = 0.5`, the PID output was only `0.05 * 180 = 9`, below the minimum threshold in `motorsOrient()`. The car never spun, it would just stop 3 feet from the wall. Raisin Kp to XXXXXX fixed this.
-3. **Inconsistent wheel friction during tuning:** the linear PID was tuned without tape on the wheels, but the orientation PID was initially tuned with tape on the wheels to try to make the spin more controlled. This created a mismatch — the tape drastically reduced friction, making the car spin uncontrollably and overshoot far past 180°. Parameters that worked with tape caused completely different behavior without it, making it extremely difficult to find gains that worked consistently. Removing the tape entirely and retuning the orientation PID from scratch resolved this.
-4. **Multiple overlapping data traces:** drift_state_start was resetting between states, causing timestamps to restart mid-run and producing multiple apparent "runs" in a single plot. Fixed by setting drift_state_start only once in STATE 0 and using a separate drift_return_start_time for STATE 4.
+2. **Orient PID gains:** with `Kp = 0.5`, the PID output was only `0.05 * 180 = 9`, below the minimum threshold in `motorsOrient()`. The car never spun, it would just stop 3 feet from the wall. Raisin Kp to 5 fixed this.
+3. **Inconsistent wheel friction during tuning:** the linear PID was tuned without tape on the wheels, but the orientation PID was initially tuned with tape on the wheels. This created a mismatch — the tape drastically reduced friction, making the car spin uncontrollably and overshoot far past 180°. Parameters that worked with tape caused completely different behavior without it, making it extremely difficult to find gains that worked consistently. Removing the tape entirely and retuning the orientation PID from scratch resolved this.
+4. **Multiple overlapping data traces:** `drift_state_start` was resetting between states, causing timestamps to restart mid-run and producing multiple apparent "runs" in a single plot. Fixed by setting drift_state_start only once in STATE 0 and using a separate `drift_return_start_time` for STATE 4.
 
 ## Results 
 
@@ -102,13 +102,13 @@ This lab was supposed to be quick and easy and I spent countless hours debugging
 
 The plot shows the complete stunt sequence: ToF decreasing from ~2700mm to 1500mm during approach (0–1000ms), wild ToF readings as the sensor rotates during the spin (1000–1700ms), IMU yaw changing by ~140° confirming the rotation, then ToF increasing as the car returns away from the wall (1700ms+).
 
-## Just for fun
+## Funny Video/Bloopers(final take)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zaOLfMlM2To?si=oelBLh3DZBruoQw8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Conclusion
 
-The drift stunt succesfully demonstrates combined use of linear PID, orientation PID, and ToF sensing. The main challenges were managing DMP FIFO reads, tuning the trigger distance for high-speed spproach, and maintaining BLE connectivity during the stunt. 
+The drift stunt succesfully demonstrates combined use of linear PID, orientation PID, and ToF sensing. The main challenges were managing DMP FIFO reads, tuning the trigger distance for high-speed approach, and maintaining BLE connectivity during the stunt. 
 Also, while writing this report I won the NSF GRFP grant so now I'm done right on time to celebrate 🎊. 
 
 ## References
