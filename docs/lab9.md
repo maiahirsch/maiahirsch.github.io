@@ -212,9 +212,15 @@ ends   = [(1981.2, -1371.6), (1981.2, 1371.6), (-609.6, 1371.6), (-609.6, 152.4)
 
 Some of the estimated wall positions are slightly shifted from the true edges — most noticeably the left wall and parts of the top boundary. This is caused by translational drift during the mapping scan. Despite using orientation PID to control heading, the robot does not spin perfectly on-axis — each incremental turn causes a small sideways displacement of the robot's physical center. Over the course of a full 36-step scan, these small displacements accumulate, meaning the robot's actual position at the time of each reading is slightly different from the marked position it started at. Since the transformation assumes the robot remains stationary at its starting coordinates throughout the entire scan, any translational drift introduces a systematic offset in the transformed wall positions. The direction and magnitude of the shift depends on which way the robot drifted — typically 1–3 inches over a full rotation. Rather than attempting to model or correct for this drift algorithmically, I manually adjusted the estimated edge positions during post-processing to best fit the visible point clusters, accepting that the estimated map will have small but bounded positional errors on the order of 50–80mm.
 
+### Outliers Beyond Room Boundary
+
+Several scatter points land outside the known room boundary, particularly from scan positions that are far from certain walls. This is likely caused by sensor 2 being mounted at a slight upward angle. When the sensor points toward a distant wall, the upward tilt means the beam grazes above the wall rather than hitting it squarely, returning either a very long reading or missing the wall entirely and hitting a distant ceiling fixture or nothing at all. This effect is most pronounced at scan positions far from the wall being measured — for example, readings from (0,3) pointing toward the top wall.
+
 ## Discussion 
 
+This lab successfully produced a line-based map of the lab space using orientation-PID-controlled incremental scanning. The main challenges were sensor 1's downward mounting angle — which caused it to read the floor instead of walls, producing a circular ring pattern in the scatter plot — and translational drift during spins, which shifted some wall clusters 50–80mm from their true positions and required manual correction in post-processing. In future iterations, verifying sensor mounting angle before scanning and marking a reference direction at each scan position would eliminate both issues entirely.
+
 ## References
-I used Stephan Wagner's page for guidance on a couple of plots and the manual tracing. I attended office hours and Lucca was extremely helpful helping me realize the sensor facing downward problem. I gave my car to Hayden Webb for a day so he could run his code. 
+I used Stephan Wagner's page for guidance on a couple of plots and the manual tracing. I attended office hours and Lucca was extremely helpful helping me realize the sensor facing downward problem. I gave my car to Hayden Webb for a day so he could run his code. Claude helped me make very pretty plots. 
 
 
