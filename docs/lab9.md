@@ -26,8 +26,7 @@ My orientation PID gains are:
 #### Graphs to document PID controller works well + upload video showing robot turning on axis 
 
 The controller is the same one I used in lab 6. 
-
-
+![setpoint](assets/lab6/setpoint.png)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4kSM23w-bDc?si=N8ZT9cjNbkfqguF-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -41,6 +40,8 @@ Consider whether your robot behavior is reliable enough to assume that the readi
 I executed the mapping scan at each of the four marked positions: (-3,-2), (5,3), (0,3), and (5,-3). The robot was placed at each mark facing the same direction. 
 
 ### 2. Sanity check individual turns by plotting them in polar coordinate plot. Do the measurement match up what you expect? 
+
+
 
 ### 3. rotate twice or more to see how precise the scans are. 
 
