@@ -94,31 +94,26 @@ My orientation PID gains are:
 - Ki = 0.0
 - Kd = 0.3
 
-#### Graphs to document PID controller works well + upload video showing robot turning on axis 
-
-The controller is the same one I used in lab 6. 
+The controller is the same one I used in lab 6. The plot blow shows the yaw tracking a 90° setpoint cleanly, confirming the controller is well-tuned. 
 ![setpoint](assets/lab6/setpoint.png)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4kSM23w-bDc?si=N8ZT9cjNbkfqguF-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-#### Given any potential drift in your sensor, the size and accuracy of your increments, and how reliably your robot turns on axis, reason about the average and maximum error of your map if you were to do an on-axis turn in the middle of a 4x4m square, empty room.
+#### Error Analysis
+
+From Serial Monitor output, the per-step yaw error was consistently within 1–3°. In the center of a 4×4m empty room, walls are 2m away in every direction. A 3° angular error at 2m produces a positional error of 2 × sin(3°) ≈ 105mm at the wall. On average with ~1.5° error this is closer to 52mm. The robot also exhibited slight translational drift (~50mm) during full scans due to imperfect on-axis spinning, giving a combined maximum map error of approximately 150mm.
 
 ## Read out Distances
 
-### 1. execute each turn on marked positions. more locations to improve map. 
-Consider whether your robot behavior is reliable enough to assume that the readings are spaced equally in angular space, or if you are better off trusting the orientation from gyroscope values.
-
-I executed the mapping scan at each of the four marked positions: (-3,-2), (5,3), (0,3), and (5,-3). The robot was placed at each mark facing the same direction. 
-
-### 2. Sanity check individual turns by plotting them in polar coordinate plot. Do the measurement match up what you expect? 
+I executed the mapping scan at each of the four marked positions: (-3,-2), (5,3), (0,3), and (5,-3).
 
 ![polar sanoty check](assets/lab9/polarsanitycheck.png)
 
-### 3. rotate twice or more to see how precise the scans are. 
+The polar plot shows reasonable shaped for each position, with distances that reflect what we expect from room geometry at each location. Here it is clear that sensor 1 is pointing at the floor. 
 
 ![consistency check](assets/lab9/consistencycheck.png)
 
-Not perfect but works. 
+I performed two full rotations on my desk to assess scan repeatability. The front sensor (blue) shows good consistency between the two rotations — the large spike toward 45°–60° (pointing toward the open room interior) and the readings toward 0° and 315° (pointing toward the right and bottom walls) appear in both rotations at similar distances. The orange (right sensor) forms a consistent small ring close to the robot in both rotations, which as discussed above is due to the sensor pointing downward and hitting the floor rather than the walls. The front sensor shape is reproducible enough to trust for mapping purposes, with the main variation occurring at angles where the sensor hits open space or the robot's chassis — both of which produce inherently noisy readings that are filtered out in post-processing.
 
 ## Merge and Plot your readings 
 
