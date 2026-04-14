@@ -117,7 +117,7 @@ I performed two full rotations on my desk to assess scan repeatability. The fron
 
 ## Merge and Plot your readings 
 
-### 1. compute transformation matrices. describe matrices
+### Transformation Matrices
 
 To convert each ToF reading from the robot's local frame into the global room frame, I applied a 3×3 homogeneous transformation matrix at each angular step:
 
@@ -135,18 +135,19 @@ $$P_{room} = T \cdot \begin{bmatrix} 0 \\ d_1 + \text{dist} \\ 1 \end{bmatrix}$$
 
 where $d_2 = 90$ mm (sensor 2 forward offset) and $d_1 = 40$ mm (sensor 1 rightward offset).
 
-After plotting the combined scatter, I found that two of the four scan positions required a 180° angular correction to align their data with the room's coordinate frame. Specifically, the scans at (0, 3) and (5, -3) required a 180° correction, while (-3, -2) and (5, 3) required none. Since all four scans were performed within the same BLE session — meaning the DMP never re-initialized and its yaw reference remained consistent throughout — the offset is most likely due to a slight inconsistency in how the robot was placed at those two positions. Despite my best efforts to orient the robot the same way at each mark, the 180° discrepancy suggests the robot was inadvertently placed facing the opposite direction at (0, 3) and (5, -3). The correction was applied as a post-processing angular offset added to all yaw readings from those positions, rotating the entire dataset by 180° to realign it with the room's coordinate system. The resulting point clusters from all four positions align consistently with the known wall geometry, confirming the corrections are appropriate.
 
-### 2. plot all of your tof sensor readings in a single plot. assign different colors to data sets acquired from each turn. 
+### A Note on Sensor 1
+
+During testing, sensor 1 (right-side mounted) produced readings that formed a tight circular ring around the robot position rather than reaching out to the walls. After investigation, this was found to be caused by the sensor's physical mounting angle — sensor 1 was pointing slightly downward toward the floor rather than perfectly horizontal. As the robot rotated, the sensor consistently hit the floor at a short, nearly constant distance regardless of heading, producing the characteristic radius-around-robot pattern visible in the right-side scatter plot. This is a hardware mounting issue, not a software or calibration problem. Because of this, sensor 1's data is less reliable for wall detection and the final map is primarily informed by sensor 2 (front-facing), which had clear unobstructed line of sight to the walls in most directions.
+
+### Angle Corrections
+After plotting the combined scatter, I found that two of the four scan positions required a 180° angular correction to align their data with the room's coordinate frame. Specifically, the scans at (0, 3) and (5, -3) required a 180° correction, while (-3, -2) and (5, 3) required none. Since all four scans were performed within the same BLE session — meaning the DMP never re-initialized and its yaw reference remained consistent throughout — the offset is most likely due to a slight inconsistency in how the robot was placed at those two positions. Despite my best efforts to orient the robot the same way at each mark, the 180° discrepancy suggests the robot was inadvertently placed facing the opposite direction at (0, 3) and (5, -3). The correction was applied as a post-processing angular offset added to all yaw readings from those positions, rotating the entire dataset by 180° to realign it with the room's coordinate system. The resulting point clusters from all four positions align consistently with the known wall geometry, confirming the corrections are appropriate.
 
 ![front vs right](assets/lab9/frontvsright.png)
 
-![all sensor readings](assets/lab9/allsensorreadings.png)
-
-
 ## Convert to Line-Based Map
 
-### manually estimate where the actual walls/obstacles are based on your scatter plot. draw lines on top of these, and save two lists containing the end points of these lines: (x_start, y_start) and (x_end, y_end)
+I manually drew estimated wall segments through the point clusters in the scatter plot, ignoring outliers caused by the sensor pointing toward open space or the robot chassis at certain angles. The estimated edges were shifted slightly inward from the true edges in some areas, reflecting the tendency of the front sensor to read slightly long when hitting walls at oblique angles.
 
 ```python
 # ─────────────────────────────────────────────────────────────────────────────
@@ -207,6 +208,13 @@ ends   = [(1981.2, -1371.6), (1981.2, 1371.6), (-609.6, 1371.6), (-609.6, 152.4)
 
 ```
 
+### Wall Offset Due to Drift
 
+Some of the estimated wall positions are slightly shifted from the true edges — most noticeably the left wall and parts of the top boundary. This is caused by translational drift during the mapping scan. Despite using orientation PID to control heading, the robot does not spin perfectly on-axis — each incremental turn causes a small sideways displacement of the robot's physical center. Over the course of a full 36-step scan, these small displacements accumulate, meaning the robot's actual position at the time of each reading is slightly different from the marked position it started at. Since the transformation assumes the robot remains stationary at its starting coordinates throughout the entire scan, any translational drift introduces a systematic offset in the transformed wall positions. The direction and magnitude of the shift depends on which way the robot drifted — typically 1–3 inches over a full rotation. Rather than attempting to model or correct for this drift algorithmically, I manually adjusted the estimated edge positions during post-processing to best fit the visible point clusters, accepting that the estimated map will have small but bounded positional errors on the order of 50–80mm.
+
+## Discussion 
+
+## References
+I used Stephan Wagner's page for guidance on a couple of plots and the manual tracing. I attended office hours and Lucca was extremely helpful helping me realize the sensor facing downward problem. I gave my car to Hayden Webb for a day so he could run his code. 
 
 
