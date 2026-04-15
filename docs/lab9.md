@@ -95,6 +95,7 @@ My orientation PID gains are:
 - Kd = 0.3
 
 The controller is the same one I used in lab 6. The plot blow shows the yaw tracking a 90° setpoint cleanly, confirming the controller is well-tuned. 
+
 ![setpoint](assets/lab6/setpoint.png)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/4kSM23w-bDc?si=N8ZT9cjNbkfqguF-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
