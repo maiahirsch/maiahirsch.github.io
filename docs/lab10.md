@@ -193,7 +193,7 @@ Without the Bayes filter, the odometry trace (red) wanders off immediately and p
 
 ## Conclusion
 
-In this lab, we demonsytayed that committing to a single pose estimate is fragile — any noise in sensing or actuation compounds over time. Maintaining a full distribution and updating it with every piece of available information is a much more robust strategy. Given how noisy our ToF sensors can be in practice (affected by surface angle, ambient light, and so on), it genuinely makes more sense to treat every measurement as a weighted hint rather than ground truth.
+In this lab, we demonstrated that committing to a single pose estimate allows error to compound drastically over time due to noise in sensing or actuation. Maintaining a distribution and updating it with every piece of available information is a much more robust strategy. Given how noisy our ToF sensors can be in practice (affected by surface angle, ambient light, and so on), it genuinely makes more sense to treat every measurement as a weighted hint rather than ground truth.
 
 ## References
 
