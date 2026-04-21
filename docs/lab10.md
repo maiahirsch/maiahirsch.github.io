@@ -20,7 +20,7 @@ Every iteration of Bayes filter has two steps:
 
 See screenshot from lecture 17 below: 
 
-[add screenshot]
+![Bayes](assets/lab10/bel.png)
 
 Here, `bel(x_{t-1})` is the previous belief — a 3D matrix where each cell holds the probability that the robot occupies that pose. `u_t` is the control input responsible for moving the robot from x_{t-1} to x_t, and `z_t` is the current sensor observation: 18 ToF readings taken at 20° increments around the robot.
 Each iteration loops over every possible current pose x_t = (x, y, θ). For each one, we weight the probability by the previous belief and sum across all prior states to get the predicted (prior) belief bel̄(x_t). We then correct this prediction by how well the sensor readings z_t match what we'd expect at that pose, normalize by η so everything sums to 1, and arrive at the updated belief bel(x_t).
