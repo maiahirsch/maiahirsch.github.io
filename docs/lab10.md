@@ -187,7 +187,7 @@ def update_step():
 
 Without the Bayes filter, the odometry trace (red) wanders off immediately and produces nonsense — it even exits the map boundaries. With the filter running, the probabilistic belief (blue) tracks the ground truth (green) closely throughout the trajectory. The filter is especially confident near walls, where sensor readings are consistent and informative. In open areas near the center of the map, the belief spreads out a bit more, which makes sense given the relative lack of distinguishing features.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dO1FyaNEtl8?si=cYycPlT32QxwgvE_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/EPlghAq_xGw?si=pwRuhwPkKrt7ef17" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/AHQIGxCXnvs?si=_9HYrz6_0gTcsna_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
