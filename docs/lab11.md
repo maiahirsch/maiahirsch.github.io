@@ -108,7 +108,11 @@ Also a good result, with the belief landing near the ground truth. Similar to (5
 ![sim](assets/lab11/53.png)
 
 ## Discussion 
+
 Overall the Bayes filter worked reasonably well on the real robot, with 3 out of 4 poses localizing within the quadrant of ground truth. The (-3, -2) pose was by far the hardest, and I believe it is because of the geometry of that part of the map. The left side of the arena is relatively open and symmetric — the distances to the surrounding walls are similar to other regions, so multiple grid cells produce similar expected sensor readings and the filter can't uniquely identify the position.
 
-The other three poses at (0, 3), (5, -3), and (5, 3) performed better, though still not perfect due to drift. Because the robot is a differential drive system it doesn't spin perfectly in place — one side consistently had less traction than the other, causing the robot to translate slightly during the scan. This means the ToF readings are taken from shifted positions compared to where the filter expects them, introducing error across all poses. This error compounds over a full 360 turn. 
+The other three poses at (0, 3), (5, -3), and (5, 3) performed better, though still not perfect due to drift. Because the robot is a differential drive system it doesn't spin perfectly in place — one side consistently had less traction than the other, causing the robot to translate slightly during the scan. This means the ToF readings are taken from shifted positions compared to where the filter expects them, introducing error across all poses. This error compounds over a full 360 turn. I did try checking the sensor readings and it was working correctly. I also tried adjusting the sensor tilt, taking more or less measurements, adjusting the speed of my motors and the PID parameters and obtained very similar results each and every single time. 
 
+## References
+
+I referenced Stephan Wagner's lab for structure and writeup expectation. 
