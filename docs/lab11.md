@@ -85,7 +85,7 @@ I tested localization at all four marked poses. The green dot represents the gro
 
 ### (-3 ft, -2 ft)
 
-This pose was the most challenging. The belief consistently landed about 1-2 grid cells away from the ground truth, sometimes drifting toward the upper left region of the map. I think this is because the left side of the map is geometrically less distinctive — the distances to the surrounding walls are similar to other parts of the map, making it hard for the filter to identify this position.
+This pose was the most challenging. The belief consistently landed a quadrant away from the ground truth, sometimes drifting toward the far right region of the map. I think this is because the left side of the map is geometrically less distinctive — the distances to the surrounding walls are similar to other parts of the map, making it hard for the filter to identify this position.
 
 ![-3-2](assets/lab11/-3-2.png)
 
@@ -97,7 +97,7 @@ This pose localized reasonably well, with the belief landing close to the ground
 
 ### (5 ft, -3 ft)
 
-Good result here. The belief was very close to the ground truth. The combination of the right wall and the inner box obstacle creates a distinctive sensor signature that the filter matches well.
+Good result here. The belief was relatively close to the ground truth. The combination of the right wall and the inner box obstacle creates a distinctive sensor signature that the filter matches well.
 
 ![sim](assets/lab11/5-3.png)
 
@@ -111,8 +111,8 @@ Also a good result, with the belief landing near the ground truth. Similar to (5
 
 Overall the Bayes filter worked reasonably well on the real robot, with 3 out of 4 poses localizing within the quadrant of ground truth. The (-3, -2) pose was by far the hardest, and I believe it is because of the geometry of that part of the map. The left side of the arena is relatively open and symmetric — the distances to the surrounding walls are similar to other regions, so multiple grid cells produce similar expected sensor readings and the filter can't uniquely identify the position.
 
-The other three poses at (0, 3), (5, -3), and (5, 3) performed better, though still not perfect due to drift. Because the robot is a differential drive system it doesn't spin perfectly in place — one side consistently had less traction than the other, causing the robot to translate slightly during the scan. This means the ToF readings are taken from shifted positions compared to where the filter expects them, introducing error across all poses. This error compounds over a full 360 turn. I did try checking the sensor readings and it was working correctly. I also tried adjusting the sensor tilt, taking more or less measurements, adjusting the speed of my motors and the PID parameters and obtained very similar results each and every single time. 
+The other three poses at (0, 3), (5, -3), and (5, 3) performed better, though still not perfect due to drift. Because the robot is a differential drive, it doesn't spin perfectly in place — one side consistently had less traction than the other, causing the robot to translate slightly during the scan. This means the ToF readings are taken from shifted positions compared to where the filter expects them, introducing error across all poses. This error compounds over a full 360 turn. I did try checking the sensor readings and it was working correctly. I also tried adjusting the sensor tilt, taking more or less measurements, adjusting the speed of my motors and the PID parameters and obtained very similar results each and every single time. 
 
 ## References
 
-I referenced Stephan Wagner's lab for structure and writeup expectation. 
+I referenced Stephan Wagner's lab for structure and writeup expectation. I also attended Julie's and Jack's office hours for multiple trials. 
