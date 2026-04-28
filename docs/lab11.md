@@ -87,18 +87,25 @@ I tested localization at all four marked poses. The green dot represents the gro
 
 This pose was the most challenging. The belief consistently landed about 1-2 grid cells away from the ground truth, sometimes drifting toward the upper left region of the map. I think this is because the left side of the map is geometrically less distinctive — the distances to the surrounding walls are similar to other parts of the map, making it hard for the filter to identify this position.
 
+![-3-2](assets/lab11/-3-2.png)
+
 ### ( 0 ft, 3 ft)
 
 This pose localized reasonably well, with the belief landing close to the ground truth. The upper wall nearby provides a distinctive close reading that helps anchor the filter.
+
+![sim](assets/lab11/03.png)
 
 ### (5 ft, -3 ft)
 
 Good result here. The belief was very close to the ground truth. The combination of the right wall and the inner box obstacle creates a distinctive sensor signature that the filter matches well.
 
+![sim](assets/lab11/5-3.png)
 
 ### (5 ft, 3 ft)
 
 Also a good result, with the belief landing near the ground truth. Similar to (5, -3), the right side of the map has enough geometric features to localize well.
+
+![sim](assets/lab11/53.png)
 
 ## Discussion 
 Overall the Bayes filter worked reasonably well on the real robot, with 3 out of 4 poses localizing within the quadrant of ground truth. The (-3, -2) pose was by far the hardest, and I believe it is because of the geometry of that part of the map. The left side of the arena is relatively open and symmetric — the distances to the surrounding walls are similar to other regions, so multiple grid cells produce similar expected sensor readings and the filter can't uniquely identify the position.
