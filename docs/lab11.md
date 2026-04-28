@@ -113,6 +113,10 @@ Overall the Bayes filter worked reasonably well on the real robot, with 3 out of
 
 The other three poses at (0, 3), (5, -3), and (5, 3) performed better, though still not perfect due to drift. Because the robot is a differential drive, it doesn't spin perfectly in place — one side consistently had less traction than the other, causing the robot to translate slightly during the scan. This means the ToF readings are taken from shifted positions compared to where the filter expects them, introducing error across all poses. This error compounds over a full 360 turn. I did try checking the sensor readings and it was working correctly. I also tried adjusting the sensor tilt, taking more or less measurements, adjusting the speed of my motors and the PID parameters and obtained very similar results each and every single time. 
 
+## Conclusion
+
+Lab 11 combined the Bayes filter from Lab 10 with the mapping scan from Lab 9 to localize the real robot. The biggest takeaway was how much physical imperfections matter — wheel drift during the rotation scan shifted the ToF readings away from their expected positions, introducing error across all four poses. This lab was a satisfying coming together of many systems we've built throughout the semester — the orientation PID, the mapping scan, and the Bayes filter all coming together at once. Given the inconsistency of my results I don't think my localization is reliable enough to support a full navigation task for Lab 12, so I'm planning to implement an inverted pendulum for the next lab.
+
 ## References
 
 I referenced Stephan Wagner's lab for structure and writeup expectation. I also attended Julie's and Jack's office hours for multiple trials. 
