@@ -50,20 +50,19 @@ I initially configured 18 steps at 20°. However, after getting poor localizatio
 
         ble.start_notify(ble.uuid['RX_STRING'], notify_handler)
 
-        # Command the robot to scan
         ble.send_command(CMD.ENABLE_MOTORS, "")
-        # Set orient gains first!
+        # orient gains first
         ble.send_command(CMD.SET_ORIENT_GAINS, "3.0|0.0|0.3")
         time.sleep(0.5)
         ble.send_command(CMD.START_MAPPING, "")
 
-        # Wait for scan to finish
+        # wait for scan to finish
         t0 = time.time()
         while not self._mapping_done and (time.time() - t0) < 90:
             time.sleep(0.25)
         LOG.info(f"Scan done in {time.time()-t0:.1f}s, requesting data...")
 
-        # Request data
+        # request data
         ble.send_command(CMD.SEND_MAPPING_DATA, "")
         t1 = time.time()
         while len(self._data_buffer) < self.num_steps and (time.time() - t1) < 10:
@@ -72,7 +71,7 @@ I initially configured 18 steps at 20°. However, after getting poor localizatio
         ble.stop_notify(ble.uuid['RX_STRING'])
         LOG.info(f"Got {len(self._data_buffer)} readings")
 
-        # Build output arrays
+        # output arrays
         dists = np.array([d[1] for d in self._data_buffer]) / 1000.0  # mm -> m
         yaws  = np.array([d[0] for d in self._data_buffer])           # degrees
 
