@@ -103,25 +103,25 @@ Although more gain combinations were tested, for the purpose of this writeup, he
 | Kp   | Kd   | result |
 | ---  | ---- | ---- |
 | 1.5  | 0.1  |Too slow — car falls backward consistently|
-| 2.0  | 0.2  |Too slow — car falls backward consistently|
-| 3.0  | 0.3  |Oscillates — overcorrects in both directions|
-| 4.5  | 0.05 |Too slow — car falls backward consistently|
+| 2.0  | 0.2  |Slow — car falls backward|
+| 3.0  | 0.3  |Starting to pick up with the speed but could be improved |
+| 4.5  | 0.05 |Oscillates too much because of the low Kd|
 | 4.5  | 0.5  |Best — car stays upright up to 7 seconds|
-| 6.0  | 0.5  |Too slow — car falls backward consistently|
+| 6.0  | 0.5  |Fast, overshoots and corrections are hard to implement|
 
 The general pattern I observed: too low Kp meant the motors were too slow to catch up. Too high Kp caused too many oscillations and the car overcorrected back and fourth. Kd helped damp these oscillations, but if Kd was too high the car also did not have time to catch up. 
 
 ### Results 
 
-**Video 1 — Kp=1.5, Kd=0.1:** Car responds but falls consistently backward. Not enough proportional gain to overcome gravity.
+**Video 1 — Kp=1.5, Kd=0.1:** 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/jbLX7fHOpy0?si=65y1vA2DDOOyZ4U_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-**Video 2 — Kp=2.0, Kd=0.2:** Visible oscillation — car rocks back and forth before falling. Getting closer but Kd needs more tuning.
+**Video 2 — Kp=2.0, Kd=0.2:** 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_APt6M0QBYo?si=q_GceCyUb_jTlNOL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-**Video 3 — Kp=3.0, Kd=0.3:** Visible oscillation — car rocks back and forth before falling. Getting closer but Kd needs more tuning.
+**Video 3 — Kp=3.0, Kd=0.3:**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/h_yLxKQAwrM?si=bxYdYt8vFkZ1_pn8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -129,13 +129,14 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OZajaiyc-mY?si=uCzROWjwydy_Re38" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-**Video 5 — Kp=4.5, Kd=0.5:** Best result. Car maintains balance for up to 7 seconds before drifting off. I was very happy when it worked after days of debugging and trial and error. 
+**Video 5 — Kp=4.5, Kd=0.5:** Best result.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/h1Ry-R3_PE8?si=2UXt4eG-NvjaH90w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 **Video 6 — Kp=6.0, Kd=0.5:**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/MYkF0nMDdws?si=-4UeRElp49V2-UGC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 
 **Reaction video of the first time it worked** 📍 Olin Library
 
