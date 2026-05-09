@@ -60,6 +60,15 @@ if (output > 0) {
 }
 ```
 
+## BLE Commands
+
+I added four new BLE commands. These allowed me to tune gains and retrive data without reflashing the Artemis between attempts, which was essential for the long iterative process. 
+
+- `SET_PENDULUM_GAINS`: received Kp and Kd from Python and stores them on the Artemis
+- `START_PENDULUM`: resets all PID state variables, accepts an optional setpoint offset to compensate for IMU mounting drift, and enables the controller flag so the main loop begins running `pidPendulum()`
+- `STOP_PENDULUM`: disables the controller flag and stops the motors.
+- `SEND_PENDULUM_DATA`: transmits the logged arrays of timestamps, angles, errors, and motor outputs back to Python for plotting and analysis.
+
 ## The DMP Speed Problem
 
 Early attempts showed the car responding to ti[[ing but never catching up with the fall. I first assumed that this was a gains problem and spent significant time tuning Kp and Kd across a wide range. Videos of these attempts are included below. No matter how aggressively I tuned, the car should just fall before the motors could response in time. 
