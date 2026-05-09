@@ -115,11 +115,27 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 **Video 1 — Kp=1.5, Kd=0.1:** Car responds but falls consistently backward. Not enough proportional gain to overcome gravity.
 
-**Video 2 — Kp=3.0, Kd=0.3:** Visible oscillation — car rocks back and forth before falling. Getting closer but Kd needs more tuning.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jbLX7fHOpy0?si=65y1vA2DDOOyZ4U_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-**Video 3 — Kp=4.5, Kd=0.5:** Best result. Car maintains balance for up to 7 seconds before drifting off. I was very happy when it worked after days of debugging and trial and error. 
+**Video 2 — Kp=2.0, Kd=0.2:** Visible oscillation — car rocks back and forth before falling. Getting closer but Kd needs more tuning.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_APt6M0QBYo?si=q_GceCyUb_jTlNOL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Video 3 — Kp=3.0, Kd=0.3:** Visible oscillation — car rocks back and forth before falling. Getting closer but Kd needs more tuning.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/h_yLxKQAwrM?si=bxYdYt8vFkZ1_pn8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Video 4 — Kp=4.5, Kd=0.05:**
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OZajaiyc-mY?si=uCzROWjwydy_Re38" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Video 5 — Kp=4.5, Kd=0.5:** Best result. Car maintains balance for up to 7 seconds before drifting off. I was very happy when it worked after days of debugging and trial and error. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zcUG7D7CMiU?si=wwl0-WXM_jUMBLtT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Video 6 — Kp=6.0, Kd=0.5:**
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/MYkF0nMDdws?si=-4UeRElp49V2-UGC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Conclusion
 
