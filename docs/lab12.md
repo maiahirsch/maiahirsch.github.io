@@ -150,3 +150,7 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 ## Conclusion
 
 The inverted pendulum challenge required solving two main problems: getting the angle measurement right, and making the control loop fast enough. Determining the offset gave the controller an accurate error signal. Increasing the DMP output rate from 26Hz to 225 Hz was the single most impactful change. The final PD controller with Kp = 4.5 and Kd = 0.5 achieves up to 7 seconds of sustained balance, which I'm quite happy about. 
+
+## References
+
+I referenced Stephan Wagner's code and videos to have ideas and understand the expectations. 
