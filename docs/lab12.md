@@ -129,7 +129,7 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/OZajaiyc-mY?si=uCzROWjwydy_Re38" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-**Video 5 — Kp=4.5, Kd=0.5:** Best result.
+**Video 5 — Kp=4.5, Kd=0.5:** Best result. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/h1Ry-R3_PE8?si=2UXt4eG-NvjaH90w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -137,12 +137,15 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/MYkF0nMDdws?si=-4UeRElp49V2-UGC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-
 **Reaction video of the first time it worked** 📍 Olin Library
+
+Car maintains balance for up to 7 seconds before drifting off. I was very happy when it worked after days of debugging and trial and error.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/zcUG7D7CMiU?si=wwl0-WXM_jUMBLtT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Failed attempts when DMP was too slow
+
+Here are some examples of the car's slow reaction when DMP was set to 2 and not 0 as explained above.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gDLmwDzJjnk?si=05MLMu7wSRZAjvxq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
