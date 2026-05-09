@@ -131,11 +131,20 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 **Video 5 — Kp=4.5, Kd=0.5:** Best result. Car maintains balance for up to 7 seconds before drifting off. I was very happy when it worked after days of debugging and trial and error. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zcUG7D7CMiU?si=wwl0-WXM_jUMBLtT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/h1Ry-R3_PE8?si=2UXt4eG-NvjaH90w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 **Video 6 — Kp=6.0, Kd=0.5:**
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/MYkF0nMDdws?si=-4UeRElp49V2-UGC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Reaction video of the first time it worked** 📍 Olin Library
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zcUG7D7CMiU?si=wwl0-WXM_jUMBLtT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Failed attempts when DMP was too slow
+
+
+
 
 ## Conclusion
 
