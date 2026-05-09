@@ -221,4 +221,4 @@ The inverted pendulum challenge required solving two main problems: getting the 
 
 ## References
 
-I referenced Stephan Wagner's code and videos to have ideas and understand the expectations. 
+I referenced Stephan Wagner's code and videos to have ideas and understand the expectations. I used Claude to create the flowchart. 
