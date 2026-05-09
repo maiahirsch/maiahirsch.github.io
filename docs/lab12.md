@@ -143,8 +143,9 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 ## Failed attempts when DMP was too slow
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gDLmwDzJjnk?si=05MLMu7wSRZAjvxq" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LBV8EZFpRQ0?si=AN0S6_V93Z8D7CxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Conclusion
 
