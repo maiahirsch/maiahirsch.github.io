@@ -100,3 +100,23 @@ ble.send_command(CMD.START_PENDULUM, "-1.4")
 
 Although more gain combinations were tested, for the purpose of this writeup, here is a chart that outlines 3 combinations, each shown in a video below: 
 
+| Kp   | Kd   | result |
+| ---  | ---- | ---- |
+| 1.5  | 0.1  |Too slow — car falls backward consistently|
+| 2.0  | 0.2  |Too slow — car falls backward consistently|
+| 3.0  | 0.3  |Oscillates — overcorrects in both directions|
+| 4.5  | 0.05 |Too slow — car falls backward consistently|
+| 4.5  | 0.5  |Best — car stays upright up to 7 seconds|
+| 6.0  | 0.5  |Too slow — car falls backward consistently|
+
+The general pattern I observed: too low Kp meant the motors were too slow to catch up. Too high Kp caused too many oscillations and the car overcorrected back and fourth. Kd helped damp these oscillations, but if Kd was too high the car also did not have time to catch up. 
+
+### Results 
+
+[Video 1 — Kp=1.5, Kd=0.1]: Car responds but falls consistently backward. Not enough proportional gain to overcome gravity.
+[Video 2 — Kp=3.0, Kd=0.3]: Visible oscillation — car rocks back and forth before falling. Getting closer but Kd needs more tuning.
+[Video 3 — Kp=4.5, Kd=0.5]: Best result. Car maintains balance for up to 7 seconds before drifting off. I was very happy when it worked after days of debugging and trial and error. 
+
+## Conclusion
+
+The inverted pendulum challenge required solving two main problems: getting the angle measurement right, and making the control loop fast enough. Determining the offset gave the controller an accurate error signal. Increasing the DMP output rate from 26Hz to 225 Hz was the single most impactful change. The final PD controller with Kp = 4.5 and Kd = 0.5 achieves up to 7 seconds of sustained balance, which I'm quite happy about. 
