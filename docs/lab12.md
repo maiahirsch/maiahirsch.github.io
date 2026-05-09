@@ -120,6 +120,61 @@ Although more gain combinations were tested, for the purpose of this writeup, he
 
 The general pattern I observed: too low Kp meant the motors were too slow to catch up. Too high Kp caused too many oscillations and the car overcorrected back and fourth. Kd helped damp these oscillations, but if Kd was too high the car also did not have time to catch up. 
 
+## Flowchart 
+
+```mermaid
+flowchart TD
+    subgraph Offboard ["💻 Offboard (Python)"]
+        A[Set Gains\nSET_PENDULUM_GAINS] 
+        B[Start Controller\nSTART_PENDULUM + setpoint]
+        C[Stop Controller\nSTOP_PENDULUM]
+        D[Request Data\nSEND_PENDULUM_DATA]
+        E[Plot: angle, error,\nmotor output vs time]
+    end
+
+    subgraph Onboard ["🤖 Onboard (Artemis)"]
+        F[Store Kp, Kd]
+        G[Reset PID state\nSet setpoint\nEnable flag]
+        H{get_yaw\nnew data?}
+        I[Read DMP\n225Hz\nglobal_pitch]
+        J[Compute angle\nglobal_pitch + 83.0]
+        K[Compute error\nangle - setpoint]
+        L{Safety check\nabs error > 30°?}
+        M[motorsStop]
+        N[P term = Kp × error]
+        O[D term = Kd × Δerror/dt\nLPF filtered]
+        P[output = P + D]
+        Q[Log: time, angle,\nerror, output]
+        R{output > 0?}
+        S[motorsBackward]
+        T[motorsForward]
+        U[Transmit arrays\nover BLE]
+    end
+
+    A -->|BLE| F
+    B -->|BLE| G
+    G --> H
+    H -->|No| H
+    H -->|Yes| I
+    I --> J
+    J --> K
+    K --> L
+    L -->|Yes| M
+    M --> H
+    L -->|No| N
+    N --> O
+    O --> P
+    P --> Q
+    Q --> R
+    R -->|Yes| S
+    R -->|No| T
+    S --> H
+    T --> H
+    C -->|BLE| M
+    D -->|BLE| U
+    U -->|BLE| E
+```
+
 ### Results 
 
 **Video 1 — Kp=1.5, Kd=0.1:** 
