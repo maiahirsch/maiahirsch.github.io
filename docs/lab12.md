@@ -76,13 +76,13 @@ Early attempts showed the car responding to ti[[ing but never catching up with t
 The real issue turned out to be the DMP output rate. My initialize_DMP() had:
 
 ```c
-myICM.setDMPODRrate(DMP_ODR_Reg_Quat6, 2);  // ~26Hz
+myICM.setDMPODRrate(DMP_ODR_Reg_Quat6, 2);  // ~20Hz
 ```
 
-At 26Hz, the controller only received a new angle reading every ~38ms. For a fast-falling inverted pendulum, this is far too slow — the car can tip several degrees between updates. I changed the rate setting to 0, which runs the DMP at its maximum rate of ~225Hz:
+For a fast-falling inverted pendulum, this is far too slow — the car can tip several degrees between updates. I changed the rate setting to 0, which runs the DMP at its maximum rate of ~57Hz:
 
 ```c
-myICM.setDMPODRrate(DMP_ODR_Reg_Quat6, 0);  // ~225Hz
+myICM.setDMPODRrate(DMP_ODR_Reg_Quat6, 0);  // ~57 - 58Hz
 ```
 
 This change made an immediate dramatic difference. Now the car could stay upright for a few seconds. 
