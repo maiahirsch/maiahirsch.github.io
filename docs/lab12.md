@@ -6,7 +6,7 @@ For this final lab, I decided to pursue the inverted pendulum challenge using cl
 
 ## Approach Overview
 
-The inverted pendulum is an unstable system. Any small perturbation from the upright position will cause the car to fall unless the controller actively compensates by driving the wheels in the direction of the fall, like a Segway or hoverboard. My implementation uses a PD controller running on the Artemis, reading pitch anfle from the ICM-20948 DMP, and driving the motors to maintain balance. 
+The inverted pendulum is an unstable system. Any small perturbation from the upright position will cause the car to fall unless the controller actively compensates by driving the wheels in the direction of the fall, like a Segway or hoverboard. My implementation uses a PD controller running on the Artemis, reading pitch angle from the ICM-20948 DMP, and driving the motors to maintain balance. 
 
 ## IMU Angle Detection
 
@@ -18,7 +18,7 @@ I found the following:
 - Tipping forward: pitch < -83° (more negative)
 - Tipping forward: pitch > 83° (more positive)
 
-This told me pitch was the correct axis, and that I needed to shift the reference so uright reads as 0°. I applied a fixed offset 
+This told me pitch was the correct axis, and that I needed to shift the reference so upright reads as 0°. I applied a fixed offset 
 
 ```c
 float angle = global_pitch + 83.0;
@@ -36,7 +36,7 @@ ble.send_command(CMD.START_PENDULUM, "-3.5")  # lean setpoint 3.5° forward
 
 ## Controller Design
 
-I implemented a PD controller. I ommited Ki on purpose as for an inverted pendulum the integral term accumulates error over time and can cause wind-up and instability making the tuning much harded. 
+I implemented a PD controller. I omitted Ki on purpose as for an inverted pendulum the integral term accumulates error over time and can cause wind-up and instability making the tuning much harder. 
 
 ```c
 float angle = global_pitch + 83.0;
