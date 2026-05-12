@@ -37,4 +37,4 @@
 | [Lab 9](docs/lab9.md) | [Mapping](lab9.md) |
 | [Lab 10](docs/lab10.md) | [Localization (sim)](lab10.md) |
 | [Lab 11](docs/lab11.md) | [Localization (real)](lab11.md) |
-| [Lab 12](docs/lab12.md) | [Planning and Execution](lab12.md) |
+| [Lab 12](docs/lab12.md) | [Inverted Pendulum](lab12.md) |
