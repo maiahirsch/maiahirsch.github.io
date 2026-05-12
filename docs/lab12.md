@@ -122,7 +122,7 @@ The general pattern I observed: too low Kp meant the motors were too slow to cat
 
 ## Flowchart 
 
-```mermaid
+<div class="mermaid">
 flowchart TD
     subgraph Offboard ["💻 Offboard (Python)"]
         A[Set Gains\nSET_PENDULUM_GAINS] 
@@ -131,7 +131,6 @@ flowchart TD
         D[Request Data\nSEND_PENDULUM_DATA]
         E[Plot: angle, error,\nmotor output vs time]
     end
-
     subgraph Onboard ["🤖 Onboard (Artemis)"]
         F[Store Kp, Kd]
         G[Reset PID state\nSet setpoint\nEnable flag]
@@ -150,7 +149,6 @@ flowchart TD
         T[motorsForward]
         U[Transmit arrays\nover BLE]
     end
-
     A -->|BLE| F
     B -->|BLE| G
     G --> H
@@ -173,7 +171,7 @@ flowchart TD
     C -->|BLE| M
     D -->|BLE| U
     U -->|BLE| E
-```
+</div>
 
 ### Results 
 
@@ -222,3 +220,7 @@ The inverted pendulum challenge required solving two main problems: getting the 
 ## References
 
 I referenced Stephan Wagner's code and videos to have ideas and understand the expectations. I used Claude to create the flowchart. 
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true});</script>
