@@ -173,6 +173,17 @@ flowchart TD
     U -->|BLE| E
 </div>
 
+## Data Analysis 
+
+The following plot shows the pendulum sensor data and motor input for the best performing gains (Kp=4.5, Kd=0.5):
+
+![results](assets/lab12/lab12.png)
+
+The top plot shows the pitch angle (green) and proportional term (blue) over time. Both start high — around 27° and 135 respectively because I was tilting the car from a horizontal position and placing it to be released from a perpendicular position with respect to the table (0°). Then we can see the plot converges toward the setpoint (0°) within approximately 0.5 seconds. After that, the angle oscillates within ±5° for the remainder of the run, showing the controller successfully maintaining balance.
+
+The bottom plot shows the actual PWM sent to the motors. It starts at 213 — maximum effort to catch the initial release — then drops to ~90 as the car approaches vertical. It then settles into a square wave alternating between +85 and -85, which is the controller making continuous small corrections in opposite directions to fight gravity.
+
+
 ### Results 
 
 **Video 1 — Kp=1.5, Kd=0.1:** 
