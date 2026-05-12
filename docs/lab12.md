@@ -16,7 +16,7 @@ I found the following:
 - Flat on the ground: pitch ~ 0°
 - Upright on rear wheels: pitch ~ -83°
 - Tipping forward: pitch < -83° (more negative)
-- Tipping forward: pitch > 83° (more positive)
+- Tipping backward: pitch > 83° (more positive)
 
 This told me pitch was the correct axis, and that I needed to shift the reference so upright reads as 0°. I applied a fixed offset 
 
@@ -29,7 +29,7 @@ With this correction:
 - Tipping forward = positive error
 - Tipping backward = negative error 
 
-At some point, I think the IMU moved a little because when I the perfectly upright position, the angle read -1.4° rather than 0°. I decided to tune this setpoint parameter whenever necessary by sending a python command rather than hardcoding it. 
+At some point, I think the IMU moved a little because when I held the car in the upright position, the angle read -1.4° rather than 0°. I decided to tune this setpoint parameter whenever necessary by sending a python command rather than hardcoding it. 
 ```python
 ble.send_command(CMD.START_PENDULUM, "-3.5")  # lean setpoint 3.5° forward
 ```
@@ -62,7 +62,7 @@ if (output > 0) {
 
 ## BLE Commands
 
-I added four new BLE commands. These allowed me to tune gains and retrive data without reflashing the Artemis between attempts, which was essential for the long iterative process. 
+I added four new BLE commands. These allowed me to tune gains and retrieve data without reflashing the Artemis between attempts, which was essential for the long iterative process. 
 
 - `SET_PENDULUM_GAINS`: received Kp and Kd from Python and stores them on the Artemis
 - `START_PENDULUM`: resets all PID state variables, accepts an optional setpoint offset to compensate for IMU mounting drift, and enables the controller flag so the main loop begins running `pidPendulum()`
@@ -71,7 +71,7 @@ I added four new BLE commands. These allowed me to tune gains and retrive data w
 
 ## The DMP Speed Problem
 
-Early attempts showed the car responding to ti[[ing but never catching up with the fall. I first assumed that this was a gains problem and spent significant time tuning Kp and Kd across a wide range. Videos of these attempts are included below. No matter how aggressively I tuned, the car should just fall before the motors could response in time. 
+Early attempts showed the car responding to tipping but never catching up with the fall. I first assumed that this was a gains problem and spent significant time tuning Kp and Kd across a wide range. Videos of these attempts are included below. No matter how aggressively I tuned, the car should just fall before the motors could respond in time. 
 
 The real issue turned out to be the DMP output rate. My initialize_DMP() had:
 
@@ -118,7 +118,7 @@ Although more gain combinations were tested, for the purpose of this writeup, he
 | 4.5  | 0.5  |Best — car stays upright up to 7 seconds|
 | 6.0  | 0.5  |Fast, overshoots and corrections are hard to implement|
 
-The general pattern I observed: too low Kp meant the motors were too slow to catch up. Too high Kp caused too many oscillations and the car overcorrected back and fourth. Kd helped damp these oscillations, but if Kd was too high the car also did not have time to catch up. 
+The general pattern I observed: too low Kp meant the motors were too slow to catch up. Too high Kp caused too many oscillations and the car overcorrected back and forth. Kd helped damp these oscillations, but if Kd was too high the car also did not have time to catch up. 
 
 ## Flowchart 
 
@@ -135,7 +135,7 @@ flowchart TD
         F[Store Kp, Kd]
         G[Reset PID state\nSet setpoint\nEnable flag]
         H{get_yaw\nnew data?}
-        I[Read DMP\n225Hz\nglobal_pitch]
+        I[Read DMP\n57Hz\nglobal_pitch]
         J[Compute angle\nglobal_pitch + 83.0]
         K[Compute error\nangle - setpoint]
         L{Safety check\nabs error > 30°?}
@@ -226,7 +226,7 @@ Here are some examples of the car's slow reaction when DMP was set to 2 and not 
 
 ## Conclusion
 
-The inverted pendulum challenge required solving two main problems: getting the angle measurement right, and making the control loop fast enough. Determining the offset gave the controller an accurate error signal. Increasing the DMP output rate from 26Hz to 225 Hz was the single most impactful change. The final PD controller with Kp = 4.5 and Kd = 0.5 achieves up to 7 seconds of sustained balance, which I'm quite happy about. 
+The inverted pendulum challenge required solving two main problems: getting the angle measurement right, and making the control loop fast enough. Determining the offset gave the controller an accurate error signal. Increasing the DMP output rate from 20Hz to 57 Hz was the single most impactful change. The final PD controller with Kp = 4.5 and Kd = 0.5 achieves up to 7 seconds of sustained balance, which I'm quite happy about. 
 
 ## References
 
